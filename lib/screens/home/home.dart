@@ -1,27 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-
-import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
+import '../../common/widgets/custom_shapes/cards/provider_card.dart';
 import '../../common/widgets/custom_shapes/containers/search_container.dart';
 import '../../common/widgets/layouts/listview.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
+import '../../utils/helpers/helper_function.dart';
 import 'widgets/home_appbar.dart';
+import 'widgets/home_category_grid.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.title});
-  final String title;
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final List<Map<String, dynamic>> serviceProviders = [
+  {
+    "imageUrl": "https://cdn.pixabay.com/photo/2017/09/26/11/10/plumber-2788330_1280.jpg",
+    "fullname": "John Doe",
+    "description": "Expert plumbing services with 10+ years of experience.",
+    "service": "Plumber",
+    "ratingColor": Colors.amber,
+    "rating": 4.5,
+  },
+  {
+    "imageUrl": "https://cdn.pixabay.com/photo/2015/09/09/19/57/cleaning-932936_960_720.jpg",
+    "fullname": "Fatima Zarah",
+    "description": "Professional home and office cleaning.",
+    "service": "Cleaner",
+    "ratingColor": Colors.brown,
+    "rating": 2.0,
+  },
+  {
+    "imageUrl": "https://cdn.pixabay.com/photo/2018/03/29/19/19/electrician-3273340_1280.jpg",
+    "fullname": "Chukwu Emeka",
+    "description": "Certified electrician for all electrical needs.",
+    "service": "Electrician",
+    "ratingColor": CustomColors.darkGrey,
+    "rating": 3.2,
+  },
+  {
+    "imageUrl": "https://cdn.pixabay.com/photo/2020/04/28/13/21/landscape-5104510_1280.jpg",
+    "fullname": "Janette Dough",
+    "description": "Beautiful garden designs and maintenance.",
+    "service": "Landscaper",
+    "ratingColor": Colors.amber,
+    "rating": 4.8,
+  },
+  {
+    "imageUrl": "https://cdn.pixabay.com/photo/2015/01/12/00/16/sushi-596930_960_720.jpg",
+    "fullname": "Ada Obi",
+    "description": "Catering and cullinary services for all type of events .",
+    "service": "Chef",
+    "ratingColor": Colors.brown,
+    "rating": 2.4,
+  },
+];
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    bool dark = Theme.of(context).brightness == Brightness.dark;
+    final dark = HelperFunction.isDarkMode(context);
     int unreadCount = 5;
     return Scaffold(
       body: NestedScrollView(
@@ -50,9 +92,13 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: Sizes.spaceBtwSections,),
                 Text(
                   'What Service do you need ?',
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                    color: dark ? CustomColors.alternate : CustomColors.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
 
                 const SizedBox(height: Sizes.spaceBtwItems),
@@ -63,87 +109,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Recommended',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
+                const SizedBox(height: Sizes.sm),
+                HomeCategoryGrid(),
 
+                const SizedBox(height: Sizes.spaceBtwItems),
+                Text(
+                  'Recommended',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
                 const SizedBox(height: Sizes.sm),
                 HomeListView(
-                  sizedBoxHeight: screenHeight * 0.25,
+                  sizedBoxHeight: screenHeight * 0.28,
                   scrollDirection: Axis.horizontal,
                   seperatorBuilder:
                       (context, index) => const SizedBox(width: Sizes.sm),
-                  itemCount: 3,
+                  itemCount: serviceProviders.length,
                   itemBuilder: (context, index) {
-                    return RoundedContainer(
-                      height: screenHeight * 0.24,
-                      width: screenWidth * 0.35,
-                      radius: Sizes.cardRadiusSm,
-                      backgroundColor:
-            dark
-                ? CustomColors.white.withValues(alpha: 0.1)
-                : CustomColors.black.withValues(alpha: 0.1),
-        showBorder: true,
-        borderColor: CustomColors.primary,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // ClipRRect(
-                //     borderRadius: BorderRadius.circular(100),
-                //   child: Container(
-                //     width: horizontalCardHeight * 0.4,
-                //     height: horizontalCardHeight * 0.4,
-                //     decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(100),
-                //     color: dark ? Colors.black : Colors.white,),
-                //     child: Center(
-                //       child: Image.network(
-                //         profileImage,
-                //         fit: BoxFit.cover,
-                //         height: horizontalCardHeight * 0.4,
-                //       ),
-                //     ),
-                //   ),
-                // ),
-      
-                //name
-                const SizedBox(height: Sizes.sm),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'profileName',
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                    const SizedBox(width: 2),
-                    const Icon(
-                      Iconsax.verify,
-                      color: Colors.amber,
-                      size: Sizes.iconSm,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-      
-            //no of jobs
-            const SizedBox(height: Sizes.sm),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.green,
-                shape: BoxShape.circle
-              ),
-              padding: const EdgeInsets.all(Sizes.sm),
-              child: Text(
-                2.toString(),
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white, fontSize: 10),
-              ),
-            ),
-      
-            
-          ],
-        ),
+                    final list = serviceProviders[index];
+                    return ProviderCard(
+                      imageUrl: list['imageUrl'],
+                      fullname: list['fullname'],
+                      ratingColor: list['ratingColor'],
+                      rating: list['rating'],
+                      service: list['service'],
+                      description: list['description']
+                      // description: 'Hi everyone! We would love to introduce the design concept our team developed for a freelance marketplace mobile application. Specialists can find work opportunities, while employers can hire freelancers for projects. Lets explore its features.',
                     );
                   },
                 ),

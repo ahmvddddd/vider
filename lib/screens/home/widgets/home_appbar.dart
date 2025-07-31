@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
+import '../../../utils/constants/custom_colors.dart';
+import '../../../utils/constants/image_strings.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,19 +31,21 @@ class _HomeAppBarState extends ConsumerState<HomeAppBar> {
             //avatar and greetings
             Row(
               children: [
-                RoundedContainer(
-                  width: screenHeight * 0.050,
-                  height: screenHeight * 0.050,
-                  radius: 100,
-                  backgroundColor:
-                      dark
-                          ? Colors.white.withValues(alpha: 0.1)
-                          : Colors.black.withValues(alpha: 0.1),
-                  padding: const EdgeInsets.all(Sizes.xs),
+                Container(
+                      height: screenHeight * 0.05,
+                      width: screenHeight * 0.05,
+                      padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color: CustomColors.darkGrey,
+                    shape: BoxShape.circle
+                  ),
                   child: Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: Icon(Icons.person)
+                      child: Image.asset(Images.avatarM1,
+                      fit: BoxFit.contain,
+                      height: screenHeight * 0.05,
+                      width: screenHeight * 0.05,),
                     ),
                   ),
                 ),
