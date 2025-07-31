@@ -105,11 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 SearchContainer(width: screenWidth * 0.90),
 
                 const SizedBox(height: Sizes.spaceBtwItems),
-                Text(
-                  'Recommended',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: Sizes.sm),
                 HomeCategoryGrid(),
 
                 const SizedBox(height: Sizes.spaceBtwItems),
