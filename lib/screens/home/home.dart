@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import '../../common/widgets/custom_shapes/cards/provider_card.dart';
 import '../../common/widgets/custom_shapes/containers/search_container.dart';
@@ -5,6 +7,7 @@ import '../../common/widgets/layouts/listview.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
+import 'components/home_shimmer.dart';
 import 'widgets/home_appbar.dart';
 import 'widgets/home_category_grid.dart';
 
@@ -59,6 +62,21 @@ class _HomeScreenState extends State<HomeScreen> {
   },
 ];
 
+  bool _showShimmer = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Timer(const Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          _showShimmer = false;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -89,7 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(Sizes.spaceBtwItems),
-            child: Column(
+            child: _showShimmer ? const HomeShimmer()
+            : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: Sizes.spaceBtwSections,),

@@ -62,7 +62,7 @@ class _HomeCategoryGridState extends State<HomeCategoryGrid> {
               ),
             )
             : RoundedContainer(
-              height: screenHeight * 0.13,
+              height: screenHeight * 0.11,
               width: screenHeight * 0.13,
               backgroundColor: dark ? Colors.black : Colors.white,
               boxShadow: [
