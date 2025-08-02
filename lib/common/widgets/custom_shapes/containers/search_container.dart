@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../../utils/constants/custom_colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/helpers/helper_function.dart';
+import '../../../../screens/map/map.dart';
 
 class SearchContainer extends StatelessWidget {
   const SearchContainer({
@@ -27,14 +28,12 @@ class SearchContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     final dark = HelperFunction.isDarkMode(context);
     return GestureDetector(
       onTap: onTap,
       child: Padding(
         padding: padding,
         child: Container(
-          height: screenHeight * 0.055,
           width: width,
           decoration: BoxDecoration(
             color: showBackground ? dark ? CustomColors.dark : CustomColors.light : Colors.transparent,
@@ -42,11 +41,18 @@ class SearchContainer extends StatelessWidget {
             border: showBorder ? Border.all(color: CustomColors.grey): null,
           ),
           child: 
-          TextFormField(
-            decoration: InputDecoration(
-              prefixIcon: Icon(icon, color: CustomColors.darkerGrey, size:  Sizes.iconSm,),
-              hintText: text,
-              hintStyle:  Theme.of(context).textTheme.labelSmall,
+          Center(
+            child: TextFormField(
+              decoration: InputDecoration(
+                prefixIcon: Icon(icon, color: CustomColors.darkerGrey, size:  Sizes.iconSm,),
+                suffixIcon: IconButton(
+                      onPressed: () => HelperFunction.navigateScreen(context, MapScreen()),
+                      icon: Icon(Icons.location_on, size: Sizes.iconM, color: Colors.red,),
+                    ),
+                border: InputBorder.none,
+                hintText: text,
+                hintStyle:  Theme.of(context).textTheme.labelSmall,
+              ),
             ),
           ) 
         ),

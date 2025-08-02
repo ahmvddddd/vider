@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: Sizes.spaceBtwItems),
                 SearchContainer(width: screenWidth * 0.90),
 
-                const SizedBox(height: Sizes.spaceBtwItems),
+                const SizedBox(height: Sizes.spaceBtwSections),
                 HomeCategoryGrid(),
 
                 const SizedBox(height: Sizes.spaceBtwItems),

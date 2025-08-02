@@ -25,7 +25,7 @@ class _HomeCategoryGridState extends State<HomeCategoryGrid> {
     'Home repair',
     'Writing',
     'Programming',
-    'Marketing'
+    'Marketing',
   ];
   @override
   Widget build(BuildContext context) {
@@ -44,16 +44,19 @@ class _HomeCategoryGridState extends State<HomeCategoryGrid> {
               },
               child: RoundedContainer(
                 height: screenHeight * 0.11,
-                width: screenHeight * 0.13,
-                backgroundColor: dark ? CustomColors.alternate : CustomColors.primary,
+                width: screenHeight * 0.11,
+                padding: const EdgeInsets.all(2),
+                backgroundColor:
+                    dark ? CustomColors.alternate : CustomColors.primary,
                 radius: Sizes.cardRadiusLg,
                 child: Center(
                   child: Center(
                     child: Text(
                       'View More',
-                      style: Theme.of(
-                        context,
-                      ).textTheme.labelSmall!.copyWith(color: dark ? Colors.black : Colors.white),
+                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                        color: dark ? Colors.black : Colors.white,
+                        fontSize: 8,
+                      ),
                       softWrap: true,
                       textAlign: TextAlign.center,
                     ),
@@ -63,7 +66,8 @@ class _HomeCategoryGridState extends State<HomeCategoryGrid> {
             )
             : RoundedContainer(
               height: screenHeight * 0.11,
-              width: screenHeight * 0.13,
+              width: screenHeight * 0.11,
+              padding: const EdgeInsets.all(2),
               backgroundColor: dark ? Colors.black : Colors.white,
               boxShadow: [
                 BoxShadow(
@@ -80,6 +84,7 @@ class _HomeCategoryGridState extends State<HomeCategoryGrid> {
                     categories[index],
                     style: Theme.of(context).textTheme.labelSmall!.copyWith(
                       color: dark ? Colors.white : Colors.black,
+                      fontSize: 8,
                     ),
                     softWrap: true,
                     textAlign: TextAlign.center,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'main.dart';
 // import 'screens/authentication/signin.dart';
 // import 'screens/authentication/signup.dart';
-import 'screens/home/home.dart';
+import 'nav_menu.dart';
 import 'utils/theme/theme.dart';
 
 class App extends StatefulWidget {
@@ -32,7 +32,7 @@ class _AppState extends State<App> {
       themeMode: ThemeMode.system,
       theme: TAppTheme.lightTheme,
       darkTheme: TAppTheme.darkTheme,
-      home:   HomeScreen(),
+      home:   NavigationMenu(),
       // Scaffold(
       //   body: PageView(
       //     scrollDirection: Axis.horizontal,

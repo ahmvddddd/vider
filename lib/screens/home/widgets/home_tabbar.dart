@@ -73,18 +73,6 @@ class HomeTabbar extends StatelessWidget {
                                               ? CustomColors.primary
                                               : Colors.transparent,
                                       borderRadius: BorderRadius.circular(30),
-                                      boxShadow:
-                                          isSelected
-                                              ? [
-                                                BoxShadow(
-                                                  color: Theme.of(
-                                                    context,
-                                                  ).primaryColor.withValues(alpha: 0.4),
-                                                  blurRadius: 8,
-                                                  offset: const Offset(0, 4),
-                                                ),
-                                              ]
-                                              : [],
                                     ),
                                     child: Text(
                                       categories[index],
@@ -111,6 +99,7 @@ class HomeTabbar extends StatelessWidget {
                                   final list = freelancers[category]!;
                                   return ListView.separated(
                                     padding: const EdgeInsets.symmetric(
+                                      vertical: Sizes.sm,
                                       horizontal: Sizes.md,
                                     ),
                                     itemCount: list.length,
