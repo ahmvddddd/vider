@@ -83,75 +83,78 @@ class _HomeScreenState extends State<HomeScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     final dark = HelperFunction.isDarkMode(context);
     int unreadCount = 5;
-    return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (_, innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              pinned: true,
-              floating: true,
-              expandedHeight: screenHeight * 0.09,
-              backgroundColor: dark ? Colors.black : Colors.white,
-              flexibleSpace: Padding(
-                padding: const EdgeInsets.all(Sizes.sm),
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [HomeAppBar(unreadCount: unreadCount)],
-                ),
-              ),
-            ),
-          ];
-        },
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.spaceBtwItems),
-            child: _showShimmer ? const HomeShimmer()
-            : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: Sizes.spaceBtwSections,),
-                Text(
-                  'What Service do you need ?',
-                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    color: dark ? CustomColors.alternate : CustomColors.primary,
-                    fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: NestedScrollView(
+          headerSliverBuilder: (_, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                pinned: true,
+                floating: true,
+                expandedHeight: screenHeight * 0.09,
+                backgroundColor: dark ? Colors.black : Colors.white,
+                flexibleSpace: Padding(
+                  padding: const EdgeInsets.all(Sizes.sm),
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [HomeAppBar(unreadCount: unreadCount)],
                   ),
                 ),
-
-                const SizedBox(height: Sizes.spaceBtwItems),
-                SearchContainer(width: screenWidth * 0.90),
-
-                const SizedBox(height: Sizes.spaceBtwSections),
-                HomeCategoryGrid(),
-
-                const SizedBox(height: Sizes.spaceBtwItems),
-                Text(
-                  'Recommended',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: Sizes.sm),
-                HomeListView(
-                  sizedBoxHeight: screenHeight * 0.28,
-                  scrollDirection: Axis.horizontal,
-                  seperatorBuilder:
-                      (context, index) => const SizedBox(width: Sizes.sm),
-                  itemCount: serviceProviders.length,
-                  itemBuilder: (context, index) {
-                    final list = serviceProviders[index];
-                    return ProviderCard(
-                      imageUrl: list['imageUrl'],
-                      fullname: list['fullname'],
-                      ratingColor: list['ratingColor'],
-                      rating: list['rating'],
-                      service: list['service'],
-                      description: list['description']
-                      // description: 'Hi everyone! We would love to introduce the design concept our team developed for a freelance marketplace mobile application. Specialists can find work opportunities, while employers can hire freelancers for projects. Lets explore its features.',
-                    );
-                  },
-                ),
-              ],
+              ),
+            ];
+          },
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+              child: _showShimmer ? const HomeShimmer()
+              : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: Sizes.spaceBtwSections,),
+                  Text(
+                    'What Service do you need ?',
+                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      color: dark ? CustomColors.alternate : CustomColors.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+      
+                  const SizedBox(height: Sizes.spaceBtwItems),
+                  SearchContainer(width: screenWidth * 0.90),
+      
+                  const SizedBox(height: Sizes.spaceBtwSections),
+                  HomeCategoryGrid(),
+      
+                  const SizedBox(height: Sizes.spaceBtwItems),
+                  Text(
+                    'Recommended',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: Sizes.sm),
+                  HomeListView(
+                    sizedBoxHeight: screenHeight * 0.28,
+                    scrollDirection: Axis.horizontal,
+                    seperatorBuilder:
+                        (context, index) => const SizedBox(width: Sizes.sm),
+                    itemCount: serviceProviders.length,
+                    itemBuilder: (context, index) {
+                      final list = serviceProviders[index];
+                      return ProviderCard(
+                        imageUrl: list['imageUrl'],
+                        fullname: list['fullname'],
+                        ratingColor: list['ratingColor'],
+                        rating: list['rating'],
+                        service: list['service'],
+                        description: list['description']
+                        // description: 'Hi everyone! We would love to introduce the design concept our team developed for a freelance marketplace mobile application. Specialists can find work opportunities, while employers can hire freelancers for projects. Lets explore its features.',
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

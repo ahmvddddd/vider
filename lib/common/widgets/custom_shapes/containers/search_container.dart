@@ -47,7 +47,7 @@ class SearchContainer extends StatelessWidget {
                 prefixIcon: Icon(icon, color: CustomColors.darkerGrey, size:  Sizes.iconSm,),
                 suffixIcon: IconButton(
                       onPressed: () => HelperFunction.navigateScreen(context, MapScreen()),
-                      icon: Icon(Icons.location_on, size: Sizes.iconM, color: Colors.red,),
+                      icon: Icon(Icons.location_pin, size: Sizes.iconM, color: Colors.red,),
                     ),
                 border: InputBorder.none,
                 hintText: text,
