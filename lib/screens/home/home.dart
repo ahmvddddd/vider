@@ -20,47 +20,52 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, dynamic>> serviceProviders = [
-  {
-    "imageUrl": "https://cdn.pixabay.com/photo/2017/09/26/11/10/plumber-2788330_1280.jpg",
-    "fullname": "John Doe",
-    "description": "Expert plumbing services with 10+ years of experience.",
-    "service": "Plumber",
-    "ratingColor": Colors.amber,
-    "rating": 4.5,
-  },
-  {
-    "imageUrl": "https://cdn.pixabay.com/photo/2015/09/09/19/57/cleaning-932936_960_720.jpg",
-    "fullname": "Fatima Zarah",
-    "description": "Professional home and office cleaning.",
-    "service": "Cleaner",
-    "ratingColor": Colors.brown,
-    "rating": 2.0,
-  },
-  {
-    "imageUrl": "https://cdn.pixabay.com/photo/2018/03/29/19/19/electrician-3273340_1280.jpg",
-    "fullname": "Chukwu Emeka",
-    "description": "Certified electrician for all electrical needs.",
-    "service": "Electrician",
-    "ratingColor": CustomColors.darkGrey,
-    "rating": 3.2,
-  },
-  {
-    "imageUrl": "https://cdn.pixabay.com/photo/2020/04/28/13/21/landscape-5104510_1280.jpg",
-    "fullname": "Janette Dough",
-    "description": "Beautiful garden designs and maintenance.",
-    "service": "Landscaper",
-    "ratingColor": Colors.amber,
-    "rating": 4.8,
-  },
-  {
-    "imageUrl": "https://cdn.pixabay.com/photo/2015/01/12/00/16/sushi-596930_960_720.jpg",
-    "fullname": "Ada Obi",
-    "description": "Catering and cullinary services for all type of events .",
-    "service": "Chef",
-    "ratingColor": Colors.brown,
-    "rating": 2.4,
-  },
-];
+    {
+      "imageUrl":
+          "https://cdn.pixabay.com/photo/2017/09/26/11/10/plumber-2788330_1280.jpg",
+      "fullname": "John Doe",
+      "description": "Expert plumbing services with 10+ years of experience.",
+      "service": "Plumber",
+      "ratingColor": Colors.amber,
+      "rating": 4.5,
+    },
+    {
+      "imageUrl":
+          "https://cdn.pixabay.com/photo/2015/09/09/19/57/cleaning-932936_960_720.jpg",
+      "fullname": "Fatima Zarah",
+      "description": "Professional home and office cleaning.",
+      "service": "Cleaner",
+      "ratingColor": Colors.brown,
+      "rating": 2.0,
+    },
+    {
+      "imageUrl":
+          "https://cdn.pixabay.com/photo/2018/03/29/19/19/electrician-3273340_1280.jpg",
+      "fullname": "Chukwu Emeka",
+      "description": "Certified electrician for all electrical needs.",
+      "service": "Electrician",
+      "ratingColor": CustomColors.darkGrey,
+      "rating": 3.2,
+    },
+    {
+      "imageUrl":
+          "https://cdn.pixabay.com/photo/2020/04/28/13/21/landscape-5104510_1280.jpg",
+      "fullname": "Janette Dough",
+      "description": "Beautiful garden designs and maintenance.",
+      "service": "Landscaper",
+      "ratingColor": Colors.amber,
+      "rating": 4.8,
+    },
+    {
+      "imageUrl":
+          "https://cdn.pixabay.com/photo/2015/01/12/00/16/sushi-596930_960_720.jpg",
+      "fullname": "Ada Obi",
+      "description": "Catering and cullinary services for all type of events .",
+      "service": "Chef",
+      "ratingColor": Colors.brown,
+      "rating": 2.4,
+    },
+  ];
 
   bool _showShimmer = true;
 
@@ -109,52 +114,65 @@ class _HomeScreenState extends State<HomeScreen> {
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(Sizes.spaceBtwItems),
-              child: _showShimmer ? const HomeShimmer()
-              : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: Sizes.spaceBtwSections,),
-                  Text(
-                    'What Service do you need ?',
-                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                      color: dark ? CustomColors.alternate : CustomColors.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-      
-                  const SizedBox(height: Sizes.spaceBtwItems),
-                  SearchContainer(width: screenWidth * 0.90),
-      
-                  const SizedBox(height: Sizes.spaceBtwSections),
-                  HomeCategoryGrid(),
-      
-                  const SizedBox(height: Sizes.spaceBtwItems),
-                  Text(
-                    'Recommended',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  const SizedBox(height: Sizes.sm),
-                  HomeListView(
-                    sizedBoxHeight: screenHeight * 0.28,
-                    scrollDirection: Axis.horizontal,
-                    seperatorBuilder:
-                        (context, index) => const SizedBox(width: Sizes.sm),
-                    itemCount: serviceProviders.length,
-                    itemBuilder: (context, index) {
-                      final list = serviceProviders[index];
-                      return ProviderCard(
-                        imageUrl: list['imageUrl'],
-                        fullname: list['fullname'],
-                        ratingColor: list['ratingColor'],
-                        rating: list['rating'],
-                        service: list['service'],
-                        description: list['description']
-                        // description: 'Hi everyone! We would love to introduce the design concept our team developed for a freelance marketplace mobile application. Specialists can find work opportunities, while employers can hire freelancers for projects. Lets explore its features.',
-                      );
-                    },
-                  ),
-                ],
-              ),
+              child:
+                  _showShimmer
+                      ? const HomeShimmer()
+                      : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: Sizes.spaceBtwSections),
+                          Text(
+                            'What Service do you need ?',
+                            style: Theme.of(
+                              context,
+                            ).textTheme.headlineSmall!.copyWith(
+                              color:
+                                  dark
+                                      ? CustomColors.alternate
+                                      : CustomColors.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          const SizedBox(height: Sizes.spaceBtwItems),
+                          SearchContainer(
+                            width: screenWidth * 0.90,
+                          ),
+
+                          const SizedBox(height: Sizes.spaceBtwSections),
+                          HomeCategoryGrid(),
+
+                          const SizedBox(height: Sizes.spaceBtwItems),
+                          Text(
+                            'Recommended',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          const SizedBox(height: Sizes.sm),
+                          HomeListView(
+                            sizedBoxHeight: screenHeight * 0.28,
+                            scrollDirection: Axis.horizontal,
+                            seperatorBuilder:
+                                (context, index) =>
+                                    const SizedBox(width: Sizes.sm),
+                            itemCount: serviceProviders.length,
+                            itemBuilder: (context, index) {
+                              final list = serviceProviders[index];
+                              return GestureDetector(
+                                onTap: () {},
+                                child: ProviderCard(
+                                  imageUrl: list['imageUrl'],
+                                  fullname: list['fullname'],
+                                  ratingColor: list['ratingColor'],
+                                  rating: list['rating'],
+                                  service: list['service'],
+                                  description: list['description'],
+                                  // description: 'Hi everyone! We would love to introduce the design concept our team developed for a freelance marketplace mobile application. Specialists can find work opportunities, while employers can hire freelancers for projects. Lets explore its features.',
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
             ),
           ),
         ),

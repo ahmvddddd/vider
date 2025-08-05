@@ -45,10 +45,18 @@ class SearchContainer extends StatelessWidget {
             child: TextFormField(
               decoration: InputDecoration(
                 prefixIcon: Icon(icon, color: CustomColors.darkerGrey, size:  Sizes.iconSm,),
-                suffixIcon: IconButton(
-                      onPressed: () => HelperFunction.navigateScreen(context, MapScreen()),
-                      icon: Icon(Icons.location_pin, size: Sizes.iconM, color: Colors.red,),
-                    ),
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                    color: dark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.1),
+                    shape: BoxShape.circle),
+                    child:  GestureDetector(
+                      onTap: () => HelperFunction.navigateScreen(context, MapScreen()),
+                    child: Icon(Icons.location_pin, size: Sizes.iconM, color: Colors.red,)),
+                  ),
+                ),
                 border: InputBorder.none,
                 hintText: text,
                 hintStyle:  Theme.of(context).textTheme.labelSmall,

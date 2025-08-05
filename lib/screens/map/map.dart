@@ -78,35 +78,41 @@ class _LocationMapPageState extends State<LocationMapPage> {
         title: Text('Map', style: Theme.of(context).textTheme.headlineSmall),
         showBackArrow: true,
       ),
-      body: FlutterMap(
-        options: MapOptions(center: center, zoom: 13.0),
-        children: [
-          TileLayer(
-            urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            subdomains: const ['a', 'b', 'c'],
-          ),
-          MarkerLayer(
-            markers:
-                randomLocations.map((loc) {
-                  final isCurrentUser = loc.userId == currentUserId;
-                  return Marker(
-                    point: loc.latLng,
-                    builder:
-                        (ctx) => IconButton(
-                          onPressed: () {
-                            // You can handle click events here
-                          },
-                          icon: Icon(
-                            Icons.location_pin,
-                            color:
-                                isCurrentUser ? Colors.red[900] : Colors.blue,
-                            size: 30,
+      body: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+        child: FlutterMap(
+          options: MapOptions(center: center, zoom: 13.0),
+          children: [
+            TileLayer(
+              urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+              subdomains: const ['a', 'b', 'c'],
+            ),
+            MarkerLayer(
+              markers:
+                  randomLocations.map((loc) {
+                    final isCurrentUser = loc.userId == currentUserId;
+                    return Marker(
+                      point: loc.latLng,
+                      builder:
+                          (ctx) => IconButton(
+                            onPressed: () {
+                              // You can handle click events here
+                            },
+                            icon: Icon(
+                              Icons.location_pin,
+                              color:
+                                  isCurrentUser ? Colors.red[900] : Colors.blue,
+                              size: 30,
+                            ),
                           ),
-                        ),
-                  );
-                }).toList(),
-          ),
-        ],
+                    );
+                  }).toList(),
+            ),
+          ],
+        ),
       ),
     );
   }
