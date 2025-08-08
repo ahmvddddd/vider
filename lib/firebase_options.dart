@@ -69,6 +69,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1054529684370',
     projectId: 'vider-8cd24',
     storageBucket: 'vider-8cd24.firebasestorage.app',
-    iosBundleId: 'com.example.vider_client',
+    iosBundleId: 'com.example.vider',
   );
 }

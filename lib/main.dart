@@ -15,7 +15,7 @@ void main() async {
 
       if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp(
-      name: "vider_client",
+      name: "vider",
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
