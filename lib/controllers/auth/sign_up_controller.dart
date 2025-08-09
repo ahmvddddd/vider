@@ -1,7 +1,3 @@
-// // ignore_for_file: use_build_context_synchronously
-
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';

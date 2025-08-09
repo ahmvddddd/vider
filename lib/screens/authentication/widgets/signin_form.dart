@@ -7,7 +7,7 @@ import '../../../repository/user/username_local_storage.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
-import '../../../controllers/auth/signin_controller.dart';
+import '../../../controllers/auth/sign_in_controller.dart';
 import '../../../utils/validators/validation.dart';
 import '../reset_password/enter_email.dart';
 import 'build_textfield.dart';
