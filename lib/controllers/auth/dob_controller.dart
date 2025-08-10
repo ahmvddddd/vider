@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 /// Storage and API constants
 final _storage = FlutterSecureStorage();
 final logger = Logger();
-String userBioURL = dotenv.env['USER_BIO_URL'] ?? 'https://defaulturl.com/api';
+String dobURL = dotenv.env['DOB_URL'] ?? 'https://defaulturl.com/api';
 String occupationsURL =
     dotenv.env['OCCUPATIONS_URL'] ?? 'https://defaulturl.com/api';
 
@@ -31,7 +31,7 @@ final updateUserBioProvider = FutureProvider.family<bool, Map<String, dynamic>>(
       final token = await _storage.read(key: 'token');
 
       final response = await http.post(
-        Uri.parse(userBioURL),
+        Uri.parse(dobURL),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

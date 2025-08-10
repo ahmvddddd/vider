@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../models/user/user_model.dart';
 import '../../repository/user/username_local_storage.dart';
-import '../../screens/authentication/user_details/user_details.dart';
+import '../../screens/authentication/user_details/user_dob.dart';
 import '../../utils/helpers/helper_function.dart';
 import '../services/firebase_service.dart';
 
@@ -75,7 +75,7 @@ class SignupController extends StateNotifier<SignupState> {
         });
 
         // Navigate to the new page
-        // HelperFunction.navigateScreenReplacement(context, UserDetailsScreen());
+        HelperFunction.navigateScreenReplacement(context, UserDOBScreen());
       } else {
         final responseData = jsonDecode(response.body);
         final rawError = responseData['message'] ?? 'Signup failed';

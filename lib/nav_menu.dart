@@ -3,6 +3,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import 'screens/authentication/user_details/user_dob.dart';
 import 'screens/home/home.dart';
 import 'utils/constants/custom_colors.dart';
 import 'utils/constants/sizes.dart';
@@ -84,7 +85,7 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
         case 0:
           return const HomeScreen();
         case 1:
-          return const HomeScreen();
+          return const UserDOBScreen();
         // case 2:
         //   return ChatScreen(key: UniqueKey());
         case 2:

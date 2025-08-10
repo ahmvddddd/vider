@@ -7,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logger/logger.dart';
 import 'dart:convert';
 import '../../common/widgets/pop_up/custom_snackbar.dart';
-// import '../../screens/transactions/create_pin.dart';
+import '../../screens/transactions/create_pin.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/helpers/helper_function.dart';
 import '../../utils/helpers/token_secure_storage.dart';
@@ -62,7 +62,7 @@ class VerifyOtpNotifier extends StateNotifier<AsyncValue<void>> {
           icon: Icons.check_circle,
           backgroundColor: CustomColors.success,
         );
-        // HelperFunction.navigateScreen(context, CreatePinScreen());
+        HelperFunction.navigateScreen(context, CreatePinScreen());
       } else {
         final responseData = jsonDecode(response.body);
         final rawError = responseData['message'] ?? 'OTP verification failed';
