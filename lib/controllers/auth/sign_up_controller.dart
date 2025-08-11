@@ -56,7 +56,7 @@ class SignupController extends StateNotifier<SignupState> {
           'username': username,
           'email': email,
           'password': password,
-          'userType': 'provider',
+          'userType': 'client',
         }),
       );
 

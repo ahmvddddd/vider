@@ -3,7 +3,7 @@ import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import 'widgets/form_divider.dart';
-import 'widgets/signup_form.dart';
+import 'widgets/sign_up_form.dart';
 
 class SignupScreen extends StatelessWidget {
   final VoidCallback toggleScreen;
@@ -35,13 +35,13 @@ class SignupScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-    
+
               const SizedBox(height: Sizes.spaceBtwItems),
-              const SignupUserForm(),
-    
+              const SignUpForm(),
+
               const SizedBox(height: Sizes.spaceBtwItems),
               const FormDivider(dividerText: 'Already a user ?'),
-    
+
               //signup button
               const SizedBox(height: Sizes.spaceBtwItems),
               SizedBox(
@@ -49,13 +49,15 @@ class SignupScreen extends StatelessWidget {
                 child: GestureDetector(
                   onTap: toggleScreen,
                   child: RoundedContainer(
-                height: screenHeight * 0.06,
-                padding: const EdgeInsets.all(Sizes.sm),
-                backgroundColor: CustomColors.primary,
+                    height: screenHeight * 0.06,
+                    padding: const EdgeInsets.all(Sizes.sm),
+                    backgroundColor: CustomColors.primary,
                     child: Center(
                       child: Text(
                         'Sign in',
-                        style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Colors.white),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.labelSmall!.copyWith(color: Colors.white),
                       ),
                     ),
                   ),

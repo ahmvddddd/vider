@@ -49,8 +49,8 @@ class _AuthScreenState extends State<AuthScreen> {
       return Scaffold(
         body: Center(
           child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue), // color
-            strokeWidth: 4.0, // thickness of the line
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+            strokeWidth: 4.0,
             backgroundColor: dark ? Colors.white : Colors.black,
           ),
         ),
@@ -63,7 +63,7 @@ class _AuthScreenState extends State<AuthScreen> {
         physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         children: <Widget>[
-          SigninScreen(toggleScreen: toggleScreen),
+          SignInScreen(toggleScreen: toggleScreen),
           SignupScreen(toggleScreen: toggleScreen),
         ],
       ),

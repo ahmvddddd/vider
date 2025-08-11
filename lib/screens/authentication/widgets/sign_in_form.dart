@@ -12,14 +12,14 @@ import '../../../utils/validators/validation.dart';
 import '../reset_password/enter_email.dart';
 import 'build_textfield.dart';
 
-class SigninForm extends ConsumerStatefulWidget {
-  const SigninForm({super.key});
+class SignInForm extends ConsumerStatefulWidget {
+  const SignInForm({super.key});
 
   @override
-  ConsumerState<SigninForm> createState() => _SigninFormState();
+  ConsumerState<SignInForm> createState() => _SigninFormState();
 }
 
-class _SigninFormState extends ConsumerState<SigninForm> {
+class _SigninFormState extends ConsumerState<SignInForm> {
   final formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -44,7 +44,7 @@ class _SigninFormState extends ConsumerState<SigninForm> {
     final loginController = ref.read(loginControllerProvider.notifier);
     final dark = HelperFunction.isDarkMode(context);
     double screenHeight = MediaQuery.of(context).size.height;
-                      final username = usernameController.text.trim();
+    final username = usernameController.text.trim();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (loginState.error != null &&
@@ -63,7 +63,9 @@ class _SigninFormState extends ConsumerState<SigninForm> {
                 content: Text(
                   'Your account @$username has been suspended due to multiple failed authentication attempts. '
                   'File a complaint via email, to regain access to your account.',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold),
                 ),
                 actions: [
                   TextButton(
@@ -77,13 +79,21 @@ class _SigninFormState extends ConsumerState<SigninForm> {
                       );
                       await launchUrl(emailLaunchUri);
                     },
-                    child: Text('File Complaint',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'File Complaint',
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text('Close',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'Close',
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -98,7 +108,7 @@ class _SigninFormState extends ConsumerState<SigninForm> {
         child: Column(
           children: [
             const SizedBox(height: Sizes.spaceBtwItems),
-        
+
             // Username field
             Container(
               decoration: BoxDecoration(
@@ -115,9 +125,9 @@ class _SigninFormState extends ConsumerState<SigninForm> {
                 },
               ),
             ),
-        
+
             const SizedBox(height: Sizes.spaceBtwItems),
-        
+
             // Password field
             Container(
               decoration: BoxDecoration(
@@ -148,9 +158,9 @@ class _SigninFormState extends ConsumerState<SigninForm> {
                 },
               ),
             ),
-        
+
             const SizedBox(height: Sizes.spaceBtwSections),
-        
+
             // Sign-in button
             loginState.isLoading
                 ? Center(
@@ -187,7 +197,7 @@ class _SigninFormState extends ConsumerState<SigninForm> {
                     ),
                   ),
                 ),
-        
+
             if (loginState.error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 20),
@@ -199,7 +209,7 @@ class _SigninFormState extends ConsumerState<SigninForm> {
                   textAlign: TextAlign.center,
                 ),
               ),
-        
+
             const SizedBox(height: Sizes.sm),
             Align(
               alignment: Alignment.centerRight,

@@ -11,8 +11,8 @@ import '../../../utils/validators/validation.dart';
 import 'build_textfield.dart';
 import 'terms_and_conditions.dart';
 
-class SignupUserForm extends ConsumerWidget {
-  const SignupUserForm({super.key});
+class SignUpForm extends ConsumerWidget {
+  const SignUpForm({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -69,7 +69,7 @@ class SignupUserForm extends ConsumerWidget {
               validator: (value) => Validator.validateEmail(value),
             ),
             const SizedBox(height: Sizes.spaceBtwItems),
-        
+
             /// Password
             _buildPasswordField(
               context,
@@ -79,7 +79,7 @@ class SignupUserForm extends ConsumerWidget {
               isDark: isDark,
             ),
             const SizedBox(height: Sizes.spaceBtwItems),
-        
+
             /// Confirm Password
             _buildPasswordField(
               context,
@@ -94,9 +94,9 @@ class SignupUserForm extends ConsumerWidget {
                 return null;
               },
             ),
-        
+
             const SizedBox(height: Sizes.spaceBtwItems),
-        
+
             /// Terms & Conditions Checkbox
             ValueListenableBuilder<bool>(
               valueListenable: termsAccepted,
@@ -110,13 +110,15 @@ class SignupUserForm extends ConsumerWidget {
                         Checkbox(
                           value: value,
                           onChanged:
-                              (checked) => termsAccepted.value = checked ?? false,
+                              (checked) =>
+                                  termsAccepted.value = checked ?? false,
                         ),
                         GestureDetector(
                           onTap:
                               () => showDialog(
                                 context: context,
-                                builder: (_) => const TermsAndConditionsDialog(),
+                                builder:
+                                    (_) => const TermsAndConditionsDialog(),
                               ),
                           child: Text.rich(
                             TextSpan(
@@ -125,7 +127,10 @@ class SignupUserForm extends ConsumerWidget {
                               children: [
                                 TextSpan(
                                   text: 'Terms and Conditions',
-                                  style: Theme.of(context).textTheme.labelMedium!.copyWith(color: CustomColors.primary)
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(color: CustomColors.primary),
                                 ),
                               ],
                             ),
@@ -138,12 +143,12 @@ class SignupUserForm extends ConsumerWidget {
                 );
               },
             ),
-        
+
             const SizedBox(height: Sizes.spaceBtwItems),
-        
+
             /// Sign Up Button
             signupState.isLoading
-                ?  Center(
+                ? Center(
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
                       Colors.blue,
@@ -165,11 +170,11 @@ class SignupUserForm extends ConsumerWidget {
                           title: 'Accept Terms and conditions',
                           message: 'Please accept the terms and conditions',
                           backgroundColor: CustomColors.error,
-                          icon: Icons.error_outline
+                          icon: Icons.error_outline,
                         );
                         return;
                       }
-        
+
                       if (formKey.currentState!.validate()) {
                         signupController.signup(
                           context,
@@ -196,7 +201,7 @@ class SignupUserForm extends ConsumerWidget {
                     ),
                   ),
                 ),
-        
+
             if (signupState.error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 20),

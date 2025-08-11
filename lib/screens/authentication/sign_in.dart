@@ -3,11 +3,11 @@ import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import 'widgets/form_divider.dart';
-import 'widgets/signin_form.dart';
+import 'widgets/sign_in_form.dart';
 
-class SigninScreen extends StatelessWidget {
+class SignInScreen extends StatelessWidget {
   final VoidCallback toggleScreen;
-  const SigninScreen({super.key, required this.toggleScreen});
+  const SignInScreen({super.key, required this.toggleScreen});
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +36,13 @@ class SigninScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-    
+
               const SizedBox(height: Sizes.spaceBtwItems),
-              const SigninForm(),
-    
+              const SignInForm(),
+
               const SizedBox(height: Sizes.spaceBtwItems),
               const FormDivider(dividerText: 'Create an account'),
-    
+
               //signup button
               const SizedBox(height: Sizes.spaceBtwItems),
               SizedBox(
@@ -50,13 +50,15 @@ class SigninScreen extends StatelessWidget {
                 child: GestureDetector(
                   onTap: toggleScreen,
                   child: RoundedContainer(
-                  height: screenHeight * 0.06,
-                  padding: const EdgeInsets.all(Sizes.sm),
-                  backgroundColor: CustomColors.primary,
+                    height: screenHeight * 0.06,
+                    padding: const EdgeInsets.all(Sizes.sm),
+                    backgroundColor: CustomColors.primary,
                     child: Center(
                       child: Text(
                         'Sign up',
-                        style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Colors.white),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.labelSmall!.copyWith(color: Colors.white),
                       ),
                     ),
                   ),
