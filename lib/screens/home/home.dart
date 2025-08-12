@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/authentication/verification/verify_email.dart';
 import '../../common/widgets/custom_shapes/cards/provider_card.dart';
 import '../../common/widgets/custom_shapes/containers/search_container.dart';
 import '../../common/widgets/layouts/listview.dart';
@@ -135,9 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
 
                           const SizedBox(height: Sizes.spaceBtwItems),
-                          SearchContainer(
-                            width: screenWidth * 0.90,
-                          ),
+                          SearchContainer(width: screenWidth * 0.90),
 
                           const SizedBox(height: Sizes.spaceBtwSections),
                           HomeCategoryGrid(),
@@ -158,7 +157,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemBuilder: (context, index) {
                               final list = serviceProviders[index];
                               return GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  HelperFunction.navigateScreen(
+                                    context,
+                                    VerifyEmailScreen(),
+                                  );
+                                },
                                 child: ProviderCard(
                                   imageUrl: list['imageUrl'],
                                   fullname: list['fullname'],

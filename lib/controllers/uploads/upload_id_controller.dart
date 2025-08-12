@@ -16,19 +16,6 @@ class VerifyIdController {
       dotenv.env['IDENTIFICATION_CARD_URL'] ?? 'https://defaulturl.com/api';
   static var logger = Logger();
 
-//   static String? _parseErrorMessage(String responseBody) {
-//   try {
-//     final decoded = jsonDecode(responseBody);
-//     if (decoded is Map<String, dynamic> && decoded['message'] != null) {
-//       return decoded['message'];
-//     }
-//   } catch (_) {
-//     // If parsing fails, just return null
-//   }
-//   return null;
-// }
-
-
   static Future<void> uploadIdentificationCard({
     required BuildContext context,
     required File idImage,

@@ -75,7 +75,7 @@ class UploadProfileImageScreen extends ConsumerWidget {
                                     Sizes.spaceBtwItems,
                                   ),
                                   child: RoundedContainer(
-                                    height: screenHeight * 0.50,
+                                    height: screenHeight * 0.45,
                                     radius: Sizes.cardRadiusSm,
                                     backgroundColor: Colors.transparent,
                                     borderColor: CustomColors.primary,
@@ -90,7 +90,7 @@ class UploadProfileImageScreen extends ConsumerWidget {
                               radius: 80,
                               backgroundImage: FileImage(File(image.path)),
                             ),
-                        const SizedBox(height: Sizes.spaceBtwSections),
+                        const SizedBox(height: Sizes.spaceBtwItems),
                         SizedBox(
                           width: screenWidth * 0.40,
                           child: ElevatedButton(
@@ -102,7 +102,7 @@ class UploadProfileImageScreen extends ConsumerWidget {
                             child: Icon(Icons.camera, color: Colors.white),
                           ),
                         ),
-                        const SizedBox(height: Sizes.spaceBtwSections),
+                        const SizedBox(height: Sizes.spaceBtwItems),
                         SizedBox(
                           width: screenWidth * 0.40,
                           child: ElevatedButton(

@@ -66,7 +66,11 @@ class LoginController extends StateNotifier<LoginState> {
       final response = await http.post(
         Uri.parse(signinUrl),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'username': username, 'password': password}),
+        body: jsonEncode({
+          'username': username,
+          'password': password,
+          'userType': 'client',
+        }),
       );
 
       if (response.statusCode == 200) {
