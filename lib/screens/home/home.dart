@@ -11,6 +11,7 @@ import '../../utils/helpers/helper_function.dart';
 import 'components/home_shimmer.dart';
 import 'widgets/home_appbar.dart';
 import 'widgets/home_category_grid.dart';
+import 'widgets/provider_profiles_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -160,7 +161,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onTap: () {
                                   HelperFunction.navigateScreen(
                                     context,
-                                    VerifyEmailScreen(),
+                                    ProviderProfilesScreen(
+                                      lat: 8.9928,
+                                      lon: 7.5725,
+                                    ),
                                   );
                                 },
                                 child: ProviderCard(

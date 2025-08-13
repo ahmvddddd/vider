@@ -22,11 +22,6 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
   @override
   void initState() {
     super.initState();
-    // Future.microtask(() {
-    //   final container = ProviderScope.containerOf(context);
-    //   final badgeService = NotificationBadgeService(container: container);
-    //   badgeService.init();
-    // });
   }
 
   Future<bool> _showExitDialog() async {
