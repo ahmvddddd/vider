@@ -1,13 +1,12 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:myapp/screens/authentication/verification/verify_email.dart';
 import '../../common/widgets/custom_shapes/cards/provider_card.dart';
 import '../../common/widgets/custom_shapes/containers/search_container.dart';
 import '../../common/widgets/layouts/listview.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
+import '../providers/providers_grid.dart';
 import 'components/home_shimmer.dart';
 import 'widgets/home_appbar.dart';
 import 'widgets/home_category_grid.dart';
@@ -140,7 +139,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           SearchContainer(width: screenWidth * 0.90),
 
                           const SizedBox(height: Sizes.spaceBtwSections),
-                          HomeCategoryGrid(),
+                          ProvidersGrid(
+                                      lat: 8.9928,
+                                      lon: 7.5725,),
 
                           const SizedBox(height: Sizes.spaceBtwItems),
                           Text(
