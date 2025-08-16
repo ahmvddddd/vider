@@ -9,7 +9,6 @@ import '../../utils/helpers/helper_function.dart';
 import '../providers/providers_grid.dart';
 import 'components/home_shimmer.dart';
 import 'widgets/home_appbar.dart';
-import 'widgets/home_category_grid.dart';
 import 'widgets/provider_profiles_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -139,9 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SearchContainer(width: screenWidth * 0.90),
 
                           const SizedBox(height: Sizes.spaceBtwSections),
-                          ProvidersGrid(
-                                      lat: 8.9928,
-                                      lon: 7.5725,),
+                          ProvidersGrid(),
 
                           const SizedBox(height: Sizes.spaceBtwItems),
                           Text(

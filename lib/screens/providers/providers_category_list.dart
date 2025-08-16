@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/cards/category_card.dart';
-import '../../common/widgets/custom_shapes/cards/provider_card.dart';
 import '../../common/widgets/layouts/listview.dart';
 import '../../controllers/user/provider_profiles_controller.dart';
 import '../../utils/constants/sizes.dart';

@@ -1,0 +1,46 @@
+class ProvidersCategoryModel {
+  final String firstname;
+  final String lastname;
+  final String username;
+  final String email;
+  final bool isIdVerified;
+  final String category;
+  final String service;
+  final String bio;
+  final double hourlyRate;
+  final List<String> skills;
+  final String profileImage;
+  final List<String> portfolioImages;
+
+  ProvidersCategoryModel({
+    required this.firstname,
+    required this.lastname,
+    required this.username,
+    required this.email,
+    required this.isIdVerified,
+    required this.category,
+    required this.service,
+    required this.bio,
+    required this.hourlyRate,
+    required this.skills,
+    required this.profileImage,
+    required this.portfolioImages,
+  });
+
+  factory ProvidersCategoryModel.fromJson(Map<String, dynamic> json) {
+    return ProvidersCategoryModel(
+      firstname: json['firstname'] ?? '',
+      lastname: json['lastname'] ?? '',
+      username: json['username'] ?? '',
+      email: json['email'] ?? '',
+      isIdVerified: json['isIdVerified'] ?? false,
+      category: json['category'] ?? '',
+      service: json['service'] ?? '',
+      bio: json['bio'] ?? '',
+      hourlyRate: (json['hourlyRate'] ?? 0).toDouble(),
+      skills: List<String>.from(json['skills'] ?? []),
+      profileImage: json['profileImage'],
+      portfolioImages: List<String>.from(json['portfolioImages'] ?? []),
+    );
+  }
+}

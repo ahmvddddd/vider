@@ -20,8 +20,8 @@ class ProviderProfilesNotifier
 
   Future<void> fetchAndGroupProviders() async {
     state = const AsyncValue.loading();
-      String providerProfilesURL =
-      dotenv.env['PROVIDER_PROFILES_URL'] ?? 'https://defaulturl.com/api';
+    String providerProfilesURL =
+        dotenv.env['PROVIDER_PROFILES_URL'] ?? 'https://defaulturl.com/api';
     try {
       final res = await http.get(
         Uri.parse(providerProfilesURL),

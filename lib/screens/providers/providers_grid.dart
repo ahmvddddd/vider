@@ -1,59 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
-import '../../../common/widgets/layouts/grid_layout.dart';
-import '../../../controllers/jobs/occupations_controller.dart';
-import '../../../utils/constants/custom_colors.dart';
-import '../../../utils/constants/sizes.dart';
-import '../../../utils/helpers/helper_function.dart';
+import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
+import '../../common/widgets/layouts/grid_layout.dart';
+import '../../controllers/providers/providers_category_controller.dart';
+import '../../utils/constants/custom_colors.dart';
+import '../../utils/constants/sizes.dart';
+import '../../utils/helpers/helper_function.dart';
+import 'all_provider_categories.dart';
 import 'providers_tabbar.dart';
 
 class ProvidersGrid extends ConsumerWidget {
-  final double lat;
-  final double lon;
-
-  const ProvidersGrid({super.key, required this.lat, required this.lon});
+  const ProvidersGrid({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final categoriesAsync = ref.watch(categoriesProvider);
     double screenHeight = MediaQuery.of(context).size.height;
     final dark = HelperFunction.isDarkMode(context);
 
-    final occupationState = ref.watch(occupationControllerProvider);
-
-    return occupationState.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error:
-          (err, _) => Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(err.toString(), style: const TextStyle(color: Colors.red)),
-                const SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed: () {
-                    ref
-                        .read(occupationControllerProvider.notifier)
-                        .refreshOccupations();
-                  },
-                  child: const Text('Retry'),
-                ),
-              ],
-            ),
-          ),
-      data: (occupations) {
-        final categories = occupations.map((e) => e.category).toList();
-        final service = occupations.map((e) => e.service).toList();
-
+    return categoriesAsync.when(
+      data: (categories) {
         return GridLayout(
-          itemCount: categories.length > 8 ? 8 : categories.length,
           crossAxisCount: 4,
           mainAxisExtent: screenHeight * 0.11,
+          itemCount: categories.length > 8 ? 8 : categories.length,
           itemBuilder: (context, index) {
+            final category = categories[index];
             final isViewMore = index == 7 && categories.length > 8;
             return isViewMore
                 ? GestureDetector(
                   onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => AllProviderCategories(),
+                      ),
+                    );
                   },
                   child: _buildCategoryBox(
                     context,
@@ -65,12 +47,11 @@ class ProvidersGrid extends ConsumerWidget {
                 )
                 : GestureDetector(
                   onTap: () {
-                    HelperFunction.navigateScreen(
+                    Navigator.push(
                       context,
-                      ProvidersTabbar(
-                        lat: lat,
-                        long: lon,
-                        service: service[index],
+                      MaterialPageRoute(
+                        builder:
+                            (_) => ProvidersTabBarScreen(category: category),
                       ),
                     );
                   },
@@ -78,12 +59,15 @@ class ProvidersGrid extends ConsumerWidget {
                     context,
                     dark,
                     screenHeight,
-                    categories[index],
+                    category,
+                    isViewMore: false,
                   ),
                 );
           },
         );
       },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, _) => Center(child: Text("Error: $err")),
     );
   }
 
