@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../models/providers/providers_category_model.dart';
 import '../../common/widgets/layouts/listview.dart';
@@ -43,47 +44,78 @@ class ProviderScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  const SizedBox(height: Sizes.spaceBtwSections),
-                  SectionHeading(title: 'Skills', showActionButton: false),
-                  const SizedBox(height: Sizes.sm),
-                  HomeListView(
-                    sizedBoxHeight: MediaQuery.of(context).size.height * 0.06,
-                    scrollDirection: Axis.horizontal,
-                    seperatorBuilder:
-                        (context, index) => const SizedBox(width: Sizes.sm),
-                    itemCount: profile.skills.length,
-                    itemBuilder:
-                        (context, index) => Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              Sizes.cardRadiusSm,
+                  
+                  const SizedBox(height: Sizes.spaceBtwItems),
+                  Text(profile.latitude.toString()),
+                  Text(profile.longitude.toString()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.50,
+                        child: HomeListView(
+                              sizedBoxHeight:
+                                  MediaQuery.of(context).size.height * 0.06,
+                              scrollDirection: Axis.horizontal,
+                              seperatorBuilder:
+                                  (context, index) =>
+                                      Padding(
+                                        padding: const EdgeInsets.all(Sizes.sm),
+                                        child: const VerticalDivider(
+                                          color: CustomColors.primary,
+                                        ),
+                                      ),
+                              itemCount: profile.skills.length,
+                              itemBuilder:
+                                  (context, index) => Services(
+                                    service: profile.skills[index],
+                                  )
                             ),
-                            color: dark ? Colors.black : Colors.white,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 2,
-                            horizontal: Sizes.xs + 1,
-                          ),
-                          child: Center(
-                            child: Text(
-                              profile.skills[index],
-                              style: Theme.of(
-                                context,
-                              ).textTheme.bodySmall!.copyWith(
-                                color: dark ? Colors.white : Colors.black,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(Sizes.sm),
+                            decoration: BoxDecoration(
+                              color: dark
+                                  ? Colors.white.withValues(alpha: 0.1)
+                                  : Colors.black.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(
+                                100,
                               ),
-                            ),
+                              border: Border.all(color: CustomColors.darkGrey,
+                              width: 2)
+                              ),
+                              child: Icon(Icons.location_on, color: Colors.red, size: Sizes.iconMd,),
                           ),
+                      
+                          const SizedBox(width: Sizes.sm,),
+                          Container(
+                            padding: const EdgeInsets.all(Sizes.sm),
+                            decoration: BoxDecoration(
+                              color: CustomColors.primary,
+                              borderRadius: BorderRadius.circular(
+                                100,
+                              ),
+                              border: Border.all(color: CustomColors.darkGrey,
+                              width: 2)
+                              ),
+                              child: Icon(Iconsax.message, color: Colors.white, size: Sizes.iconMd,),
+                          ),
+                        ],
                         ),
+                    ],
                   ),
 
-                  const SizedBox(height: Sizes.spaceBtwSections),
+                  const SizedBox(height: Sizes.spaceBtwItems),  
                   SectionHeading(title: 'About', showActionButton: false),
                   const SizedBox(height: Sizes.sm),
                   Text(
                     profile.bio,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: dark ? Colors.white : Colors.black,
                     ),
                     softWrap: true,
                   ),
@@ -211,6 +243,33 @@ class ProfileImage extends StatelessWidget {
 
         const SizedBox(height: Sizes.sm),
       ],
+    );
+  }
+}
+
+
+class Services extends StatelessWidget {
+  final String service;
+  const Services({super.key, required this.service});
+
+  @override
+  Widget build(BuildContext context) {
+    final dark = HelperFunction.isDarkMode(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 2,
+        horizontal: Sizes.xs + 1,
+      ),
+      child: Center(
+        child: Text(
+          service,
+          style: Theme.of(context).textTheme.labelLarge!.copyWith(
+            color: dark ? Colors.white : Colors.black,
+          ),
+          softWrap: true,
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }

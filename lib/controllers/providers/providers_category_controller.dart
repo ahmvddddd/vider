@@ -1,73 +1,3 @@
-// import 'dart:async';
-// import 'dart:convert';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:http/http.dart' as http;
-// import '../../models/providers/providers_category_model.dart';
-
-// String baseUrl = dotenv.env['BASE_URL'] ?? 'https://defaulturl.com/api';
-
-// /// Fetch all categories
-// final categoriesProvider = FutureProvider<List<String>>((ref) async {
-//   final res = await http.get(Uri.parse("$baseUrl/grouped-categories"));
-//   final json = jsonDecode(res.body);
-//   return List<String>.from(json['data']);
-// });
-
-// /// Fetch services for a given category
-// final servicesProvider = FutureProvider.family<List<String>, String>((
-//   ref,
-//   category,
-// ) async {
-//   final res = await http.get(Uri.parse("$baseUrl/services?category=$category"));
-//   final json = jsonDecode(res.body);
-//   return List<String>.from(json['data']);
-// });
-
-// /// Debounced profile fetcher
-// class DebouncedProfilesNotifier
-//     extends StateNotifier<AsyncValue<List<ProvidersCategoryModel>>> {
-//   DebouncedProfilesNotifier() : super(const AsyncValue.data([]));
-
-//   Timer? _debounce;
-
-//   void fetchProfiles(String category, String service) {
-//     _debounce?.cancel();
-//     _debounce = Timer(const Duration(milliseconds: 400), () async {
-//       state = const AsyncValue.loading();
-//       try {
-//         final res = await http.get(
-//           Uri.parse(
-//             "$baseUrl/service-profiles?category=$category&service=$service",
-//           ),
-//         );
-//         if (res.statusCode == 200) {
-//           final json = jsonDecode(res.body);
-//           final profiles =
-//               (json['data'] as List)
-//                   .map((p) => ProvidersCategoryModel.fromJson(p))
-//                   .toList();
-//           state = AsyncValue.data(profiles);
-//         } else {
-//           state = AsyncValue.error(
-//             "Failed to load profiles",
-//             StackTrace.current,
-//           );
-//         }
-//       } catch (e, st) {
-//         state = AsyncValue.error(e, st);
-//       }
-//     });
-//   }
-// }
-
-// final debouncedProfilesProvider = StateNotifierProvider<
-//   DebouncedProfilesNotifier,
-//   AsyncValue<List<ProvidersCategoryModel>>
-// >((ref) => DebouncedProfilesNotifier());
-
-
-// controllers/providers_controller.dart
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -75,20 +5,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import '../../models/providers/providers_category_model.dart';
 
-String apiRoot = dotenv.env['BASE_URL'] ?? 'https://defaulturl.com/api';
+String baseUrl = dotenv.env['BASE_URL'] ?? 'https://defaulturl.com/api';
 
 // Categories
 final categoriesProvider = FutureProvider<List<String>>((ref) async {
-  final res = await http.get(Uri.parse("$apiRoot/grouped-categories"));
+  final res = await http.get(Uri.parse("$baseUrl/grouped-categories"));
   if (res.statusCode != 200) throw Exception("Failed to load categories");
   final json = jsonDecode(res.body) as Map<String, dynamic>;
   return List<String>.from(json['data'] ?? []);
 });
 
 // Services by category
-final servicesProvider =
-    FutureProvider.family<List<String>, String>((ref, category) async {
-  final res = await http.get(Uri.parse("$apiRoot/services?category=$category"));
+final servicesProvider = FutureProvider.family<List<String>, String>((
+  ref,
+  category,
+) async {
+  final res = await http.get(Uri.parse("$baseUrl/services?category=$category"));
   if (res.statusCode != 200) throw Exception("Failed to load services");
   final json = jsonDecode(res.body) as Map<String, dynamic>;
   return List<String>.from(json['data'] ?? []);
@@ -102,10 +34,8 @@ class ServiceProfilesNotifier
   final String service;
   Timer? _debounce;
 
-  ServiceProfilesNotifier({
-    required this.category,
-    required this.service,
-  }) : super(const AsyncValue.loading()) {
+  ServiceProfilesNotifier({required this.category, required this.service})
+    : super(const AsyncValue.loading()) {
     _fetch(); // load for this (category,service)
   }
 
@@ -115,18 +45,27 @@ class ServiceProfilesNotifier
       state = const AsyncValue.loading();
       try {
         final url =
-            "$apiRoot/service-profiles?category=$category&service=$service";
+            "$baseUrl/service-profiles?category=$category&service=$service";
         final res = await http.get(Uri.parse(url));
         if (res.statusCode != 200) {
-          state = AsyncValue.error("Failed to load profiles", StackTrace.current);
+          state = AsyncValue.error(
+            "Failed to load profiles",
+            StackTrace.current,
+          );
           return;
         }
         final json = jsonDecode(res.body) as Map<String, dynamic>;
-        final list = (json['data'] as List? ?? [])
-            .map((e) => ProvidersCategoryModel.fromJson(e as Map<String, dynamic>))
-            .toList();
+        final list =
+            (json['data'] as List? ?? [])
+                .map(
+                  (e) => ProvidersCategoryModel.fromJson(
+                    e as Map<String, dynamic>,
+                  ),
+                )
+                .toList();
         state = AsyncValue.data(list);
       } catch (e, st) {
+        print(e);
         state = AsyncValue.error(e, st);
       }
     });
@@ -139,12 +78,11 @@ class ServiceProfilesNotifier
   }
 }
 
-final serviceProfilesProvider = StateNotifierProvider.family
-    .autoDispose<ServiceProfilesNotifier, AsyncValue<List<ProvidersCategoryModel>>,
-        ({String category, String service})>((ref, key) {
+final serviceProfilesProvider = StateNotifierProvider.family.autoDispose<
+  ServiceProfilesNotifier,
+  AsyncValue<List<ProvidersCategoryModel>>,
+  ({String category, String service})
+>((ref, key) {
   // autoDispose ensures tabs you leave stop holding memory/network.
-  return ServiceProfilesNotifier(
-    category: key.category,
-    service: key.service,
-  );
+  return ServiceProfilesNotifier(category: key.category, service: key.service);
 });

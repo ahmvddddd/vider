@@ -73,18 +73,6 @@ class ProvidersCategoryList extends ConsumerWidget {
                       rating: 4.5,
                       ratingColor: Colors.amber,
                     );
-                    // ListTile(
-                    //   leading: CircleAvatar(
-                    //     backgroundImage: provider['profileImage'] != null
-                    //         ? NetworkImage(provider['profileImage'])
-                    //         : null,
-                    //     child: provider['profileImage'] == null
-                    //         ? const Icon(Icons.person)
-                    //         : null,
-                    //   ),
-                    //   title: Text(provider['firstname'] ?? 'Unknown'),
-                    //   subtitle: Text(provider['profession'] ?? ''),
-                    // );
                   },
                 ),
               );
