@@ -64,6 +64,7 @@ class ProvidersCategoryList extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final provider = providers[index];
                     return CategoryCard(
+                      potfolioImage: provider['portfolioImages'][0],
                       imageAvatar: provider['profileImage'],
                       fullname: '${provider['firstname']} ${provider['lastname']}',
                       service: provider['service'],

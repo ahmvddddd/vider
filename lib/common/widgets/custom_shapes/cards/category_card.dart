@@ -5,6 +5,7 @@ import '../../../../utils/helpers/helper_function.dart';
 import '../containers/rounded_container.dart';
 
 class CategoryCard extends StatelessWidget {
+  final String potfolioImage;
   final String imageAvatar;
   final String fullname;
   final String service;
@@ -15,6 +16,7 @@ class CategoryCard extends StatelessWidget {
 
   const CategoryCard({
     super.key,
+    required this.potfolioImage,
     required this.imageAvatar,
     required this.fullname,
     required this.ratingColor,
@@ -30,8 +32,8 @@ class CategoryCard extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     final dark = HelperFunction.isDarkMode(context);
     return RoundedContainer(
-      width: screenWidth * 0.80,
-      height: screenHeight * 0.23,
+      width: screenWidth * 0.90,
+      height: screenHeight * 0.32,
       backgroundColor: dark ? Colors.black : Colors.white,
       boxShadow: [
         BoxShadow(
@@ -41,34 +43,32 @@ class CategoryCard extends StatelessWidget {
           offset: const Offset(0, 2),
         ),
       ],
-      padding: const EdgeInsets.all(Sizes.sm),
+      padding: const EdgeInsets.all(Sizes.xs),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            height: screenHeight * 0.12,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(Sizes.cardRadiusMd),
+                topRight: Radius.circular(Sizes.cardRadiusMd),
+              ),
+              image: DecorationImage(
+                image: NetworkImage(potfolioImage),
+                fit: BoxFit.cover
+              )
+            ),
+          ),
+
+          const SizedBox(height: Sizes.sm,),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        width: 2,
-                        color: dark ? Colors.white : Colors.white,
-                      ),
-                    ),
-                    child: Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.asset(
-                          imageAvatar,
-                          fit: BoxFit.contain,
-                          height: screenHeight * 0.055,
-                          width: screenHeight * 0.055,
-                        ),
-                      ),
-                    ),
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundImage: NetworkImage(imageAvatar),
                   ),
 
                   const SizedBox(width: Sizes.sm),
@@ -92,18 +92,19 @@ class CategoryCard extends StatelessWidget {
                 ],
               ),
 
+              const SizedBox(width: Sizes.md,),
               RoundedContainer(
-                radius: 40,
+                radius: 6,
                 backgroundColor: ratingColor,
                 padding: const EdgeInsets.symmetric(
-                  horizontal: Sizes.xs + 2,
+                  horizontal: Sizes.xs + 4,
                   vertical: 2,
                 ),
                 child: Center(
                   child: Text(
                     rating.toString(),
                     style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                      color: Colors.white,
+                      color: dark ? Colors.white : Colors.black,
                       fontFamily: 'JosefinSans',
                     ),
                   ),

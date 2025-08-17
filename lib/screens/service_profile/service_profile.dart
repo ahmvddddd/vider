@@ -97,7 +97,7 @@ class ProfileImage extends StatelessWidget {
         Container(
           height: MediaQuery.of(context).size.height * 0.20,
           decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage(imageAvatar)),
+            image: DecorationImage(image: NetworkImage(imageAvatar)),
             border: Border.all(
               color: dark ? CustomColors.darkGrey : CustomColors.darkGrey,
               width: 2,

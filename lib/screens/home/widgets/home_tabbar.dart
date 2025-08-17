@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../common/widgets/appbar/appbar.dart';
-import '../../../common/widgets/custom_shapes/cards/category_card.dart';
 import '../../../utils/constants/custom_colors.dart';
-import '../../../utils/constants/image_strings.dart';
 import '../../../utils/constants/sizes.dart';
 
 class HomeTabbar extends StatelessWidget {
@@ -21,7 +19,6 @@ class HomeTabbar extends StatelessWidget {
     'Marketing': ['Pam', 'Quincy', 'Rachel', 'Steve', 'Tina'],
     'Music': ['Uma', 'Victor', 'Wendy', 'Xander', 'Yara'],
   };
-  
 
   HomeTabbar({super.key});
 
@@ -30,8 +27,10 @@ class HomeTabbar extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: TAppBar(
-        title: Text('All Categories',
-        style: Theme.of(context).textTheme.headlineSmall,),
+        title: Text(
+          'All Categories',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
         showBackArrow: true,
       ),
       body: SingleChildScrollView(
@@ -43,7 +42,9 @@ class HomeTabbar extends StatelessWidget {
                 length: categories.length,
                 child: Builder(
                   builder: (context) {
-                    final TabController tabController = DefaultTabController.of(context);
+                    final TabController tabController = DefaultTabController.of(
+                      context,
+                    );
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -54,12 +55,15 @@ class HomeTabbar extends StatelessWidget {
                             builder: (context, _) {
                               return TabBar(
                                 isScrollable: true,
-                                labelPadding: const EdgeInsets.symmetric(horizontal: 8),
+                                labelPadding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
                                 indicator: const BoxDecoration(),
                                 indicatorColor: Colors.transparent,
                                 tabs: List.generate(categories.length, (index) {
-                                  final isSelected = tabController.index == index;
-              
+                                  final isSelected =
+                                      tabController.index == index;
+
                                   return AnimatedContainer(
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.easeInOut,
@@ -76,12 +80,14 @@ class HomeTabbar extends StatelessWidget {
                                     ),
                                     child: Text(
                                       categories[index],
-                                  
-                             style: Theme.of(
+
+                                      style: Theme.of(
                                         context,
                                       ).textTheme.labelLarge!.copyWith(
                                         color:
-                                            isSelected ? Colors.white : Colors.blueGrey,
+                                            isSelected
+                                                ? Colors.white
+                                                : Colors.blueGrey,
                                       ),
                                     ),
                                   );
@@ -103,18 +109,21 @@ class HomeTabbar extends StatelessWidget {
                                       horizontal: Sizes.md,
                                     ),
                                     itemCount: list.length,
-                                    separatorBuilder: (_, __) => const SizedBox(height: Sizes.md,),
+                                    separatorBuilder:
+                                        (_, __) =>
+                                            const SizedBox(height: Sizes.md),
                                     itemBuilder: (context, index) {
-                                      return CategoryCard(
-                                        imageAvatar: Images.carpenter,
-                                        fullname: list[index],
-                                        ratingColor: Colors.brown,
-                                        rating: 2,
-                                        service: category,
-                                        description:
-                                            'Hi everyone! We would love to introduce the design concept our team developed for a freelance marketplace mobile application. Specialists can find work opportunities, while employers can hire freelancers for projects. Lets explore its features.',
-                                        hourlyRate: 50,
-                                      );
+                                      return Text('');
+                                      // CategoryCard(
+                                      //   imageAvatar: Images.carpenter,
+                                      //   fullname: list[index],
+                                      //   ratingColor: Colors.brown,
+                                      //   rating: 2,
+                                      //   service: category,
+                                      //   description:
+                                      //       'Hi everyone! We would love to introduce the design concept our team developed for a freelance marketplace mobile application. Specialists can find work opportunities, while employers can hire freelancers for projects. Lets explore its features.',
+                                      //   hourlyRate: 50,
+                                      // );
                                     },
                                   );
                                 }).toList(),
