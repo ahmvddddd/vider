@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../common/widgets/appbar/appbar.dart';
-import '../../common/widgets/custom_shapes/cards/category_card.dart';
-import '../../common/widgets/layouts/listview.dart';
-import '../../controllers/providers/providers_category_controller.dart';
-import '../../models/providers/providers_category_model.dart';
-import '../../utils/constants/sizes.dart';
-import '../../utils/helpers/helper_function.dart';
-import '../../utils/constants/custom_colors.dart';
-import 'provider_screen.dart';
+import '../../../common/widgets/appbar/appbar.dart';
+import '../../../common/widgets/custom_shapes/cards/category_card.dart';
+import '../../../common/widgets/layouts/listview.dart';
+import '../../../controllers/providers/providers_category_controller.dart';
+import '../../../models/providers/providers_category_model.dart';
+import '../../../utils/constants/sizes.dart';
+import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/constants/custom_colors.dart';
+import '../provider_screen.dart';
 
 class ProvidersTabBarScreen extends ConsumerStatefulWidget {
   final String category;

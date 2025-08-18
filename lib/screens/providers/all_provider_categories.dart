@@ -7,7 +7,7 @@ import '../../controllers/providers/providers_category_controller.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
-import 'providers_tabbar.dart';
+import 'widgets/providers_tabbar.dart';
 
 class AllProviderCategories extends ConsumerStatefulWidget {
   const AllProviderCategories({super.key});

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
-import '../../common/widgets/layouts/grid_layout.dart';
-import '../../controllers/providers/providers_category_controller.dart';
-import '../../utils/constants/custom_colors.dart';
-import '../../utils/constants/sizes.dart';
-import '../../utils/helpers/helper_function.dart';
-import 'all_provider_categories.dart';
+import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
+import '../../../common/widgets/layouts/grid_layout.dart';
+import '../../../controllers/providers/providers_category_controller.dart';
+import '../../../utils/constants/custom_colors.dart';
+import '../../../utils/constants/sizes.dart';
+import '../../../utils/helpers/helper_function.dart';
+import '../all_provider_categories.dart';
 import 'providers_tabbar.dart';
 
 class ProvidersGrid extends ConsumerWidget {

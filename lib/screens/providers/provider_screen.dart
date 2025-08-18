@@ -7,6 +7,7 @@ import '../../common/widgets/texts/section_heading.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
+import 'provider_map.dart';
 
 class ProviderScreen extends StatelessWidget {
   final ProvidersCategoryModel profile;
@@ -15,8 +16,16 @@ class ProviderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = HelperFunction.isDarkMode(context);
+
+    // ✅ Boolean variable instead of function
+    final bool hasValidLocation =
+        (profile.latitude != null &&
+            profile.longitude != null &&
+            profile.latitude > 0 &&
+            profile.longitude > 0);
+
     return Scaffold(
-      appBar: AppBar(title: Text('Service Profile')),
+      appBar: AppBar(title: const Text('Service Profile')),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -33,18 +42,16 @@ class ProviderScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(Sizes.spaceBtwItems),
               decoration: BoxDecoration(
-                color:
-                    dark
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.black.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.only(
+                color: dark
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : Colors.black.withValues(alpha: 0.1),
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(40),
                   topRight: Radius.circular(40),
                 ),
               ),
               child: Column(
                 children: [
-                  
                   const SizedBox(height: Sizes.spaceBtwItems),
                   Text(profile.latitude.toString()),
                   Text(profile.longitude.toString()),
@@ -54,69 +61,97 @@ class ProviderScreen extends StatelessWidget {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.50,
                         child: HomeListView(
-                              sizedBoxHeight:
-                                  MediaQuery.of(context).size.height * 0.06,
-                              scrollDirection: Axis.horizontal,
-                              seperatorBuilder:
-                                  (context, index) =>
-                                      Padding(
-                                        padding: const EdgeInsets.all(Sizes.sm),
-                                        child: const VerticalDivider(
-                                          color: CustomColors.primary,
-                                        ),
-                                      ),
-                              itemCount: profile.skills.length,
-                              itemBuilder:
-                                  (context, index) => Services(
-                                    service: profile.skills[index],
-                                  )
+                          sizedBoxHeight:
+                              MediaQuery.of(context).size.height * 0.06,
+                          scrollDirection: Axis.horizontal,
+                          seperatorBuilder: (context, index) => const Padding(
+                            padding: EdgeInsets.all(Sizes.sm),
+                            child: VerticalDivider(
+                              color: CustomColors.primary,
                             ),
+                          ),
+                          itemCount: profile.skills.length,
+                          itemBuilder: (context, index) =>
+                              Services(service: profile.skills[index]),
+                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(Sizes.sm),
-                            decoration: BoxDecoration(
-                              color: dark
-                                  ? Colors.white.withValues(alpha: 0.1)
-                                  : Colors.black.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(
-                                100,
+                          /// ✅ Location icon wrapped with GestureDetector
+                          GestureDetector(
+                            onTap: () {
+                              if (hasValidLocation) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProviderMapScreen(
+                                      profileLatitude: profile.latitude,
+                                      profileLongitude: profile.longitude,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Location not available"),
+                                  ),
+                                );
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(Sizes.sm),
+                              decoration: BoxDecoration(
+                                color: dark
+                                    ? Colors.white.withValues(alpha: 0.1)
+                                    : Colors.black.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(
+                                  color: CustomColors.darkGrey,
+                                  width: 2,
+                                ),
                               ),
-                              border: Border.all(color: CustomColors.darkGrey,
-                              width: 2)
+                              child: Icon(
+                                Icons.location_on,
+                                color: hasValidLocation
+                                    ? Colors.red
+                                    : Colors.grey, // ✅ color depends on validity
+                                size: Sizes.iconMd,
                               ),
-                              child: Icon(Icons.location_on, color: Colors.red, size: Sizes.iconMd,),
+                            ),
                           ),
-                      
-                          const SizedBox(width: Sizes.sm,),
+
+                          const SizedBox(width: Sizes.sm),
                           Container(
                             padding: const EdgeInsets.all(Sizes.sm),
                             decoration: BoxDecoration(
                               color: CustomColors.primary,
-                              borderRadius: BorderRadius.circular(
-                                100,
+                              borderRadius: BorderRadius.circular(100),
+                              border: Border.all(
+                                color: CustomColors.darkGrey,
+                                width: 2,
                               ),
-                              border: Border.all(color: CustomColors.darkGrey,
-                              width: 2)
-                              ),
-                              child: Icon(Iconsax.message, color: Colors.white, size: Sizes.iconMd,),
+                            ),
+                            child: const Icon(
+                              Iconsax.message,
+                              color: Colors.white,
+                              size: Sizes.iconMd,
+                            ),
                           ),
                         ],
-                        ),
+                      ),
                     ],
                   ),
 
-                  const SizedBox(height: Sizes.spaceBtwItems),  
+                  const SizedBox(height: Sizes.spaceBtwItems),
                   SectionHeading(title: 'About', showActionButton: false),
                   const SizedBox(height: Sizes.sm),
                   Text(
                     profile.bio,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: dark ? Colors.white : Colors.black,
-                    ),
+                          fontWeight: FontWeight.bold,
+                          color: dark ? Colors.white : Colors.black,
+                        ),
                     softWrap: true,
                   ),
 
@@ -126,14 +161,13 @@ class ProviderScreen extends StatelessWidget {
                   HomeListView(
                     sizedBoxHeight: MediaQuery.of(context).size.height * 0.40,
                     scrollDirection: Axis.horizontal,
-                    seperatorBuilder:
-                        (context, index) => const SizedBox(width: Sizes.sm),
+                    seperatorBuilder: (context, index) =>
+                        const SizedBox(width: Sizes.sm),
                     itemCount: profile.portfolioImages.length,
                     itemBuilder: (context, index) {
                       return ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                          Sizes.borderRadiusLg,
-                        ),
+                        borderRadius:
+                            BorderRadius.circular(Sizes.borderRadiusLg),
                         child: Image.network(
                           profile.portfolioImages[index],
                           width: MediaQuery.of(context).size.height * 0.40,
@@ -154,6 +188,7 @@ class ProviderScreen extends StatelessWidget {
     );
   }
 }
+
 
 class ProfileImage extends StatelessWidget {
   final String imageAvatar;

@@ -6,7 +6,7 @@ import '../../common/widgets/layouts/listview.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
-import '../providers/providers_grid.dart';
+import '../providers/widgets/providers_grid.dart';
 import 'components/home_shimmer.dart';
 import 'widgets/home_appbar.dart';
 import 'widgets/provider_profiles_screen.dart';
