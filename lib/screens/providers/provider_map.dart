@@ -1,18 +1,20 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
+import '../../common/widgets/appbar/appbar.dart';
+import '../../utils/constants/custom_colors.dart';
 
 class ProviderMapScreen extends StatefulWidget {
   final double profileLatitude;
   final double profileLongitude;
+  final String profileImage;
 
   const ProviderMapScreen({
     super.key,
     required this.profileLatitude,
     required this.profileLongitude,
+    required this.profileImage
   });
 
   @override
@@ -22,7 +24,6 @@ class ProviderMapScreen extends StatefulWidget {
 class _ProviderMapScreenState extends State<ProviderMapScreen> {
   LatLng? currentUserLocation;
   late final MapController _mapController;
-  List<LatLng> routePoints = [];
 
   @override
   void initState() {
@@ -50,32 +51,28 @@ class _ProviderMapScreenState extends State<ProviderMapScreen> {
       currentUserLocation = LatLng(position.latitude, position.longitude);
     });
 
-    // After location is found → fetch route
-    _fetchRoute();
+    // 👇 once both locations exist, fit the map to show both
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fitMapToBounds();
+    });
   }
 
-  Future<void> _fetchRoute() async {
+  void _fitMapToBounds() {
     if (currentUserLocation == null) return;
-
-    final url = Uri.parse(
-      'https://api.openrouteservice.org/v2/directions/driving-car?api_key=YOUR_API_KEY'
-      '&start=${currentUserLocation!.longitude},${currentUserLocation!.latitude}'
-      '&end=${widget.profileLongitude},${widget.profileLatitude}',
+    final profileLocation = LatLng(
+      widget.profileLatitude,
+      widget.profileLongitude,
     );
 
-    final response = await http.get(url);
+    final bounds = LatLngBounds.fromPoints([
+      currentUserLocation!,
+      profileLocation,
+    ]);
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final coords = data['features'][0]['geometry']['coordinates'] as List;
-      setState(() {
-        routePoints = coords
-            .map((c) => LatLng(c[1].toDouble(), c[0].toDouble()))
-            .toList();
-      });
-    } else {
-      print("Failed to fetch route: ${response.body}");
-    }
+    _mapController.fitBounds(
+      bounds,
+      options: const FitBoundsOptions(padding: EdgeInsets.all(50)),
+    );
   }
 
   @override
@@ -86,65 +83,68 @@ class _ProviderMapScreenState extends State<ProviderMapScreen> {
     );
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: TAppBar(
         title: Text('Map', style: Theme.of(context).textTheme.headlineSmall),
+        showBackArrow: true,
       ),
-      body: currentUserLocation == null
-          ? const Center(child: CircularProgressIndicator())
-          : FlutterMap(
-              mapController: _mapController,
-              options: MapOptions(
-                zoom: 12.0,
-                onMapReady: () {
-                  final bounds = LatLngBounds.fromPoints([
-                    currentUserLocation!,
-                    profileLocation,
-                  ]);
-                  _mapController.fitBounds(
-                    bounds,
-                    options: const FitBoundsOptions(padding: EdgeInsets.all(50)),
-                  );
-                },
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate:
-                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: const ['a', 'b', 'c'],
-                ),
-                MarkerLayer(
-                  markers: [
-                    Marker(
-                      point: currentUserLocation!,
-                      builder: (ctx) => const Icon(
-                        Icons.person_pin_circle,
-                        color: Colors.red,
-                        size: 40,
-                      ),
+      body:
+          currentUserLocation == null
+              ? const Center(child: CircularProgressIndicator())
+              : ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    center: currentUserLocation, // 👈 temp center
+                    zoom: 12,
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      userAgentPackageName: 'com.example.myapp',
                     ),
-                    Marker(
-                      point: profileLocation,
-                      builder: (ctx) => const Icon(
-                        Icons.location_pin,
-                        color: Colors.blue,
-                        size: 40,
-                      ),
+                    MarkerLayer(
+                      markers: [
+                        // current user marker
+                        
+                        // profile marker
+                        Marker(
+                          point: profileLocation,
+                          width: 40,
+                          height: 40,
+                          builder:
+                              (ctx) => Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: CustomColors.alternate,
+                                    width: 3
+                                  ),
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: CircleAvatar(
+                                  radius: 25,
+                                  backgroundImage: NetworkImage(widget.profileImage,),
+                                ),
+                              ),
+                        ),
+
+                        Marker(
+                          point: currentUserLocation!,
+                          width: 40,
+                          height: 40,
+                          builder:
+                              (ctx) => const Icon(
+                                Icons.location_on,
+                                color: Colors.red,
+                                size: 30,
+                              ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                // ✅ Draw the route
-                if (routePoints.isNotEmpty)
-                  PolylineLayer(
-                    polylines: [
-                      Polyline(
-                        points: routePoints,
-                        strokeWidth: 4.0,
-                        color: Colors.green,
-                      ),
-                    ],
-                  ),
-              ],
-            ),
+              ),
     );
   }
 }

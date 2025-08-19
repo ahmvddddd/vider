@@ -53,8 +53,6 @@ class ProviderScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: Sizes.spaceBtwItems),
-                  Text(profile.latitude.toString()),
-                  Text(profile.longitude.toString()),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -88,6 +86,7 @@ class ProviderScreen extends StatelessWidget {
                                     builder: (context) => ProviderMapScreen(
                                       profileLatitude: profile.latitude,
                                       profileLongitude: profile.longitude,
+                                      profileImage: profile.profileImage,
                                     ),
                                   ),
                                 );

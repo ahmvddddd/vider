@@ -1,118 +1,150 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import '../../common/widgets/appbar/appbar.dart';
 
-class MapScreen extends StatefulWidget {
+import '../../controllers/user/provider_profiles_controller.dart';
+import '../../utils/constants/custom_colors.dart';
+
+class MapScreen extends ConsumerStatefulWidget {
   const MapScreen({super.key});
 
   @override
-  State<MapScreen> createState() => _MapScreenState();
+  ConsumerState<MapScreen> createState() => _ProvidersMapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return LocationMapPage();
-  }
-}
-
-class MockLocation {
-  final String userId;
-  final String username;
-  final LatLng latLng;
-
-  MockLocation({
-    required this.userId,
-    required this.username,
-    required this.latLng,
-  });
-}
-
-class LocationMapPage extends StatefulWidget {
-  const LocationMapPage({super.key});
-
-  @override
-  State<LocationMapPage> createState() => _LocationMapPageState();
-}
-
-class _LocationMapPageState extends State<LocationMapPage> {
-  List<MockLocation> randomLocations = [];
-  final String currentUserId = 'user_0'; // Simulated current user ID
+class _ProvidersMapScreenState extends ConsumerState<MapScreen> {
+  LatLng? currentUserLocation;
 
   @override
   void initState() {
     super.initState();
-    generateRandomLocations();
+    _determinePosition();
   }
 
-  void generateRandomLocations() {
-    final random = Random();
-    const baseLat = 37.7749; // Example: San Francisco
-    const baseLng = -122.4194;
+  /// Request location permission & get current position
+  Future<void> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-    randomLocations = List.generate(10, (index) {
-      final latOffset = (random.nextDouble() - 0.5) * 0.1; // ~±0.05 deg
-      final lngOffset = (random.nextDouble() - 0.5) * 0.1;
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return;
+    }
 
-      return MockLocation(
-        userId: 'user_$index',
-        username: 'User $index',
-        latLng: LatLng(baseLat + latOffset, baseLng + lngOffset),
-      );
+    // Check for permissions
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return;
+    }
+
+    // Get current position
+    final pos = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    setState(() {
+      currentUserLocation = LatLng(pos.latitude, pos.longitude);
     });
-
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final center =
-        randomLocations.isNotEmpty
-            ? randomLocations.first.latLng
-            : const LatLng(0.0, 0.0);
+    final providersState = ref.watch(providerProfilesController);
 
     return Scaffold(
-      appBar: TAppBar(
-        title: Text('Map', style: Theme.of(context).textTheme.headlineSmall),
-        showBackArrow: true,
-      ),
-      body: ClipRRect(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-        child: FlutterMap(
-          options: MapOptions(center: center, zoom: 13.0),
-          children: [
-            TileLayer(
-              urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-              subdomains: const ['a', 'b', 'c'],
+      appBar: AppBar(title: const Text("Providers Map")),
+      body: providersState.when(
+        data: (groupedProviders) {
+          if (currentUserLocation == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // Convert providers into markers
+          final markers = <Marker>[
+            // Current user marker
+            Marker(
+              point: LatLng(
+                currentUserLocation!.latitude,
+                currentUserLocation!.longitude,
+              ),
+              width: 40,
+              height: 40,
+              builder:
+                  (ctx) => const Icon(
+                    Icons.location_on,
+                    color: Colors.red,
+                    size: 40,
+                  ),
             ),
-            MarkerLayer(
-              markers:
-                  randomLocations.map((loc) {
-                    final isCurrentUser = loc.userId == currentUserId;
-                    return Marker(
-                      point: loc.latLng,
-                      builder:
-                          (ctx) => IconButton(
-                            onPressed: () {
-                              // You can handle click events here
-                            },
-                            icon: Icon(
-                              Icons.location_pin,
-                              color:
-                                  isCurrentUser ? Colors.red[900] : Colors.blue,
-                              size: 30,
-                            ),
+          ];
+
+          // Add providers markers
+          for (final entry in groupedProviders.entries) {
+            for (final provider in entry.value) {
+              final lat = (provider['latitude'] as num).toDouble();
+              final lon = (provider['longitude'] as num).toDouble();
+              final profileImage = provider['profileImage'] as String?;
+
+              markers.add(
+                Marker(
+                  point: LatLng(lat, lon),
+                  width: 40,
+                  height: 40,
+                  builder: (ctx) {
+                    if (profileImage != null && profileImage.isNotEmpty) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: CustomColors.alternate,
+                            width: 3,
                           ),
-                    );
-                  }).toList(),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundImage: NetworkImage(profileImage),
+                        ),
+                      );
+                    } else {
+                      return const Icon(
+                        Icons.location_on,
+                        color: Colors.red,
+                        size: 40,
+                      );
+                    }
+                  },
+                ),
+              );
+            }
+          }
+
+          return FlutterMap(
+            options: MapOptions(
+              center: currentUserLocation, // 👈 Center on user
+              zoom: 12,
             ),
-          ],
-        ),
+            children: [
+              TileLayer(
+                urlTemplate:
+                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                subdomains: const ['a', 'b', 'c'],
+              ),
+              MarkerLayer(markers: markers),
+            ],
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, st) => Center(child: Text("Error: $e")),
       ),
     );
   }
