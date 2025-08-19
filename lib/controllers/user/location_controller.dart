@@ -54,7 +54,6 @@ class LocationController extends StateNotifier<LocationState> {
         throw Exception('Failed to fetch locations.');
       }
     } catch (e) {
-      print('Error fetching locations: $e');
       state = state.copyWith(isLoading: false);
     }
   }

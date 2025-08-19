@@ -175,6 +175,9 @@ class _SigninFormState extends ConsumerState<SignInForm> {
                   child: GestureDetector(
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
+
+                        FocusScope.of(context).unfocus();
+                        
                         await loginController.login(
                           context,
                           usernameController.text.trim(),

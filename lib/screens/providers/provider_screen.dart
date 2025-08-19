@@ -9,20 +9,40 @@ import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
 import 'provider_map.dart';
 
-class ProviderScreen extends StatelessWidget {
+class ProviderScreen extends StatefulWidget {
   final ProvidersCategoryModel profile;
   const ProviderScreen({super.key, required this.profile});
 
+  @override
+  State<ProviderScreen> createState() => _ProviderScreenState();
+}
+
+class _ProviderScreenState extends State<ProviderScreen> {
   @override
   Widget build(BuildContext context) {
     final dark = HelperFunction.isDarkMode(context);
 
     // ✅ Boolean variable instead of function
     final bool hasValidLocation =
-        (profile.latitude != null &&
-            profile.longitude != null &&
-            profile.latitude > 0 &&
-            profile.longitude > 0);
+        (widget.profile.latitude != null &&
+            widget.profile.longitude != null &&
+            widget.profile.latitude > 0 &&
+            widget.profile.longitude > 0);
+
+    Color ratingColor = Colors.brown;
+    if (widget.profile.rating < 1.66) {
+      setState(() {
+        ratingColor = Colors.brown;
+      });
+    } else if (widget.profile.rating < 1.66 && widget.profile.rating >= 3.33) {
+      setState(() {
+        ratingColor = CustomColors.silver;
+      });
+    } else if (widget.profile.rating >= 5.00) {
+      setState(() {
+        ratingColor = CustomColors.gold;
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Service Profile')),
@@ -30,21 +50,23 @@ class ProviderScreen extends StatelessWidget {
         child: Column(
           children: [
             ProfileImage(
-              imageAvatar: profile.profileImage,
-              fullname: '${profile.firstname} ${profile.lastname}',
-              ratingColor: Colors.brown,
-              rating: 2,
-              service: profile.service,
-              hourlyRate: profile.hourlyRate,
+              imageAvatar: widget.profile.profileImage,
+              fullname:
+                  '${widget.profile.firstname} ${widget.profile.lastname}',
+              ratingColor: ratingColor,
+              rating: widget.profile.rating,
+              service: widget.profile.service,
+              hourlyRate: widget.profile.hourlyRate,
             ),
 
             const SizedBox(height: Sizes.sm),
             Container(
               padding: const EdgeInsets.all(Sizes.spaceBtwItems),
               decoration: BoxDecoration(
-                color: dark
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.black.withValues(alpha: 0.1),
+                color:
+                    dark
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.black.withValues(alpha: 0.1),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(40),
                   topRight: Radius.circular(40),
@@ -62,15 +84,18 @@ class ProviderScreen extends StatelessWidget {
                           sizedBoxHeight:
                               MediaQuery.of(context).size.height * 0.06,
                           scrollDirection: Axis.horizontal,
-                          seperatorBuilder: (context, index) => const Padding(
-                            padding: EdgeInsets.all(Sizes.sm),
-                            child: VerticalDivider(
-                              color: CustomColors.primary,
-                            ),
-                          ),
-                          itemCount: profile.skills.length,
-                          itemBuilder: (context, index) =>
-                              Services(service: profile.skills[index]),
+                          seperatorBuilder:
+                              (context, index) => const Padding(
+                                padding: EdgeInsets.all(Sizes.sm),
+                                child: VerticalDivider(
+                                  color: CustomColors.primary,
+                                ),
+                              ),
+                          itemCount: widget.profile.skills.length,
+                          itemBuilder:
+                              (context, index) => Services(
+                                service: widget.profile.skills[index],
+                              ),
                         ),
                       ),
                       Row(
@@ -83,11 +108,15 @@ class ProviderScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ProviderMapScreen(
-                                      profileLatitude: profile.latitude,
-                                      profileLongitude: profile.longitude,
-                                      profileImage: profile.profileImage,
-                                    ),
+                                    builder:
+                                        (context) => ProviderMapScreen(
+                                          profileLatitude:
+                                              widget.profile.latitude,
+                                          profileLongitude:
+                                              widget.profile.longitude,
+                                          profileImage:
+                                              widget.profile.profileImage,
+                                        ),
                                   ),
                                 );
                               } else {
@@ -101,9 +130,10 @@ class ProviderScreen extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.all(Sizes.sm),
                               decoration: BoxDecoration(
-                                color: dark
-                                    ? Colors.white.withValues(alpha: 0.1)
-                                    : Colors.black.withValues(alpha: 0.1),
+                                color:
+                                    dark
+                                        ? Colors.white.withValues(alpha: 0.1)
+                                        : Colors.black.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(100),
                                 border: Border.all(
                                   color: CustomColors.darkGrey,
@@ -112,9 +142,11 @@ class ProviderScreen extends StatelessWidget {
                               ),
                               child: Icon(
                                 Icons.location_on,
-                                color: hasValidLocation
-                                    ? Colors.red
-                                    : Colors.grey, // ✅ color depends on validity
+                                color:
+                                    hasValidLocation
+                                        ? Colors.red
+                                        : Colors
+                                            .grey, // ✅ color depends on validity
                                 size: Sizes.iconMd,
                               ),
                             ),
@@ -146,11 +178,11 @@ class ProviderScreen extends StatelessWidget {
                   SectionHeading(title: 'About', showActionButton: false),
                   const SizedBox(height: Sizes.sm),
                   Text(
-                    profile.bio,
+                    widget.profile.bio,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: dark ? Colors.white : Colors.black,
-                        ),
+                      fontWeight: FontWeight.bold,
+                      color: dark ? Colors.white : Colors.black,
+                    ),
                     softWrap: true,
                   ),
 
@@ -160,15 +192,16 @@ class ProviderScreen extends StatelessWidget {
                   HomeListView(
                     sizedBoxHeight: MediaQuery.of(context).size.height * 0.40,
                     scrollDirection: Axis.horizontal,
-                    seperatorBuilder: (context, index) =>
-                        const SizedBox(width: Sizes.sm),
-                    itemCount: profile.portfolioImages.length,
+                    seperatorBuilder:
+                        (context, index) => const SizedBox(width: Sizes.sm),
+                    itemCount: widget.profile.portfolioImages.length,
                     itemBuilder: (context, index) {
                       return ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(Sizes.borderRadiusLg),
+                        borderRadius: BorderRadius.circular(
+                          Sizes.borderRadiusLg,
+                        ),
                         child: Image.network(
-                          profile.portfolioImages[index],
+                          widget.profile.portfolioImages[index],
                           width: MediaQuery.of(context).size.height * 0.40,
                           height: MediaQuery.of(context).size.height * 0.30,
                           fit: BoxFit.cover,
@@ -187,7 +220,6 @@ class ProviderScreen extends StatelessWidget {
     );
   }
 }
-
 
 class ProfileImage extends StatelessWidget {
   final String imageAvatar;
@@ -260,7 +292,7 @@ class ProfileImage extends StatelessWidget {
                   rating.toString(),
                   style: Theme.of(
                     context,
-                  ).textTheme.bodySmall!.copyWith(color: Colors.white),
+                  ).textTheme.bodySmall!.copyWith(color: Colors.black),
                 ),
               ),
             ),
@@ -280,7 +312,6 @@ class ProfileImage extends StatelessWidget {
     );
   }
 }
-
 
 class Services extends StatelessWidget {
   final String service;

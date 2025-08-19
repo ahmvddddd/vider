@@ -13,6 +13,7 @@ class ProvidersCategoryModel {
   final List<String> portfolioImages;
   final double latitude;
   final double longitude;
+  final double rating;
 
   ProvidersCategoryModel({
     required this.firstname,
@@ -29,6 +30,7 @@ class ProvidersCategoryModel {
     required this.portfolioImages,
     required this.latitude,
     required this.longitude,
+    required this.rating
   });
 
   factory ProvidersCategoryModel.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,7 @@ class ProvidersCategoryModel {
       portfolioImages: List<String>.from(json['portfolioImages'] ?? []),
       latitude: (json['latitude'] ?? 0).toDouble(),
       longitude: (json['longitude'] ?? 0).toDouble(),
+      rating: (json['rating'] ?? 0).toDouble(),
     );
   }
 }

@@ -165,6 +165,9 @@ class SignUpForm extends ConsumerWidget {
                   child: GestureDetector(
                     onTap: () {
                       if (!termsAccepted.value) {
+
+                        FocusScope.of(context).unfocus();
+                        
                         CustomSnackbar.show(
                           context: context,
                           title: 'Accept Terms and conditions',
@@ -176,6 +179,9 @@ class SignUpForm extends ConsumerWidget {
                       }
 
                       if (formKey.currentState!.validate()) {
+
+                        FocusScope.of(context).unfocus();
+
                         signupController.signup(
                           context,
                           firstnameController.text.trim(),

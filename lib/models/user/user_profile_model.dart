@@ -11,6 +11,7 @@ class UserProfileModel {
   final double hourlyRate;
   final List<String> skills;
   final List<String> portfolioImages;
+  final double rating;
 
   UserProfileModel({
     required this.userId,
@@ -24,7 +25,8 @@ class UserProfileModel {
     required this.service,
     required this.skills,
     required this.hourlyRate,
-    required this.portfolioImages
+    required this.portfolioImages,
+    required this.rating
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,7 @@ class UserProfileModel {
       hourlyRate: (json['hourlyRate'] ?? 0).toDouble(),
       skills: List<String>.from(json['skills'] ?? []),
       portfolioImages: List<String>.from(json['portfolioImages'] ?? []),
+      rating: (json['rating'] ?? 0).toDouble(),
     );
   }
 
@@ -57,9 +60,7 @@ class UserProfileModel {
       'service': service,
       'hourlyRate': hourlyRate,
       'skills': skills,
-      'portfolioImages': portfolioImages
+      'portfolioImages': portfolioImages,
     };
   }
 }
-
-

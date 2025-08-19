@@ -65,7 +65,6 @@ class ServiceProfilesNotifier
                 .toList();
         state = AsyncValue.data(list);
       } catch (e, st) {
-        print(e);
         state = AsyncValue.error(e, st);
       }
     });
