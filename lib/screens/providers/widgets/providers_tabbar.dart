@@ -51,7 +51,8 @@ class _ProvidersTabBarScreenState extends ConsumerState<ProvidersTabBarScreen>
             }
 
             // Create or update TabController
-            if (_tabController == null || _tabController!.length != services.length) {
+            if (_tabController == null ||
+                _tabController!.length != services.length) {
               _tabController?.dispose();
               _tabController = TabController(
                 length: services.length,
@@ -84,21 +85,20 @@ class _ProvidersTabBarScreenState extends ConsumerState<ProvidersTabBarScreen>
                               vertical: Sizes.sm,
                             ),
                             decoration: BoxDecoration(
-                              color: isSelected
-                                  ? CustomColors.primary
-                                  : Colors.transparent,
+                              color:
+                                  isSelected
+                                      ? CustomColors.primary
+                                      : Colors.transparent,
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: Text(
                               services[index],
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelLarge!
-                                  .copyWith(
-                                    color: isSelected
-                                        ? Colors.white
-                                        : Colors.blueGrey,
-                                  ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.labelLarge!.copyWith(
+                                color:
+                                    isSelected ? Colors.white : Colors.blueGrey,
+                              ),
                             ),
                           );
                         }),
@@ -124,15 +124,18 @@ class _ProvidersTabBarScreenState extends ConsumerState<ProvidersTabBarScreen>
               ],
             );
           },
-          loading: () => Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-              strokeWidth: 4.0,
-              backgroundColor: dark ? Colors.white : Colors.black,
-            ),
-          ),
-          error: (e, _) =>
-              const Center(child: Text("An error occured, Could not load providers")),
+          loading:
+              () => Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  strokeWidth: 4.0,
+                  backgroundColor: dark ? Colors.white : Colors.black,
+                ),
+              ),
+          error:
+              (e, _) => const Center(
+                child: Text("An error occured, Could not load providers"),
+              ),
         ),
       ),
     );
@@ -143,15 +146,13 @@ class _ServiceTabBody extends ConsumerWidget {
   final String category;
   final String service;
 
-  const _ServiceTabBody({
-    required this.category,
-    required this.service,
-  });
+  const _ServiceTabBody({required this.category, required this.service});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profilesAsync =
-        ref.watch(serviceProfilesProvider((category: category, service: service)));
+    final profilesAsync = ref.watch(
+      serviceProfilesProvider((category: category, service: service)),
+    );
 
     return profilesAsync.when(
       data: (profiles) => _buildProfileList(context, profiles),
@@ -175,9 +176,21 @@ class _ServiceTabBody extends ConsumerWidget {
         itemCount: profiles.length,
         itemBuilder: (_, i) {
           final profile = profiles[i];
+          Color ratingColor = Colors.brown;
+
+          if (profile.rating < 1.66) {
+            ratingColor = Colors.brown; // Low rating
+          } else if (profile.rating < 3.33) {
+            ratingColor = CustomColors.silver; // Medium rating
+          } else if (profile.rating >= 3.33) {
+            ratingColor = CustomColors.gold; // High rating
+          }
           return GestureDetector(
             onTap: () {
-              HelperFunction.navigateScreen(context, ProviderScreen(profile: profile));
+              HelperFunction.navigateScreen(
+                context,
+                ProviderScreen(profile: profile),
+              );
             },
             child: CategoryCard(
               potfolioImage: profile.portfolioImages[0],
@@ -186,8 +199,8 @@ class _ServiceTabBody extends ConsumerWidget {
               service: profile.service,
               description: profile.bio,
               hourlyRate: profile.hourlyRate,
-              rating: 5,
-              ratingColor: Colors.amber,
+              rating: profile.rating,
+              ratingColor: ratingColor,
             ),
           );
         },

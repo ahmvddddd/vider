@@ -30,18 +30,13 @@ class _ProviderScreenState extends State<ProviderScreen> {
             widget.profile.longitude > 0);
 
     Color ratingColor = Colors.brown;
+
     if (widget.profile.rating < 1.66) {
-      setState(() {
-        ratingColor = Colors.brown;
-      });
-    } else if (widget.profile.rating < 1.66 && widget.profile.rating >= 3.33) {
-      setState(() {
-        ratingColor = CustomColors.silver;
-      });
-    } else if (widget.profile.rating >= 5.00) {
-      setState(() {
-        ratingColor = CustomColors.gold;
-      });
+      ratingColor = Colors.brown; // Low rating
+    } else if (widget.profile.rating < 3.33) {
+      ratingColor = CustomColors.silver; // Medium rating
+    } else if (widget.profile.rating >= 3.33) {
+      ratingColor = CustomColors.gold; // High rating
     }
 
     return Scaffold(

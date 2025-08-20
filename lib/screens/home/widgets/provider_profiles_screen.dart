@@ -60,7 +60,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../controllers/user/provider_profiles_controller.dart';
 
 class ProviderProfilesScreen extends ConsumerWidget {
