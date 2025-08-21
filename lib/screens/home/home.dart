@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../common/widgets/custom_shapes/cards/provider_card.dart';
+// import '../../common/widgets/custom_shapes/cards/provider_card.dart';
 import '../../common/widgets/custom_shapes/containers/search_container.dart';
-import '../../common/widgets/layouts/listview.dart';
+// import '../../common/widgets/layouts/listview.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
@@ -135,7 +135,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
 
                           const SizedBox(height: Sizes.spaceBtwItems),
-                          SearchContainer(width: screenWidth * 0.90),
+                          SearchContainer(width: screenWidth * 0.90,
+                          onTap: () => FocusScope.of(context).unfocus(),),
 
                           const SizedBox(height: Sizes.spaceBtwSections),
                           ProvidersGrid(),
@@ -145,38 +146,32 @@ class _HomeScreenState extends State<HomeScreen> {
                             'Recommended',
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
-                          const SizedBox(height: Sizes.sm),
-                          HomeListView(
-                            sizedBoxHeight: screenHeight * 0.28,
-                            scrollDirection: Axis.horizontal,
-                            seperatorBuilder:
-                                (context, index) =>
-                                    const SizedBox(width: Sizes.sm),
-                            itemCount: serviceProviders.length,
-                            itemBuilder: (context, index) {
-                              final list = serviceProviders[index];
-                              return GestureDetector(
-                                onTap: () {
-                                  HelperFunction.navigateScreen(
-                                    context,
-                                    ProviderProfilesScreen(
-                                      lat: 8.9928,
-                                      lon: 7.5725,
-                                    ),
-                                  );
-                                },
-                                child: ProviderCard(
-                                  imageUrl: list['imageUrl'],
-                                  fullname: list['fullname'],
-                                  ratingColor: list['ratingColor'],
-                                  rating: list['rating'],
-                                  service: list['service'],
-                                  description: list['description'],
-                                  // description: 'Hi everyone! We would love to introduce the design concept our team developed for a freelance marketplace mobile application. Specialists can find work opportunities, while employers can hire freelancers for projects. Lets explore its features.',
-                                ),
-                              );
-                            },
-                          ),
+
+                          ProviderProfilesWidget(),
+                          
+                          // const SizedBox(height: Sizes.sm),
+                          // HomeListView(
+                          //   sizedBoxHeight: screenHeight * 0.30,
+                          //   scrollDirection: Axis.horizontal,
+                          //   seperatorBuilder:
+                          //       (context, index) =>
+                          //           const SizedBox(width: Sizes.sm),
+                          //   itemCount: serviceProviders.length,
+                          //   itemBuilder: (context, index) {
+                          //     final list = serviceProviders[index];
+                          //     return ProviderCard(
+                          //       imageAvatar: list['imageUrl'],
+                          //       portfolioImage: list['imageUrl'],
+                          //       fullname: list['fullname'],
+                          //       ratingColor: list['ratingColor'],
+                          //       rating: list['rating'],
+                          //       service: list['service'],
+                          //       description: list['description'],
+                          //       hourlyRate: 100,
+                          //       // description: 'Hi everyone! We would love to introduce the design concept our team developed for a freelance marketplace mobile application. Specialists can find work opportunities, while employers can hire freelancers for projects. Lets explore its features.',
+                          //     );
+                          //   },
+                          // ),
                         ],
                       ),
             ),

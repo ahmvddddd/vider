@@ -5,21 +5,25 @@ import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_function.dart';
 
 class ProviderCard extends StatelessWidget {
-  final String imageUrl;
+  final String imageAvatar;
   final String fullname;
   final String service;
   final Color ratingColor;
   final double rating;
   final String description;
+  final String portfolioImage;
+  final double hourlyRate;
 
   const ProviderCard({
     super.key,
-    required this.imageUrl,
+    required this.imageAvatar,
     required this.fullname,
     required this.ratingColor,
     required this.rating,
     required this.service,
     required this.description,
+    required this.portfolioImage,
+    required this.hourlyRate
   });
 
   @override
@@ -28,7 +32,7 @@ class ProviderCard extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     final dark = HelperFunction.isDarkMode(context);
     return Container(
-      height: screenHeight * 0.28,
+      height: screenHeight * 0.32,
       width: screenWidth * 0.60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Sizes.cardRadiusLg),
@@ -43,7 +47,7 @@ class ProviderCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(Sizes.cardRadiusLg),
             child: Image.network(
-              imageUrl,
+              portfolioImage,
               fit: BoxFit.cover,
               height: screenHeight * 0.15,
               width: screenWidth * 0.60,
@@ -61,6 +65,12 @@ class ProviderCard extends StatelessWidget {
                 Row(
                   children: [
                     const SizedBox(height: Sizes.sm),
+                    CircleAvatar(
+                    radius: 20,
+                    backgroundImage: NetworkImage(imageAvatar),
+                  ),
+
+                  const SizedBox(width: Sizes.sm),
                     Text(
                       fullname,
                       style: Theme.of(context).textTheme.labelMedium!.copyWith(
@@ -118,6 +128,14 @@ class ProviderCard extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+
+          const SizedBox(height: Sizes.sm),
+          Text(
+            '\$$hourlyRate (hourly rate)',
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall!.copyWith(color: CustomColors.success),
           ),
         ],
       ),
