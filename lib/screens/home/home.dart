@@ -143,10 +143,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           const SizedBox(height: Sizes.spaceBtwItems),
                           Text(
-                            'Recommended',
+                            'Providers near you',
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
 
+                          const SizedBox(height: Sizes.sm,),
                           ProviderProfilesWidget(),
                           
                           // const SizedBox(height: Sizes.sm),

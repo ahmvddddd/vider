@@ -33,7 +33,7 @@ class ProviderCard extends StatelessWidget {
     final dark = HelperFunction.isDarkMode(context);
     return Container(
       height: screenHeight * 0.32,
-      width: screenWidth * 0.60,
+      width: screenWidth * 0.63,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Sizes.cardRadiusLg),
         border: Border.all(
@@ -44,21 +44,26 @@ class ProviderCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(Sizes.cardRadiusLg),
-            child: Image.network(
-              portfolioImage,
-              fit: BoxFit.cover,
-              height: screenHeight * 0.15,
-              width: screenWidth * 0.60,
+          Padding(
+            padding: const EdgeInsets.all(Sizes.xs),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(Sizes.cardRadiusMd),
+              child: Image.network(
+                portfolioImage,
+                fit: BoxFit.cover,
+                height: screenHeight * 0.13,
+                width: screenWidth * 0.63,
+              ),
             ),
           ),
+
+          const SizedBox(height: Sizes.xs,),
           Container(
             color:
                 dark
                     ? Colors.black.withValues(alpha: 0.8)
                     : Colors.white.withValues(alpha: 0.8),
-            padding: const EdgeInsets.all(Sizes.xs),
+            padding: const EdgeInsets.symmetric(horizontal: Sizes.sm, vertical: Sizes.xs),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -66,17 +71,32 @@ class ProviderCard extends StatelessWidget {
                   children: [
                     const SizedBox(height: Sizes.sm),
                     CircleAvatar(
-                    radius: 20,
+                    radius: 18,
                     backgroundImage: NetworkImage(imageAvatar),
                   ),
 
                   const SizedBox(width: Sizes.sm),
-                    Text(
-                      fullname,
-                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: dark ? Colors.white : Colors.black,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          fullname,
+                          style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: dark ? Colors.white : Colors.black,
+                          ),
+                        ),
+
+                //description
+                Text(
+                  service,
+                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    fontSize: 9,
+                    color: CustomColors.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                      ],
                     ),
 
                     const SizedBox(width: Sizes.sm),
@@ -103,16 +123,6 @@ class ProviderCard extends StatelessWidget {
                   ],
                 ),
 
-                //description
-                Text(
-                  service,
-                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    fontSize: 9,
-                    color: CustomColors.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
                 const SizedBox(height: Sizes.sm),
                 SizedBox(
                   width: screenWidth * 0.60,
@@ -126,16 +136,16 @@ class ProviderCard extends StatelessWidget {
                     softWrap: true,
                   ),
                 ),
-              ],
-            ),
-          ),
 
           const SizedBox(height: Sizes.sm),
           Text(
-            '\$$hourlyRate (hourly rate)',
+            '\$$hourlyRate/hour',
             style: Theme.of(
               context,
-            ).textTheme.labelSmall!.copyWith(color: CustomColors.success),
+            ).textTheme.bodySmall!.copyWith(color: CustomColors.success),
+          ),
+              ],
+            ),
           ),
         ],
       ),

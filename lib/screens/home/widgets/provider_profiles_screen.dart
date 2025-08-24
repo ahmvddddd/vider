@@ -63,8 +63,11 @@ import 'package:geolocator/geolocator.dart';
 import '../../../common/widgets/custom_shapes/cards/provider_card.dart';
 import '../../../common/widgets/layouts/listview.dart';
 import '../../../controllers/user/provider_profiles_controller.dart';
+import '../../../models/providers/providers_category_model.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
+import '../../../utils/helpers/helper_function.dart';
+import '../../providers/provider_screen.dart';
 
 class ProviderProfilesWidget extends ConsumerStatefulWidget {
   const ProviderProfilesWidget({super.key});
@@ -80,6 +83,7 @@ class _ProviderProfilesWidgetState
   double? lon;
   bool _loadingLocation = true;
   String? _locationError;
+  String? _stateName; // <-- store fetched state here
 
   @override
   void initState() {
@@ -111,18 +115,21 @@ class _ProviderProfilesWidgetState
       }
 
       // Get location
-      final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
+      // final position = await Geolocator.getCurrentPosition(
+      //   desiredAccuracy: LocationAccuracy.high,
+      // );
 
       setState(() {
-        // Use actual location if needed
-        lat = position.latitude;
-        lon = position.longitude;
-
-        // For now, using fixed location as in your code
-        lat = 9.0882;
+        lat = 9.0882; // using fixed coords as before
         lon = 7.4934;
+      });
+
+      // fetch state once
+      final notifier = ref.read(providerProfilesController.notifier);
+      final stateName = await notifier.getStateFromCoordinates(lat!, lon!);
+
+      setState(() {
+        _stateName = stateName;
         _loadingLocation = false;
       });
     } catch (e) {
@@ -146,53 +153,56 @@ class _ProviderProfilesWidgetState
       return Center(child: Text(_locationError!));
     }
 
+    if (_stateName == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return profilesState.when(
       data: (groupedProfiles) {
-        final notifier = ref.read(providerProfilesController.notifier);
+        final providers = groupedProfiles[_stateName] ?? [];
 
-        return FutureBuilder<String>(
-          future: notifier.getStateFromCoordinates(lat!, lon!),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
+        if (providers.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        return HomeListView(
+          sizedBoxHeight: screenHeight * 0.32,
+          seperatorBuilder: (context, index) =>
+              const SizedBox(height: Sizes.sm),
+          scrollDirection: Axis.horizontal,
+          itemCount: providers.length,
+          itemBuilder: (context, index) {
+            final provider = providers[index];
+        
+            Color ratingColor = Colors.brown;
+            if (provider['rating'] < 1.66) {
+              ratingColor = Colors.brown;
+            } else if (provider['rating'] < 3.33) {
+              ratingColor = CustomColors.silver;
+            } else {
+              ratingColor = CustomColors.gold;
             }
-
-            final stateName = snapshot.data!;
-            final providers = groupedProfiles[stateName] ?? [];
-
-            if (providers.isEmpty) {
-              return const SizedBox.shrink();
-            }
-
-            return HomeListView(
-              sizedBoxHeight: screenHeight * 0.32,
-              seperatorBuilder:
-                  (context, index) => const SizedBox(height: Sizes.sm),
-              scrollDirection: Axis.horizontal,
-              itemCount: providers.length,
-              itemBuilder: (context, index) {
-                final provider = providers[index];
-
-                Color ratingColor = Colors.brown;
-                if (provider['rating'] < 1.66) {
-                  ratingColor = Colors.brown;
-                } else if (provider['rating'] < 3.33) {
-                  ratingColor = CustomColors.silver;
-                } else if (provider['rating'] >= 3.33) {
-                  ratingColor = CustomColors.gold;
-                }
-
-                return ProviderCard(
-                  fullname: '${provider['firstname']} ${provider['lastname']}',
-                  service: provider['service'] ?? '',
-                  portfolioImage: provider['portfolioImages'][1] ?? '',
-                  imageAvatar: provider['profileImage'] ?? '',
-                  description: provider['bio'],
-                  rating: provider['rating'],
-                  ratingColor: ratingColor,
-                  hourlyRate: 100,
+        
+            return GestureDetector(
+              onTap: () {
+                final model = ProvidersCategoryModel.fromJson(
+                            provider,
+                          );
+                HelperFunction.navigateScreen(
+                  context,
+                  ProviderScreen(profile: model),
                 );
               },
+              child: ProviderCard(
+                fullname: '${provider['firstname']} ${provider['lastname']}',
+                service: provider['service'] ?? '',
+                portfolioImage: provider['portfolioImages'][1] ?? '',
+                imageAvatar: provider['profileImage'] ?? '',
+                description: provider['bio'],
+                rating: provider['rating'],
+                ratingColor: ratingColor,
+                hourlyRate: 100,
+              ),
             );
           },
         );
@@ -202,51 +212,3 @@ class _ProviderProfilesWidgetState
     );
   }
 }
-
-// class _ProviderCard extends StatelessWidget {
-//   final Map<String, dynamic> provider;
-
-//   const _ProviderCard({required this.provider});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 140,
-//       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-//       decoration: BoxDecoration(
-//         borderRadius: BorderRadius.circular(12),
-//         color: Colors.white,
-//         boxShadow: const [
-//           BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
-//         ],
-//       ),
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           CircleAvatar(
-//             backgroundImage:
-//                 provider['profileImage'] != null
-//                     ? NetworkImage(provider['profileImage'])
-//                     : null,
-//             radius: 35,
-//             child:
-//                 provider['profileImage'] == null
-//                     ? const Icon(Icons.person, size: 40)
-//                     : null,
-//           ),
-//           const SizedBox(height: 8),
-//           Text(
-//             provider['firstname'] ?? 'Unknown',
-//             style: const TextStyle(fontWeight: FontWeight.bold),
-//             overflow: TextOverflow.ellipsis,
-//           ),
-//           Text(
-//             provider['service'] ?? '',
-//             style: TextStyle(color: Colors.grey[600], fontSize: 12),
-//             overflow: TextOverflow.ellipsis,
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

@@ -1,11 +1,9 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../../../utils/constants/custom_colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/helpers/helper_function.dart';
-import '../../../../screens/map/map.dart';
+import '../../../../screens/map/providers_map.dart';
 
 class SearchContainer extends StatelessWidget {
   const SearchContainer({
@@ -53,7 +51,7 @@ class SearchContainer extends StatelessWidget {
                     color: dark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.1),
                     shape: BoxShape.circle),
                     child:  GestureDetector(
-                      onTap: () => HelperFunction.navigateScreen(context, MapScreen()),
+                      onTap: () => HelperFunction.navigateScreen(context, ProvidersMapPage()),
                     child: Icon(Icons.location_pin, size: Sizes.iconM, color: Colors.red,)),
                   ),
                 ),
