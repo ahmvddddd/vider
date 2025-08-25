@@ -1,4 +1,5 @@
 class ProvidersCategoryModel {
+  final String userId;
   final String firstname;
   final String lastname;
   final String username;
@@ -16,6 +17,7 @@ class ProvidersCategoryModel {
   final double rating;
 
   ProvidersCategoryModel({
+    required this.userId,
     required this.firstname,
     required this.lastname,
     required this.username,
@@ -30,11 +32,12 @@ class ProvidersCategoryModel {
     required this.portfolioImages,
     required this.latitude,
     required this.longitude,
-    required this.rating
+    required this.rating,
   });
 
   factory ProvidersCategoryModel.fromJson(Map<String, dynamic> json) {
     return ProvidersCategoryModel(
+      userId: json['userId'] ?? '',
       firstname: json['firstname'] ?? '',
       lastname: json['lastname'] ?? '',
       username: json['username'] ?? '',

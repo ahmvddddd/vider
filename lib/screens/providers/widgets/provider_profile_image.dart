@@ -29,8 +29,8 @@ class ProfileImage extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: MediaQuery.of(context).size.height * 0.20,
-          width: MediaQuery.of(context).size.height * 0.20,
+          height: MediaQuery.of(context).size.height * 0.15,
+          width: MediaQuery.of(context).size.height * 0.15,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
             border: Border.all(
@@ -44,8 +44,8 @@ class ProfileImage extends StatelessWidget {
               child: Image.network(
                 imageAvatar,
                 fit: BoxFit.cover,
-                height: MediaQuery.of(context).size.height * 0.20,
-                width: MediaQuery.of(context).size.height * 0.20,
+                height: MediaQuery.of(context).size.height * 0.15,
+                width: MediaQuery.of(context).size.height * 0.15,
               ),
             ),
           ),
@@ -90,8 +90,6 @@ class ProfileImage extends StatelessWidget {
             fontFamily: 'JosefinSans',
           ),
         ),
-
-        const SizedBox(height: Sizes.sm),
       ],
     );
   }
