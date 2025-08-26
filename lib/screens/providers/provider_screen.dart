@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/containers/button_container.dart';
 import '../../common/widgets/image/full_screen_image_view.dart';
+import '../../controllers/jobs/pending_jobs_controller.dart';
 import '../../controllers/services/user_id_controller.dart';
 import '../../models/providers/providers_category_model.dart';
 import '../../common/widgets/layouts/listview.dart';
@@ -11,6 +12,7 @@ import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
 import '../messages/message.dart';
+import 'hire_provider.dart';
 import 'provider_map.dart';
 import 'widgets/provider_buttons.dart';
 import 'widgets/provider_profile_image.dart';
@@ -72,7 +74,31 @@ class _ProviderScreenState extends ConsumerState<ProviderScreen> {
         ),
         showBackArrow: true,
       ),
-      bottomNavigationBar: ButtonContainer(onPressed: () {}, text: 'Hire'),
+      bottomNavigationBar: ButtonContainer(
+        onPressed: () async {
+          // ✅ Use the providerId from profile to check pending jobs
+          final result = await ref
+              .read(pendingJobsProvider(widget.profile.userId).future);
+
+          if (result.hasPendingJob) {
+            // Show a message if provider is busy
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                    "This provider is currently busy and cannot take new jobs."),
+                backgroundColor: Colors.red,
+              ),
+            );
+          } else {
+            // Navigate if provider is available
+            HelperFunction.navigateScreen(
+              context,
+              HireProvider(profile: widget.profile),
+            );
+          }
+        },
+        text: 'Hire',
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

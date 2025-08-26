@@ -19,7 +19,7 @@ class TitleAndDescription extends StatelessWidget {
           width: screenWidth * 0.70,  
         child: Text(
           title,
-          style: Theme.of(context).textTheme.labelSmall,
+          style: Theme.of(context).textTheme.labelLarge,
           textAlign: textAlign,
         ),
       ),
