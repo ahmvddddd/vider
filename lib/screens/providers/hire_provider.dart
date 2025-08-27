@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:latlong2/latlong.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/containers/button_container.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../common/widgets/layouts/listview.dart';
+import '../../common/widgets/pop_up/location_picker_dialog.dart';
 import '../../common/widgets/texts/title_and_description.dart';
-import '../../controllers/jobs/hire_provider_controller.dart';
+import '../../controllers/notifications/add_notification_controller.dart';
 import '../../controllers/user/user_controller.dart';
+import '../../models/notification/add_notification_model.dart';
 import '../../models/providers/providers_category_model.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
@@ -14,18 +17,17 @@ import '../../utils/helpers/helper_function.dart';
 
 class HireProvider extends ConsumerStatefulWidget {
   final ProvidersCategoryModel profile;
-  const HireProvider({
-    super.key,
-    required this.profile,
-  });
+  const HireProvider({super.key, required this.profile});
 
   @override
   ConsumerState<HireProvider> createState() => _HireProviderState();
 }
 
 class _HireProviderState extends ConsumerState<HireProvider> {
+  bool _isSubmitting = false;
   int _count = 0;
-  String? _selectedService; // Track selected service
+  String? _selectedService;
+  LatLng? _selectedLocation; // <-- Store picked location
 
   @override
   Widget build(BuildContext context) {
@@ -33,77 +35,103 @@ class _HireProviderState extends ConsumerState<HireProvider> {
     double screenHeight = MediaQuery.of(context).size.height;
     final dark = HelperFunction.isDarkMode(context);
     final userState = ref.watch(userProvider);
-    // totalPay = hourlyRate * count
-    double totalPay = widget.profile.hourlyRate * _count;
 
-    final jobState = ref.watch(jobControllerProvider);
+    double totalPay = widget.profile.hourlyRate * _count;
 
     return Scaffold(
       appBar: TAppBar(
-        title: Text(
-          'Hire',
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
+        title: Text('Hire', style: Theme.of(context).textTheme.headlineSmall),
         showBackArrow: true,
       ),
       bottomNavigationBar: ButtonContainer(
         text: 'Proceed',
-        onPressed: jobState.isLoading
-            ? null
-            : () async {
-                if (_selectedService == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Please select a service")),
-                  );
-                  return;
-                }
-                if (_count <= 0) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Please enter hours")),
-                  );
-                  return;
-                }
+        onPressed:
+            _isSubmitting
+                ? null
+                : () async {
+                  if (_selectedService == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please select a service")),
+                    );
+                    return;
+                  }
+                  if (_count <= 0) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please enter hours")),
+                    );
+                    return;
+                  }
+                  if (_selectedLocation == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please select a location")),
+                    );
+                    return;
+                  }
 
-                // Make sure user details are loaded
-                userState.when(
-                  data: (user) async {
-                    await ref.read(jobControllerProvider.notifier).addEmployee(
-                          employerImage: user.profileImage,
-                          providerImage: widget.profile.profileImage,
-                          employerId: user.userId,
-                          providerId: widget.profile.userId,
-                          employerName: user.firstname,
-                          providerName: widget.profile.firstname,
-                          jobTitle: _selectedService!,
-                          pay: totalPay.toInt(),
-                          duration: _count,
-                        );
+                  userState.when(
+                    data: (user) async {
+                      setState(() => _isSubmitting = true);
 
-                    final state = ref.read(jobControllerProvider);
-                    if (mounted && state.hasError) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(state.error.toString())),
+                      final jobDetails = JobDetails(
+                        employerId: user.userId,
+                        providerId: widget.profile.userId,
+                        employerImage: user.profileImage,
+                        providerImage: widget.profile.profileImage,
+                        employerName: user.firstname,
+                        providerName: widget.profile.firstname,
+                        jobTitle: _selectedService!,
+                        pay: totalPay,
+                        duration: _count,
+                        startTime: DateTime.now(),
+                        latitude: _selectedLocation!.latitude,
+                        longitude: _selectedLocation!.longitude,
                       );
-                    } else if (mounted && !state.isLoading) {
+
+                      final notification = AddNotificationModel(
+                        type: "job_request",
+                        title: "New Job Request",
+                        message:
+                            "${user.firstname} wants to hire you for $_selectedService",
+                        recipientId: widget.profile.userId,
+                        jobDetails: jobDetails,
+                      );
+
+                      try {
+                        await ref.read(
+                          addNotificationProvider(notification).future,
+                        );
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Job created successfully"),
+                            ),
+                          );
+                          Navigator.pop(context);
+                        }
+                      } catch (e) {
+                        if (mounted) {
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text("Error: $e")));
+                        }
+                      } finally {
+                        if (mounted) setState(() => _isSubmitting = false);
+                      }
+                    },
+                    loading: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text("Job created successfully")),
+                          content: Text("Loading employer details"),
+                        ),
                       );
-                      Navigator.pop(context);
-                    }
-                  },
-                  loading: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Loading employer details")),
-                    );
-                  },
-                  error: (err, _) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Error: $err")),
-                    );
-                  },
-                );
-              },
+                    },
+                    error: (err, _) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text("Error: $err")));
+                    },
+                  );
+                },
       ),
       body: Stack(
         children: [
@@ -117,15 +145,16 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                     alignment: Alignment.center,
                     child: Text(
                       '\$${widget.profile.hourlyRate}/hr',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineMedium!
-                          .copyWith(
-                              color: CustomColors.success,
-                              fontFamily: 'JosefinSans'),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.headlineMedium!.copyWith(
+                        color: CustomColors.success,
+                        fontFamily: 'JosefinSans',
+                      ),
                     ),
                   ),
                   const SizedBox(height: Sizes.spaceBtwItems),
+
                   const TitleAndDescription(
                     textAlign: TextAlign.left,
                     title: 'Select service',
@@ -133,47 +162,46 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                         'Please select the service you need from the list below',
                   ),
                   const SizedBox(height: Sizes.spaceBtwItems),
+
+                  // Services
                   HomeListView(
-                    sizedBoxHeight:
-                        MediaQuery.of(context).size.height * 0.06,
+                    sizedBoxHeight: screenHeight * 0.06,
                     scrollDirection: Axis.horizontal,
-                    seperatorBuilder: (context, index) => const Padding(
-                      padding: EdgeInsets.all(Sizes.xs),
-                      child: VerticalDivider(color: CustomColors.primary),
-                    ),
+                    seperatorBuilder:
+                        (context, index) => const Padding(
+                          padding: EdgeInsets.all(Sizes.xs),
+                          child: VerticalDivider(color: CustomColors.primary),
+                        ),
                     itemCount: widget.profile.skills.length,
                     itemBuilder: (context, index) {
                       final skill = widget.profile.skills[index];
                       final isSelected = _selectedService == skill;
                       return GestureDetector(
                         onTap: () {
-                          setState(() {
-                            _selectedService = skill;
-                          });
+                          setState(() => _selectedService = skill);
                         },
                         child: RoundedContainer(
                           width: screenWidth * 0.25,
                           height: screenHeight * 0.06,
                           padding: const EdgeInsets.all(Sizes.sm),
                           radius: Sizes.cardRadiusMd,
-                          backgroundColor: isSelected
-                              ? CustomColors.primary
-                              : (dark
-                                  ? Colors.white.withValues(alpha: 0.1)
-                                  : Colors.black.withValues(alpha: 0.1)),
+                          backgroundColor:
+                              isSelected
+                                  ? CustomColors.primary
+                                  : (dark
+                                      ? Colors.white.withOpacity(0.1)
+                                      : Colors.black.withOpacity(0.1)),
                           child: Center(
                             child: Text(
                               skill,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(
-                                    color: isSelected
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodySmall!.copyWith(
+                                color:
+                                    isSelected
                                         ? Colors.white
-                                        : (dark
-                                            ? Colors.white
-                                            : Colors.black),
-                                  ),
+                                        : (dark ? Colors.white : Colors.black),
+                              ),
                             ),
                           ),
                         ),
@@ -181,8 +209,8 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                     },
                   ),
 
-                  /// --- Cart Counter Section ---
                   const SizedBox(height: Sizes.spaceBtwSections),
+
                   const TitleAndDescription(
                     textAlign: TextAlign.left,
                     title: 'Enter Hours',
@@ -190,6 +218,8 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                         'Please tap the counter to adjust the number of hours you would like to hire',
                   ),
                   const SizedBox(height: Sizes.spaceBtwSections),
+
+                  // Hours Counter
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -208,25 +238,21 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                           radius: 100,
                           padding: const EdgeInsets.all(Sizes.sm),
                           child: Center(
-                              child: Icon(
-                            Icons.remove,
-                            size: Sizes.iconMd,
-                            color: Colors.white,
-                          )),
+                            child: Icon(
+                              Icons.remove,
+                              size: Sizes.iconMd,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
-
-                      // Counter Display
                       Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
                           '$_count',
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ),
-
-                      // Plus Button
                       GestureDetector(
                         onTap: () {
                           if (_count < 5) {
@@ -242,67 +268,91 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                           radius: 100,
                           padding: const EdgeInsets.all(Sizes.sm),
                           child: Center(
-                              child: Icon(
-                            Icons.add,
-                            size: Sizes.iconMd,
-                            color: Colors.white,
-                          )),
+                            child: Icon(
+                              Icons.add,
+                              size: Sizes.iconMd,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
 
-                  // Total Pay Display
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Sizes.spaceBtwItems,
-                      vertical: Sizes.spaceBtwSections,
-                    ),
-                    child: Divider(
-                      color: CustomColors.primary,
+                  // Select Location Section
+                  const SizedBox(height: Sizes.spaceBtwSections),
+                  const TitleAndDescription(
+                    textAlign: TextAlign.left,
+                    title: 'Service Location',
+                    description:
+                        'Please select where you want the service to be provided',
+                  ),
+                  const SizedBox(height: Sizes.spaceBtwItems),
+                  Center(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.location_on, color:  Colors.white,),
+                      label: Text(
+                        _selectedLocation == null
+                            ? "Select Location"
+                            // : "Lat: ${_selectedLocation!.latitude.toStringAsFixed(4)}, Lng: ${_selectedLocation!.longitude.toStringAsFixed(4)}"
+                            : "Change Location",
+                        style: Theme.of(
+                          context,
+                        ).textTheme.labelSmall!.copyWith(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            _selectedLocation == null
+                                ? CustomColors.primary
+                                : CustomColors.success,
+                        padding: const EdgeInsets.all(Sizes.sm),
+                      ),
+                      onPressed: () async {
+                        final result = await showDialog<LatLng>(
+                          context: context,
+                          builder: (_) => const LocationPickerDialog(),
+                        );
+                        if (result != null) {
+                          setState(() {
+                            _selectedLocation = result;
+                          });
+                        }
+                      },
                     ),
                   ),
+
+                  // Total Pay
+                  const SizedBox(height: Sizes.spaceBtwSections),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Total Pay: ',
-                      style: Theme.of(context).textTheme.titleLarge,),
+                      Text(
+                        'Total: ',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                       Text(
                         '\$${totalPay.toStringAsFixed(2)}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(
-                                color: CustomColors.success,
-                                fontFamily: 'JosefinSans'),
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: CustomColors.success,
+                          fontFamily: 'JosefinSans',
+                        ),
                       ),
                     ],
                   ),
                   const SizedBox(height: Sizes.spaceBtwItems),
-                  Align(
-                    alignment: Alignment.center,
-                    child: SizedBox(
-                      width: screenWidth * 0.75,
-                      child: Text(
-                        'By clicking on proceed you agree to Vider contract rules and regulations. Violating these rules could lead to permanent suspension of your account',
-                        style: Theme.of(context).textTheme.labelMedium,
-                        textAlign: TextAlign.center,
-                        softWrap: true,
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
           ),
 
-          // Show loading overlay
-          if (jobState.isLoading)
+          if (_isSubmitting)
             Container(
               color: Colors.black.withOpacity(0.4),
-              child: const Center(
+              child: Center(
                 child: CircularProgressIndicator(
-                  color: CustomColors.primary,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  strokeWidth: 4.0,
+                  backgroundColor: dark ? Colors.white : Colors.black,
                 ),
               ),
             ),

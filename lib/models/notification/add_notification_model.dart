@@ -9,6 +9,8 @@ class JobDetails {
   final double pay;
   final int duration;
   final DateTime startTime;
+  final double latitude;
+  final double longitude;
 
   JobDetails({
     required this.employerId,
@@ -21,6 +23,8 @@ class JobDetails {
     required this.pay,
     required this.duration,
     required this.startTime,
+    required this.latitude,
+    required this.longitude,
   });
 
   Map<String, dynamic> toJson() {
@@ -35,6 +39,8 @@ class JobDetails {
       'pay': pay,
       'duration': duration,
       'startTime': startTime.toIso8601String(),
+      'latitude': latitude,
+      'longitude': longitude,
     };
   }
 }

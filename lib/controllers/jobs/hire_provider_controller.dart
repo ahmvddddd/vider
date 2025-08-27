@@ -17,6 +17,8 @@ class JobController extends StateNotifier<AsyncValue<void>> {
     required String jobTitle,
     required int pay,
     required int duration,
+    required double latitude,
+    required double longitude,
   }) async {
     state = const AsyncValue.loading();
 
@@ -36,6 +38,8 @@ class JobController extends StateNotifier<AsyncValue<void>> {
           "jobTitle": jobTitle,
           "pay": pay,
           "duration": duration,
+          "latitude": latitude,
+          "longitude": longitude
         }),
       );
 
