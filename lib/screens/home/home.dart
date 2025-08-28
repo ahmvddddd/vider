@@ -6,6 +6,7 @@ import '../../common/widgets/custom_shapes/containers/search_container.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
+import '../map/providers_map.dart';
 import '../providers/widgets/providers_grid.dart';
 import 'components/home_shimmer.dart';
 import 'widgets/home_appbar.dart';
@@ -135,8 +136,35 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
 
                           const SizedBox(height: Sizes.spaceBtwItems),
-                          SearchContainer(width: screenWidth * 0.90,
-                          onTap: () => FocusScope.of(context).unfocus(),),
+                          SearchContainer(
+                            width: screenWidth * 0.90,
+                            onTap: () => FocusScope.of(context).unfocus(),
+                            suffixIcon: Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Container(
+                                padding: const EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color:
+                                      dark
+                                          ? Colors.white.withValues(alpha: 0.1)
+                                          : Colors.black.withValues(alpha: 0.1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: GestureDetector(
+                                  onTap:
+                                      () => HelperFunction.navigateScreen(
+                                        context,
+                                        ProvidersMapPage(),
+                                      ),
+                                  child: Icon(
+                                    Icons.location_pin,
+                                    size: Sizes.iconM,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
 
                           const SizedBox(height: Sizes.spaceBtwSections),
                           ProvidersGrid(),
@@ -147,9 +175,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
 
-                          const SizedBox(height: Sizes.sm,),
+                          const SizedBox(height: Sizes.sm),
                           ProviderProfilesWidget(),
-                          
+
                           // const SizedBox(height: Sizes.sm),
                           // HomeListView(
                           //   sizedBoxHeight: screenHeight * 0.30,

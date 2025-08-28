@@ -12,7 +12,7 @@ import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
 import '../messages/message.dart';
-import 'hire_provider.dart';
+import 'hire_provider_screen.dart';
 import 'provider_map.dart';
 import 'widgets/provider_buttons.dart';
 import 'widgets/provider_profile_image.dart';

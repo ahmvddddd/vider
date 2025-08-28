@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'screens/authentication/user_details/user_dob.dart';
 import 'screens/home/home.dart';
+import 'screens/messages/chat.dart';
 import 'utils/constants/custom_colors.dart';
 import 'utils/constants/sizes.dart';
 import 'utils/helpers/helper_function.dart';
@@ -84,7 +85,7 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
         // case 2:
         //   return ChatScreen(key: UniqueKey());
         case 2:
-          return const HomeScreen();
+          return const ChatScreen();
         case 3:
           return const HomeScreen();
         default:

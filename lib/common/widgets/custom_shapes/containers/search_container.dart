@@ -3,26 +3,34 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../../utils/constants/custom_colors.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/helpers/helper_function.dart';
-import '../../../../screens/map/providers_map.dart';
+
 
 class SearchContainer extends StatelessWidget {
   const SearchContainer({
+    this.controller,
     required this.width,
     super.key,
-    this.text, 
-    this.icon = Iconsax.search_normal, 
-    this.showBackground = true, 
+    this.text,
+    this.icon = Iconsax.search_normal,
+    this.showBackground = true,
     this.showBorder = true,
     this.onTap,
+    this.onSubmitted, // for Enter/Done
+    this.onEditingComplete, // for focus loss or submit
     this.padding = const EdgeInsets.symmetric(horizontal: 0),
+    this.suffixIcon
   });
 
+  final TextEditingController? controller;
   final double width;
   final String? text;
   final IconData? icon;
   final bool showBackground, showBorder;
   final VoidCallback? onTap;
   final EdgeInsetsGeometry padding;
+  final ValueChanged<String>? onSubmitted; // returns the text
+  final VoidCallback? onEditingComplete; // no text, just action
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -34,41 +42,33 @@ class SearchContainer extends StatelessWidget {
         child: Container(
           width: width,
           decoration: BoxDecoration(
-            color: showBackground ? dark ? CustomColors.dark : CustomColors.light : Colors.transparent,
+            color:
+                showBackground
+                    ? (dark ? CustomColors.dark : CustomColors.light)
+                    : Colors.transparent,
             borderRadius: BorderRadius.circular(Sizes.cardRadiusLg),
-            border: showBorder ? Border.all(color: CustomColors.grey): null,
+            border: showBorder ? Border.all(color: CustomColors.grey) : null,
           ),
-          child: 
-          Center(
+          child: Center(
             child: TextFormField(
+              controller: controller,
+              onFieldSubmitted: onSubmitted, // ✅ handles Enter/Done
+              onEditingComplete: onEditingComplete, // ✅ handles focus loss
               decoration: InputDecoration(
-                prefixIcon: Icon(icon, color: CustomColors.darkerGrey, size:  Sizes.iconSm,),
-                suffixIcon: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                    color: dark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.1),
-                    shape: BoxShape.circle),
-                    child:  GestureDetector(
-                      onTap: () => HelperFunction.navigateScreen(context, ProvidersMapPage()),
-                    child: Icon(Icons.location_pin, size: Sizes.iconM, color: Colors.red,)),
-                  ),
+                prefixIcon: Icon(
+                  icon,
+                  color: CustomColors.darkerGrey,
+                  size: Sizes.iconSm,
                 ),
+                suffixIcon: suffixIcon,
                 border: InputBorder.none,
                 hintText: text,
-                hintStyle:  Theme.of(context).textTheme.labelSmall,
+                hintStyle: Theme.of(context).textTheme.labelSmall,
               ),
             ),
-          ) 
+          ),
         ),
       ),
     );
   }
 }
-
-
-
-
-
-

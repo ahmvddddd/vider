@@ -1,14 +1,17 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
+import '../../common/widgets/custom_shapes/containers/search_container.dart';
 import '../../controllers/providers/provider_map_controller.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
-import '../providers/provider_screen.dart'; // ✅ import your ProviderScreen
+import '../providers/provider_screen.dart';
 
 class ProvidersMapPage extends ConsumerStatefulWidget {
   const ProvidersMapPage({super.key});
@@ -20,6 +23,8 @@ class ProvidersMapPage extends ConsumerStatefulWidget {
 class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
   final MapController _mapController = MapController();
   LatLng? _currentUserLocation;
+  final TextEditingController searchController = TextEditingController();
+  List<dynamic> searchResults = [];
 
   @override
   void initState() {
@@ -37,12 +42,8 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
       permission = await Geolocator.requestPermission();
     }
 
-    // Position pos = await Geolocator.getCurrentPosition(
-    //   desiredAccuracy: LocationAccuracy.high,
-    // );
-
     setState(() {
-      _currentUserLocation = LatLng(9.0882, 7.4934);
+      _currentUserLocation = LatLng(9.0882, 7.4934); // demo location
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -52,10 +53,7 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
 
   void _fetchProvidersForBounds() {
     final bounds = _mapController.bounds;
-    if (bounds == null) {
-      debugPrint("❌ Map bounds not ready yet.");
-      return;
-    }
+    if (bounds == null) return;
 
     final northEast = bounds.northEast;
     final southWest = bounds.southWest;
@@ -75,16 +73,17 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
     final dark = HelperFunction.isDarkMode(context);
     Color ratingColor = Colors.brown;
 
-          if (provider.rating < 1.66) {
-            ratingColor = Colors.brown; // Low rating
-          } else if (provider.rating < 3.33) {
-            ratingColor = CustomColors.silver; // Medium rating
-          } else if (provider.rating >= 3.33) {
-            ratingColor = CustomColors.gold; // High rating
-          }
+    if (provider.rating < 1.66) {
+      ratingColor = Colors.brown;
+    } else if (provider.rating < 3.33) {
+      ratingColor = CustomColors.silver;
+    } else {
+      ratingColor = CustomColors.gold;
+    }
+
     showModalBottomSheet(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (ctx) {
@@ -113,25 +112,24 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  
-                  const SizedBox(width: Sizes.sm,),
+                  const SizedBox(width: Sizes.sm),
                   RoundedContainer(
-                radius: 6,
-                backgroundColor: ratingColor,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Sizes.xs + 4,
-                  vertical: 2,
-                ),
-                child: Center(
-                  child: Text(
-                    provider.rating.toString(),
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      color: dark ? Colors.white : Colors.black,
-                      fontFamily: 'JosefinSans',
+                    radius: 6,
+                    backgroundColor: ratingColor,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Sizes.xs + 4,
+                      vertical: 2,
+                    ),
+                    child: Center(
+                      child: Text(
+                        provider.rating.toString(),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: dark ? Colors.white : Colors.black,
+                          fontFamily: 'JosefinSans',
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
                 ],
               ),
               Text(
@@ -143,7 +141,7 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
               const SizedBox(height: Sizes.spaceBtwItems),
               GestureDetector(
                 onTap: () {
-                  Navigator.pop(ctx); // close popup
+                  Navigator.pop(ctx);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -152,10 +150,10 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                   );
                 },
                 child: RoundedContainer(
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          width: MediaQuery.of(context).size.width * 0.80,
-                          padding: const EdgeInsets.all(Sizes.sm),
-                          backgroundColor: CustomColors.primary,
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  width: MediaQuery.of(context).size.width * 0.80,
+                  padding: const EdgeInsets.all(Sizes.sm),
+                  backgroundColor: CustomColors.primary,
                   child: Center(
                     child: Text(
                       "View Profile",
@@ -166,13 +164,84 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                   ),
                 ),
               ),
-
               const SizedBox(height: Sizes.spaceBtwItems),
             ],
           ),
         );
       },
     );
+  }
+
+  Future<void> searchLocation({
+    required String query,
+    required MapController mapController,
+  }) async {
+    if (query.isEmpty) {
+      return;
+    }
+
+    try {
+      final url = Uri.parse(
+        "https://nominatim.openstreetmap.org/search?q=$query&format=json&limit=1",
+      );
+
+      final response = await http.get(
+        url,
+        headers: {
+          "User-Agent":
+              "ViderApp/1.0 (your_email@example.com)", // required by Nominatim
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List results = jsonDecode(response.body);
+        if (results.isNotEmpty) {
+          final lat = double.parse(results[0]['lat']);
+          final lon = double.parse(results[0]['lon']);
+
+          // 2. Move the map to the searched location
+          mapController.move(LatLng(lat, lon), 14);
+
+          // 3. Define bounding box around the location (±0.05 for example)
+          final northEastLat = lat + 0.05;
+          final northEastLng = lon + 0.05;
+          final southWestLat = lat - 0.05;
+          final southWestLng = lon - 0.05;
+
+          // 4. Fetch providers in that bounding box
+          await ref
+              .read(providersMapController.notifier)
+              .fetchProviders(
+                northEastLat: northEastLat,
+                northEastLng: northEastLng,
+                southWestLat: southWestLat,
+                southWestLng: southWestLng,
+              );
+        } else {
+          return;
+        }
+      } else {
+        return;
+      }
+    } catch (e) {
+      throw Exception("Failed to fetch location");
+    }
+  }
+
+  bool _isSearching = false;
+
+  Future<void> _onSearch() async {
+    if (_isSearching) return; // ✅ ignore if already searching
+
+    final query = searchController.text.trim();
+
+    if (query.isEmpty) {
+      return;
+    }
+
+    _isSearching = true;
+    await searchLocation(query: query, mapController: _mapController);
+    _isSearching = false;
   }
 
   @override
@@ -184,100 +253,131 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
       body:
           _currentUserLocation == null
               ? const Center(child: CircularProgressIndicator())
-              : FlutterMap(
-                mapController: _mapController,
-                options: MapOptions(
-                  center: _currentUserLocation!,
-                  zoom: 13,
-                  onMapEvent: (event) {
-                    if (event is MapEventMoveEnd) {
-                      _fetchProvidersForBounds();
-                    }
-                  },
-                ),
+              : Column(
                 children: [
-                  TileLayer(
-                    urlTemplate:
-                        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                    subdomains: const ['a', 'b', 'c'],
+                  SizedBox(
+                    child: SearchContainer(
+                      text: 'Search locations for providers',
+                      controller: searchController,
+                      width: MediaQuery.of(context).size.width * 0.90,
+                      onTap: () => FocusScope.of(context).unfocus(),
+                      onEditingComplete: () {
+                        _onSearch();
+                        FocusScope.of(context).unfocus();
+                        searchController.clear();
+                      },
+                      onSubmitted: (value) {
+                        _onSearch();
+                        FocusScope.of(context).unfocus();
+                        searchController.clear();
+                      },
+                    ),
                   ),
-                  providersState.when(
-                    data: (providers) {
-                      return MarkerLayer(
-                        markers: [
-                          // ✅ Current user marker
-                          Marker(
-                            point: _currentUserLocation!,
-                            width: 40,
-                            height: 40,
-                            builder:
-                                (ctx) => const Icon(
-                                  Icons.location_on,
-                                  color: Colors.red,
-                                  size: 40,
+                  const SizedBox(height: Sizes.sm),
+                  Expanded(
+                    // ✅ Expanded fixes overflow
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                      child: FlutterMap(
+                        mapController: _mapController,
+                        options: MapOptions(
+                          center: _currentUserLocation!,
+                          zoom: 13,
+                          onMapEvent: (event) {
+                            if (event is MapEventMoveEnd) {
+                              _fetchProvidersForBounds();
+                            }
+                          },
+                        ),
+                        children: [
+                          TileLayer(
+                            urlTemplate:
+                                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                            subdomains: const ['a', 'b', 'c'],
+                          ),
+                          providersState.when(
+                            data: (providers) {
+                              return MarkerLayer(
+                                markers: [
+                                  Marker(
+                                    point: _currentUserLocation!,
+                                    width: 40,
+                                    height: 40,
+                                    builder:
+                                        (ctx) => const Icon(
+                                          Icons.location_on,
+                                          color: Colors.red,
+                                          size: 40,
+                                        ),
+                                  ),
+                                  ...providers
+                                      .where(
+                                        (p) =>
+                                            p.latitude.isFinite &&
+                                            p.longitude.isFinite,
+                                      )
+                                      .map(
+                                        (p) => Marker(
+                                          point: LatLng(
+                                            p.latitude,
+                                            p.longitude,
+                                          ),
+                                          width: 40,
+                                          height: 40,
+                                          builder:
+                                              (ctx) => GestureDetector(
+                                                onTap:
+                                                    () => _showProviderPopup(
+                                                      context,
+                                                      p,
+                                                    ),
+                                                child: Icon(
+                                                  Icons.location_on,
+                                                  size: 40,
+                                                  color: CustomColors.primary,
+                                                ),
+                                              ),
+                                        ),
+                                      ),
+                                ],
+                              );
+                            },
+                            loading:
+                                () => MarkerLayer(
+                                  markers: [
+                                    Marker(
+                                      point: _currentUserLocation!,
+                                      width: 40,
+                                      height: 40,
+                                      builder:
+                                          (ctx) => const Icon(
+                                            Icons.location_on,
+                                            color: Colors.red,
+                                            size: 40,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                            error:
+                                (err, _) => MarkerLayer(
+                                  markers: [
+                                    Marker(
+                                      point: _currentUserLocation!,
+                                      width: 40,
+                                      height: 40,
+                                      builder:
+                                          (ctx) => const Icon(
+                                            Icons.location_on,
+                                            color: Colors.red,
+                                            size: 40,
+                                          ),
+                                    ),
+                                  ],
                                 ),
                           ),
-                          // ✅ Provider markers with popup
-                          ...providers.map(
-                            (p) => Marker(
-                              point: LatLng(p.latitude, p.longitude),
-                              width: 40,
-                              height: 40,
-                              builder:
-                                  (ctx) => GestureDetector(
-                                    onTap: () => _showProviderPopup(context, p),
-                                    child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: CustomColors.alternate,
-                              width: 3,
-                            ),
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: CircleAvatar(
-                            radius: 25,
-                            backgroundImage: NetworkImage(p.profileImage),
-                          ),
-                        ),
-                                  ),
-                            ),
-                          ),
                         ],
-                      );
-                    },
-                    loading:
-                        () => MarkerLayer(
-                          markers: [
-                            Marker(
-                              point: _currentUserLocation!,
-                              width: 40,
-                              height: 40,
-                              builder:
-                                  (ctx) => const Icon(
-                                    Icons.location_on,
-                                    color: Colors.red,
-                                    size: 40,
-                                  ),
-                            ),
-                          ],
-                        ),
-                    error: (err, _) {
-                      return MarkerLayer(
-                        markers: [
-                          Marker(
-                            point: _currentUserLocation!,
-                            width: 40,
-                            height: 40,
-                            builder:
-                                (ctx) => const Icon(
-                                  Icons.location_on,
-                                  color: Colors.red,
-                                  size: 40,
-                                ),
-                          ),
-                        ],
-                      );
-                    },
+                      ),
+                    ),
                   ),
                 ],
               ),
