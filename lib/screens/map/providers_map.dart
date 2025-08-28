@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../common/widgets/custom_shapes/containers/search_container.dart';
 import '../../controllers/providers/provider_map_controller.dart';
@@ -249,7 +250,10 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
     final providersState = ref.watch(providersMapController);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Map")),
+      appBar: TAppBar(
+        title: Text("Map", style: Theme.of(context).textTheme.headlineSmall),
+        showBackArrow: true,
+      ),
       body:
           _currentUserLocation == null
               ? const Center(child: CircularProgressIndicator())

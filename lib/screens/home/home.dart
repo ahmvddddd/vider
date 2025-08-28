@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 // import '../../common/widgets/custom_shapes/cards/provider_card.dart';
 import '../../common/widgets/custom_shapes/containers/search_container.dart';
 // import '../../common/widgets/layouts/listview.dart';
+import '../../common/widgets/texts/section_heading.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
 import '../map/providers_map.dart';
+import '../providers/all_providers_screen.dart';
 import '../providers/widgets/providers_grid.dart';
 import 'components/home_shimmer.dart';
 import 'widgets/home_appbar.dart';
@@ -169,38 +171,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(height: Sizes.spaceBtwSections),
                           ProvidersGrid(),
 
-                          const SizedBox(height: Sizes.spaceBtwItems),
-                          Text(
-                            'Providers near you',
-                            style: Theme.of(context).textTheme.bodySmall,
+                          const SizedBox(height: Sizes.spaceBtwSections),
+                          SectionHeading(
+                            title: 'Providers near you',
+                            onPressed: () => HelperFunction.navigateScreen(
+                              context,
+                              AllProvidersScreen(),
+                            ),
                           ),
 
                           const SizedBox(height: Sizes.sm),
                           ProviderProfilesWidget(),
 
-                          // const SizedBox(height: Sizes.sm),
-                          // HomeListView(
-                          //   sizedBoxHeight: screenHeight * 0.30,
-                          //   scrollDirection: Axis.horizontal,
-                          //   seperatorBuilder:
-                          //       (context, index) =>
-                          //           const SizedBox(width: Sizes.sm),
-                          //   itemCount: serviceProviders.length,
-                          //   itemBuilder: (context, index) {
-                          //     final list = serviceProviders[index];
-                          //     return ProviderCard(
-                          //       imageAvatar: list['imageUrl'],
-                          //       portfolioImage: list['imageUrl'],
-                          //       fullname: list['fullname'],
-                          //       ratingColor: list['ratingColor'],
-                          //       rating: list['rating'],
-                          //       service: list['service'],
-                          //       description: list['description'],
-                          //       hourlyRate: 100,
-                          //       // description: 'Hi everyone! We would love to introduce the design concept our team developed for a freelance marketplace mobile application. Specialists can find work opportunities, while employers can hire freelancers for projects. Lets explore its features.',
-                          //     );
-                          //   },
-                          // ),
+                        
                         ],
                       ),
             ),
