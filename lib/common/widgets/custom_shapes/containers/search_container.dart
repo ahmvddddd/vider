@@ -15,6 +15,7 @@ class SearchContainer extends StatelessWidget {
     this.showBackground = true,
     this.showBorder = true,
     this.onTap,
+    this.onChanged,
     this.onSubmitted, // for Enter/Done
     this.onEditingComplete, // for focus loss or submit
     this.padding = const EdgeInsets.symmetric(horizontal: 0),
@@ -28,6 +29,7 @@ class SearchContainer extends StatelessWidget {
   final bool showBackground, showBorder;
   final VoidCallback? onTap;
   final EdgeInsetsGeometry padding;
+  final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted; // returns the text
   final VoidCallback? onEditingComplete; // no text, just action
   final Widget? suffixIcon;
@@ -52,6 +54,7 @@ class SearchContainer extends StatelessWidget {
           child: Center(
             child: TextFormField(
               controller: controller,
+              onChanged: onChanged,
               onFieldSubmitted: onSubmitted, // ✅ handles Enter/Done
               onEditingComplete: onEditingComplete, // ✅ handles focus loss
               decoration: InputDecoration(
@@ -63,7 +66,7 @@ class SearchContainer extends StatelessWidget {
                 suffixIcon: suffixIcon,
                 border: InputBorder.none,
                 hintText: text,
-                hintStyle: Theme.of(context).textTheme.labelSmall,
+                hintStyle: Theme.of(context).textTheme.labelLarge,
               ),
             ),
           ),

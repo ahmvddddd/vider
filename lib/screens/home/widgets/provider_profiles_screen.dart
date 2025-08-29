@@ -107,18 +107,21 @@ class _ProviderProfilesWidgetState
         }
 
         return HomeListView(
-          sizedBoxHeight: screenHeight * 0.32,
+          sizedBoxHeight: screenHeight * 0.25,
           seperatorBuilder: (context, index) =>
               const SizedBox(height: Sizes.sm),
           scrollDirection: Axis.horizontal,
           itemCount: providers.length,
           itemBuilder: (context, index) {
             final provider = providers[index];
+            final p = ProvidersCategoryModel.fromJson(
+              provider,
+            );
         
             Color ratingColor = Colors.brown;
-            if (provider['rating'] < 1.66) {
+            if (p.rating < 1.66) {
               ratingColor = Colors.brown;
-            } else if (provider['rating'] < 3.33) {
+            } else if (p.rating < 3.33) {
               ratingColor = CustomColors.silver;
             } else {
               ratingColor = CustomColors.gold;
@@ -126,23 +129,18 @@ class _ProviderProfilesWidgetState
         
             return GestureDetector(
               onTap: () {
-                final model = ProvidersCategoryModel.fromJson(
-                            provider,
-                          );
                 HelperFunction.navigateScreen(
                   context,
-                  ProviderScreen(profile: model),
+                  ProviderScreen(profile: p),
                 );
               },
               child: ProviderCard(
-                fullname: '${provider['firstname']} ${provider['lastname']}',
-                service: provider['service'] ?? '',
-                portfolioImage: provider['portfolioImages'][1] ?? '',
-                imageAvatar: provider['profileImage'] ?? '',
-                description: provider['bio'],
-                rating: provider['rating'],
+                fullname: '${p.firstname} ${p.lastname}',
+                service: p.service,
+                portfolioImage: p.portfolioImages[1],
+                imageAvatar: p.profileImage,
+                rating: p.rating,
                 ratingColor: ratingColor,
-                hourlyRate: 100,
               ),
             );
           },

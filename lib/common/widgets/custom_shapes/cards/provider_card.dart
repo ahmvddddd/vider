@@ -10,9 +10,7 @@ class ProviderCard extends StatelessWidget {
   final String service;
   final Color ratingColor;
   final double rating;
-  final String description;
   final String portfolioImage;
-  final double hourlyRate;
 
   const ProviderCard({
     super.key,
@@ -21,9 +19,7 @@ class ProviderCard extends StatelessWidget {
     required this.ratingColor,
     required this.rating,
     required this.service,
-    required this.description,
     required this.portfolioImage,
-    required this.hourlyRate
   });
 
   @override
@@ -32,8 +28,8 @@ class ProviderCard extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     final dark = HelperFunction.isDarkMode(context);
     return Container(
-      height: screenHeight * 0.32,
-      width: screenWidth * 0.63,
+      height: screenHeight * 0.25,
+      width: screenWidth * 0.53,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Sizes.cardRadiusLg),
         border: Border.all(
@@ -51,8 +47,8 @@ class ProviderCard extends StatelessWidget {
               child: Image.network(
                 portfolioImage,
                 fit: BoxFit.cover,
-                height: screenHeight * 0.13,
-                width: screenWidth * 0.63,
+                height: screenHeight * 0.15,
+                width: screenWidth * 0.53,
               ),
             ),
           ),
@@ -99,7 +95,7 @@ class ProviderCard extends StatelessWidget {
                       ],
                     ),
 
-                    const SizedBox(width: Sizes.sm),
+                    const SizedBox(width: Sizes.sm + 2),
                     RoundedContainer(
                       radius: Sizes.cardRadiusXs,
                       backgroundColor: ratingColor,
@@ -121,30 +117,7 @@ class ProviderCard extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-
-                const SizedBox(height: Sizes.sm),
-                SizedBox(
-                  width: screenWidth * 0.60,
-                  child: Text(
-                    description,
-                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: 10,
-                    ),
-                    maxLines: 2,
-                    softWrap: true,
-                  ),
-                ),
-
-          const SizedBox(height: Sizes.sm),
-          Text(
-            '\$$hourlyRate/hour',
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall!.copyWith(color: CustomColors.success),
-          ),
-              ],
+                ),],
             ),
           ),
         ],

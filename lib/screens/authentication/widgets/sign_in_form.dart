@@ -29,6 +29,13 @@ class _SigninFormState extends ConsumerState<SignInForm> {
   void initState() {
     super.initState();
     _loadSavedUsername();
+
+    usernameController.addListener(
+      () => ref.read(loginControllerProvider.notifier).clearError(),
+    );
+    passwordController.addListener(
+      () => ref.read(loginControllerProvider.notifier).clearError(),
+    );
   }
 
   Future<void> _loadSavedUsername() async {
@@ -175,9 +182,10 @@ class _SigninFormState extends ConsumerState<SignInForm> {
                   child: GestureDetector(
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
-
                         FocusScope.of(context).unfocus();
-                        
+
+                        loginController.clearError();
+
                         await loginController.login(
                           context,
                           usernameController.text.trim(),

@@ -36,23 +36,26 @@ class ProvidersCategoryModel {
   });
 
   factory ProvidersCategoryModel.fromJson(Map<String, dynamic> json) {
+    double _toDouble(dynamic v) =>
+        v is num ? v.toDouble() : double.tryParse(v?.toString() ?? '0') ?? 0.0;
+
     return ProvidersCategoryModel(
-      userId: json['userId'] ?? '',
-      firstname: json['firstname'] ?? '',
-      lastname: json['lastname'] ?? '',
-      username: json['username'] ?? '',
-      email: json['email'] ?? '',
-      isIdVerified: json['isIdVerified'] ?? false,
-      category: json['category'] ?? '',
-      service: json['service'] ?? '',
-      bio: json['bio'] ?? '',
-      hourlyRate: (json['hourlyRate'] ?? 0).toDouble(),
-      skills: List<String>.from(json['skills'] ?? []),
-      profileImage: json['profileImage'],
-      portfolioImages: List<String>.from(json['portfolioImages'] ?? []),
-      latitude: (json['latitude'] ?? 0).toDouble(),
-      longitude: (json['longitude'] ?? 0).toDouble(),
-      rating: (json['rating'] ?? 0).toDouble(),
+      userId: (json['userId'] ?? '').toString(),
+      firstname: (json['firstname'] ?? '').toString(),
+      lastname: (json['lastname'] ?? '').toString(),
+      username: (json['username'] ?? '').toString(),
+      email: (json['email'] ?? '').toString(),
+      isIdVerified: (json['isIdVerified'] ?? false) == true,
+      category: (json['category'] ?? '').toString(),
+      service: (json['service'] ?? '').toString(),
+      bio: (json['bio'] ?? '').toString(),
+      hourlyRate: _toDouble(json['hourlyRate']),
+      skills: List<String>.from(json['skills'] ?? const []),
+      profileImage: (json['profileImage'] ?? '').toString(),
+      portfolioImages: List<String>.from(json['portfolioImages'] ?? const []),
+      latitude: _toDouble(json['latitude']),
+      longitude: _toDouble(json['longitude']),
+      rating: _toDouble(json['rating']),
     );
   }
 }

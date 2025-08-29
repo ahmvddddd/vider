@@ -44,7 +44,7 @@ class SignupController extends StateNotifier<SignupState> {
     String email,
     String password,
   ) async {
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isLoading: true, error: null);
 
     try {
       final response = await http.post(
@@ -65,7 +65,7 @@ class SignupController extends StateNotifier<SignupState> {
 
         await Future.wait([
           // Save the token in secure storage
-          _secureStorage.write(key: 'token', value: responseData['token']),
+          _secureStorage.write(key: 'token', value: responseData['token'],),
           // Save username to local storage
           UsernameLocalStorage.saveUsername(username)
         ]);
@@ -106,5 +106,8 @@ class SignupController extends StateNotifier<SignupState> {
         reason: 'Signup controller error ',
       );
     }
+  }
+   void clearError() {
+    state = state.copyWith(error: null);
   }
 }

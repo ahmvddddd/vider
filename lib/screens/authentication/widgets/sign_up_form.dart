@@ -11,24 +11,55 @@ import '../../../utils/validators/validation.dart';
 import 'build_textfield.dart';
 import 'terms_and_conditions.dart';
 
-class SignUpForm extends ConsumerWidget {
+class SignUpForm extends ConsumerStatefulWidget {
   const SignUpForm({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SignUpForm> createState() => _SignUpFormState();
+}
+
+class _SignUpFormState extends ConsumerState<SignUpForm> {
+  final TextEditingController firstnameController = TextEditingController();
+  final TextEditingController lastnameController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  final hidePassword = ValueNotifier<bool>(true);
+  final hideConfirmPassword = ValueNotifier<bool>(true);
+  final termsAccepted = ValueNotifier<bool>(false);
+
+  @override
+  void initState() {
+    super.initState();
+
+    firstnameController.addListener(
+      () => ref.read(signupControllerProvider.notifier).clearError(),
+    );
+    lastnameController.addListener(
+      () => ref.read(signupControllerProvider.notifier).clearError(),
+    );
+    usernameController.addListener(
+      () => ref.read(signupControllerProvider.notifier).clearError(),
+    );
+    emailController.addListener(
+      () => ref.read(signupControllerProvider.notifier).clearError(),
+    );
+    passwordController.addListener(
+      () => ref.read(signupControllerProvider.notifier).clearError(),
+    );
+    passwordController.addListener(
+      () => ref.read(signupControllerProvider.notifier).clearError(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final signupState = ref.watch(signupControllerProvider);
     final signupController = ref.read(signupControllerProvider.notifier);
 
     final formKey = GlobalKey<FormState>();
-    final firstnameController = TextEditingController();
-    final lastnameController = TextEditingController();
-    final usernameController = TextEditingController();
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final confirmPasswordController = TextEditingController();
-    final hidePassword = ValueNotifier<bool>(true);
-    final hideConfirmPassword = ValueNotifier<bool>(true);
-    final termsAccepted = ValueNotifier<bool>(false);
 
     final isDark = HelperFunction.isDarkMode(context);
     final screenHeight = MediaQuery.of(context).size.height;
@@ -165,9 +196,10 @@ class SignUpForm extends ConsumerWidget {
                   child: GestureDetector(
                     onTap: () {
                       if (!termsAccepted.value) {
-
                         FocusScope.of(context).unfocus();
-                        
+
+                        signupController.clearError();
+
                         CustomSnackbar.show(
                           context: context,
                           title: 'Accept Terms and conditions',
@@ -179,7 +211,6 @@ class SignUpForm extends ConsumerWidget {
                       }
 
                       if (formKey.currentState!.validate()) {
-
                         FocusScope.of(context).unfocus();
 
                         signupController.signup(

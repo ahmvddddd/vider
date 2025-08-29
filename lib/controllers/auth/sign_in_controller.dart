@@ -60,7 +60,7 @@ class LoginController extends StateNotifier<LoginState> {
     String username,
     String password,
   ) async {
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isLoading: true, error: null);
 
     try {
       final response = await http.post(
@@ -129,5 +129,8 @@ class LoginController extends StateNotifier<LoginState> {
         reason: 'Login controller error',
       );
     }
+  }
+   void clearError() {
+    state = state.copyWith(error: null);
   }
 }
