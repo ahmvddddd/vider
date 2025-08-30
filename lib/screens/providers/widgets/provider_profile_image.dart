@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
@@ -64,22 +62,24 @@ class ProfileImage extends StatelessWidget {
             ),
 
             const SizedBox(width: Sizes.xs),
-            RoundedContainer(
-              backgroundColor: ratingColor,
-              radius: Sizes.cardRadiusXs,
-              padding: const EdgeInsets.symmetric(
-                horizontal: Sizes.xs + 2,
-                vertical: 2,
-              ),
-              child: Center(
-                child: Text(
-                  rating.toString(),
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall!.copyWith(color: Colors.black),
-                ),
-              ),
-            ),
+            Row(
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: ratingColor,
+                          size: Sizes.iconMd,
+                        ),
+                        Text(
+                          rating.toString(),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium!.copyWith(
+                            color: dark ? Colors.white : Colors.black,
+                            fontFamily: 'JosefinSans',
+                          ),
+                        ),
+                      ],
+                    ),
           ],
         ),
         Text(service, style: Theme.of(context).textTheme.bodySmall),

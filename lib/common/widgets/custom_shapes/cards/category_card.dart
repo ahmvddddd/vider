@@ -75,14 +75,16 @@ class CategoryCard extends StatelessWidget {
                           radius: 16,
                           backgroundImage: NetworkImage(imageAvatar),
                         ),
-                
+
                         const SizedBox(width: Sizes.sm),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               fullname,
-                              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodySmall!.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: dark ? Colors.white : Colors.black,
                               ),
@@ -96,14 +98,20 @@ class CategoryCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                
+
                     const SizedBox(width: Sizes.md),
                     Row(
                       children: [
-                        Icon(Icons.star, color: ratingColor, size: Sizes.iconMd),
+                        Icon(
+                          Icons.star,
+                          color: ratingColor,
+                          size: Sizes.iconMd,
+                        ),
                         Text(
                           rating.toString(),
-                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium!.copyWith(
                             color: dark ? Colors.white : Colors.black,
                             fontFamily: 'JosefinSans',
                           ),
@@ -114,34 +122,32 @@ class CategoryCard extends StatelessWidget {
                 ),
 
                 //description
-          const SizedBox(height: Sizes.sm),
-          SizedBox(
-            width: screenWidth * 0.80,
-            child: Text(
-              description,
-              style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                overflow: TextOverflow.ellipsis,
-              ),
-              maxLines: 3,
-              softWrap: true,
-            ),
-          ),
+                const SizedBox(height: Sizes.sm),
+                SizedBox(
+                  width: screenWidth * 0.80,
+                  child: Text(
+                    description,
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    maxLines: 3,
+                    softWrap: true,
+                  ),
+                ),
 
-          const SizedBox(height: Sizes.sm),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              '\$$hourlyRate',
-              style: Theme.of(
-                context,
-              ).textTheme.labelSmall!.copyWith(color: CustomColors.success),
-            ),
-          ),
+                const SizedBox(height: Sizes.sm),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    '\$$hourlyRate',
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                      color: CustomColors.success,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-
-          
         ],
       ),
     );

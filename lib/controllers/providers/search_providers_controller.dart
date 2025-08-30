@@ -19,15 +19,15 @@ final searchProfilesProvider =
           searchProvidersURL,
         ).replace(queryParameters: {'q': query});
 
-        final resp = await http.get(
+        final res = await http.get(
           uri,
           headers: {'Content-Type': 'application/json'},
         );
-        if (resp.statusCode != 200) {
-          throw Exception(resp.body);
+        if (res.statusCode != 200) {
+          throw Exception('No results found');
         }
 
-        final data = json.decode(resp.body);
+        final data = json.decode(res.body);
 
         final List providersJson = data['data'];
 
@@ -36,6 +36,6 @@ final searchProfilesProvider =
             .map((json) => ProvidersCategoryModel.fromJson(json))
             .toList();
       } catch (e) {
-        throw Exception(e.toString());
+        throw Exception('No results found');
       }
     });

@@ -36,7 +36,7 @@ class ProvidersCategoryModel {
   });
 
   factory ProvidersCategoryModel.fromJson(Map<String, dynamic> json) {
-    double _toDouble(dynamic v) =>
+    double toDouble(dynamic v) =>
         v is num ? v.toDouble() : double.tryParse(v?.toString() ?? '0') ?? 0.0;
 
     return ProvidersCategoryModel(
@@ -49,13 +49,13 @@ class ProvidersCategoryModel {
       category: (json['category'] ?? '').toString(),
       service: (json['service'] ?? '').toString(),
       bio: (json['bio'] ?? '').toString(),
-      hourlyRate: _toDouble(json['hourlyRate']),
+      hourlyRate: toDouble(json['hourlyRate']),
       skills: List<String>.from(json['skills'] ?? const []),
       profileImage: (json['profileImage'] ?? '').toString(),
       portfolioImages: List<String>.from(json['portfolioImages'] ?? const []),
-      latitude: _toDouble(json['latitude']),
-      longitude: _toDouble(json['longitude']),
-      rating: _toDouble(json['rating']),
+      latitude: toDouble(json['latitude']),
+      longitude: toDouble(json['longitude']),
+      rating: toDouble(json['rating']),
     );
   }
 }

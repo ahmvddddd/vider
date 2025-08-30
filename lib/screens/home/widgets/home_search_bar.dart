@@ -96,11 +96,26 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
               itemCount: profiles.length,
               itemBuilder: (context, index) {
                 final p = profiles[index];
+
+                Color ratingColor = Colors.brown;
+
+                if (p.rating < 1.66) {
+                  ratingColor = Colors.brown; // Low rating
+                } else if (p.rating < 3.33) {
+                  ratingColor = CustomColors.silver; // Medium rating
+                } else if (p.rating >= 3.33) {
+                  ratingColor = CustomColors.gold; // High rating
+                }
                 return RoundedContainer(
-                  backgroundColor:
-                      dark
-                          ? Colors.white.withValues(alpha: 0.1)
-                          : Colors.black.withValues(alpha: 0.1),
+                  backgroundColor: dark ? Colors.black : Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: CustomColors.darkGrey,
+                      blurRadius: 5,
+                      spreadRadius: 0.5,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                   radius: Sizes.cardRadiusLg,
                   padding: const EdgeInsets.all(0),
                   child: ListTile(
@@ -113,9 +128,33 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(p.profileImage),
                     ),
-                    title: Text(
-                      "${p.firstname} ${p.lastname}",
-                      style: Theme.of(context).textTheme.labelSmall,
+                    title: Row(
+                      children: [
+                        Text(
+                          "${p.firstname} ${p.lastname}",
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+
+                        const SizedBox(width: Sizes.sm),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: ratingColor,
+                              size: Sizes.iconMd,
+                            ),
+                            Text(
+                              p.rating.toString(),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium!.copyWith(
+                                color: dark ? Colors.white : Colors.black,
+                                fontFamily: 'JosefinSans',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                     subtitle: Text(
                       p.category,
@@ -142,6 +181,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
                 ),
               ),
         ),
+        
       ],
     );
   }

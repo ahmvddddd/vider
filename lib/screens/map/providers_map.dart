@@ -328,19 +328,40 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                                           ),
                                           width: 40,
                                           height: 40,
-                                          builder:
-                                              (ctx) => GestureDetector(
-                                                onTap:
-                                                    () => _showProviderPopup(
-                                                      context,
-                                                      p,
-                                                    ),
-                                                child: Icon(
-                                                  Icons.location_on,
-                                                  size: 40,
-                                                  color: CustomColors.primary,
-                                                ),
+                                          builder: (ctx) {
+                                            IconData providerIcon =
+                                                Icons.location_on;
+
+                                            switch (p.category.toLowerCase()) {
+                                              case 'beauty':
+                                                providerIcon = Icons.spa;
+                                                break;
+                                              case 'construction':
+                                                providerIcon = Icons.handyman;
+                                                break;
+                                              case 'food':
+                                                providerIcon = Icons.restaurant;
+                                                break;
+                                              case 'maintenance':
+                                                providerIcon = Icons.build;
+                                                break;
+                                              case 'health & fitness':
+                                                providerIcon = Icons.fitness_center;
+                                              
+                                            }
+                                            return GestureDetector(
+                                              onTap:
+                                                  () => _showProviderPopup(
+                                                    context,
+                                                    p,
+                                                  ),
+                                              child: Icon(
+                                                providerIcon,
+                                                size: 40,
+                                                color: CustomColors.primary,
                                               ),
+                                            );
+                                          },
                                         ),
                                       ),
                                 ],
