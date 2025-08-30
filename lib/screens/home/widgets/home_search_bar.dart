@@ -118,7 +118,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
                       style: Theme.of(context).textTheme.labelSmall,
                     ),
                     subtitle: Text(
-                      p.service,
+                      p.category,
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                   ),

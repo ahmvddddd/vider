@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../../../utils/constants/custom_colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_function.dart';
@@ -28,8 +27,8 @@ class ProviderCard extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     final dark = HelperFunction.isDarkMode(context);
     return Container(
-      height: screenHeight * 0.25,
-      width: screenWidth * 0.53,
+      height: screenHeight * 0.28,
+      width: screenWidth * 0.48,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Sizes.cardRadiusLg),
         border: Border.all(
@@ -47,13 +46,13 @@ class ProviderCard extends StatelessWidget {
               child: Image.network(
                 portfolioImage,
                 fit: BoxFit.cover,
-                height: screenHeight * 0.15,
-                width: screenWidth * 0.53,
+                height: screenHeight * 0.18,
+                width: screenWidth * 0.48,
               ),
             ),
           ),
 
-          const SizedBox(height: Sizes.xs,),
+          const SizedBox(height: Sizes.sm),
           Container(
             color:
                 dark
@@ -67,7 +66,7 @@ class ProviderCard extends StatelessWidget {
                   children: [
                     const SizedBox(height: Sizes.sm),
                     CircleAvatar(
-                    radius: 18,
+                    radius: 16,
                     backgroundImage: NetworkImage(imageAvatar),
                   ),
 
@@ -77,9 +76,10 @@ class ProviderCard extends StatelessWidget {
                       children: [
                         Text(
                           fullname,
-                          style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          style: Theme.of(context).textTheme.labelSmall!.copyWith(
                             fontWeight: FontWeight.bold,
                             color: dark ? Colors.white : Colors.black,
+                            overflow: TextOverflow.ellipsis
                           ),
                         ),
 
@@ -95,26 +95,20 @@ class ProviderCard extends StatelessWidget {
                       ],
                     ),
 
-                    const SizedBox(width: Sizes.sm + 2),
-                    RoundedContainer(
-                      radius: Sizes.cardRadiusXs,
-                      backgroundColor: ratingColor,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Sizes.xs + 2,
-                        vertical: 3,
-                      ),
-                      child: Center(
-                        child: Text(
+                    const SizedBox(width: Sizes.md),
+                    Row(
+                      children: [
+                        Icon(Icons.star, color: ratingColor, size: Sizes.iconM,),
+                        Text(
                           rating.toString(),
                           style: Theme.of(
                             context,
                           ).textTheme.labelMedium!.copyWith(
-                            fontSize: 8,
-                            color: Colors.black,
+                            color: dark ? Colors.white : Colors.black,
                             fontFamily: 'JosefinSans',
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),],

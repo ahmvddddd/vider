@@ -107,7 +107,7 @@ class _ProviderProfilesWidgetState
         }
 
         return HomeListView(
-          sizedBoxHeight: screenHeight * 0.25,
+          sizedBoxHeight: screenHeight * 0.28,
           seperatorBuilder: (context, index) =>
               const SizedBox(height: Sizes.sm),
           scrollDirection: Axis.horizontal,

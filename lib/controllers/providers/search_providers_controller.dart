@@ -8,29 +8,34 @@ final searchQueryProvider = StateProvider<String>((ref) => "");
 
 final searchProfilesProvider =
     FutureProvider.autoDispose<List<ProvidersCategoryModel>>((ref) async {
-  final query = ref.watch(searchQueryProvider).trim();
-  if (query.isEmpty) return const [];
+      final query = ref.watch(searchQueryProvider).trim();
+      if (query.isEmpty) return const [];
 
-  final searchProvidersURL = dotenv.env["SEARCH_PROVIDERS_URL"] ?? 'https://defaulturl.com/api';
+      final searchProvidersURL =
+          dotenv.env["SEARCH_PROVIDERS_URL"] ?? 'https://defaulturl.com/api';
 
+      try {
+        final uri = Uri.parse(
+          searchProvidersURL,
+        ).replace(queryParameters: {'q': query});
 
-  try {
-  final uri = Uri.parse(searchProvidersURL)
-      .replace(queryParameters: {'q': query});
+        final resp = await http.get(
+          uri,
+          headers: {'Content-Type': 'application/json'},
+        );
+        if (resp.statusCode != 200) {
+          throw Exception(resp.body);
+        }
 
-  final resp = await http.get(uri, headers: {'Content-Type': 'application/json'});
-  if (resp.statusCode != 200) {
-    throw Exception('No results found');
-  }
+        final data = json.decode(resp.body);
 
-  final body = jsonDecode(resp.body) as Map<String, dynamic>;
-  final list = (body['data'] as List)
-      .cast<Map<String, dynamic>>()
-      .map((m) => ProvidersCategoryModel.fromJson(m))
-      .toList(growable: false);
+        final List providersJson = data['data'];
 
-  return list;
-  } catch (e) {
-    throw Exception('No results found');
-  }
-});
+        // Convert list of JSON into list of ProvidersCategoryModel
+        return providersJson
+            .map((json) => ProvidersCategoryModel.fromJson(json))
+            .toList();
+      } catch (e) {
+        throw Exception(e.toString());
+      }
+    });

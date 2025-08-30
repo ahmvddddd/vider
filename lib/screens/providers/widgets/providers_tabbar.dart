@@ -193,7 +193,7 @@ class _ServiceTabBody extends ConsumerWidget {
               );
             },
             child: CategoryCard(
-              potfolioImage: profile.portfolioImages[0],
+              potfolioImage: profile.portfolioImages[1],
               imageAvatar: profile.profileImage,
               fullname: '${profile.firstname} ${profile.lastname}',
               service: profile.service,

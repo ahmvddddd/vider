@@ -48,7 +48,7 @@ class CategoryCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: screenHeight * 0.12,
+            height: screenHeight * 0.14,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(Sizes.cardRadiusMd),
@@ -56,64 +56,64 @@ class CategoryCard extends StatelessWidget {
               ),
               image: DecorationImage(
                 image: NetworkImage(potfolioImage),
-                fit: BoxFit.cover
-              )
+                fit: BoxFit.cover,
+              ),
             ),
           ),
 
-          const SizedBox(height: Sizes.sm,),
-          Row(
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundImage: NetworkImage(imageAvatar),
-                  ),
-
-                  const SizedBox(width: Sizes.sm),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        fullname,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: dark ? Colors.white : Colors.black,
+          const SizedBox(height: Sizes.sm),
+          Padding(
+            padding: const EdgeInsets.all(Sizes.xs),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 16,
+                          backgroundImage: NetworkImage(imageAvatar),
                         ),
-                      ),
-                      Text(
-                        service,
-                        style: Theme.of(context).textTheme.labelMedium!
-                            .copyWith(color: CustomColors.primary),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-
-              const SizedBox(width: Sizes.md,),
-              RoundedContainer(
-                radius: 6,
-                backgroundColor: ratingColor,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Sizes.xs + 4,
-                  vertical: 2,
-                ),
-                child: Center(
-                  child: Text(
-                    rating.toString(),
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                      color: dark ? Colors.white : Colors.black,
-                      fontFamily: 'JosefinSans',
+                
+                        const SizedBox(width: Sizes.sm),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              fullname,
+                              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: dark ? Colors.white : Colors.black,
+                              ),
+                            ),
+                            Text(
+                              service,
+                              style: Theme.of(context).textTheme.labelMedium!
+                                  .copyWith(color: CustomColors.primary),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
+                
+                    const SizedBox(width: Sizes.md),
+                    Row(
+                      children: [
+                        Icon(Icons.star, color: ratingColor, size: Sizes.iconMd),
+                        Text(
+                          rating.toString(),
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: dark ? Colors.white : Colors.black,
+                            fontFamily: 'JosefinSans',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
 
-          //description
+                //description
           const SizedBox(height: Sizes.sm),
           SizedBox(
             width: screenWidth * 0.80,
@@ -128,12 +128,20 @@ class CategoryCard extends StatelessWidget {
           ),
 
           const SizedBox(height: Sizes.sm),
-          Text(
-            '\$$hourlyRate (hourly rate)',
-            style: Theme.of(
-              context,
-            ).textTheme.labelSmall!.copyWith(color: CustomColors.success),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              '\$$hourlyRate',
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall!.copyWith(color: CustomColors.success),
+            ),
           ),
+              ],
+            ),
+          ),
+
+          
         ],
       ),
     );
