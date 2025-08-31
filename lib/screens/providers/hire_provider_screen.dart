@@ -7,7 +7,9 @@ import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../common/widgets/layouts/listview.dart';
 import '../../common/widgets/pop_up/location_picker_dialog.dart';
 import '../../common/widgets/texts/title_and_description.dart';
+import '../../controllers/jobs/job_request_controller.dart';
 import '../../controllers/notifications/add_notification_controller.dart';
+import '../../controllers/services/user_id_controller.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/notification/add_notification_model.dart';
 import '../../models/providers/providers_category_model.dart';
@@ -24,6 +26,7 @@ class HireProvider extends ConsumerStatefulWidget {
 }
 
 class _HireProviderState extends ConsumerState<HireProvider> {
+  UserIdService userIdService = UserIdService();
   bool _isSubmitting = false;
   int _count = 0;
   String? _selectedService;
@@ -87,11 +90,13 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                         longitude: _selectedLocation!.longitude,
                       );
 
+                      final vvid = await ref.read(jobRequestProvider.future);
+
                       final notification = AddNotificationModel(
                         type: "job_request",
                         title: "New Job Request",
                         message:
-                            "${user.firstname} wants to hire you for $_selectedService",
+                            "${user.firstname} ${user.lastname} wants to hire you for $_selectedService for a duration of $_count hours. VVID: $vvid",
                         recipientId: widget.profile.userId,
                         jobDetails: jobDetails,
                       );
@@ -290,7 +295,7 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                   const SizedBox(height: Sizes.spaceBtwItems),
                   Center(
                     child: ElevatedButton.icon(
-                      icon: const Icon(Icons.location_on, color:  Colors.white,),
+                      icon: const Icon(Icons.location_on, color: Colors.white),
                       label: Text(
                         _selectedLocation == null
                             ? "Select Location"

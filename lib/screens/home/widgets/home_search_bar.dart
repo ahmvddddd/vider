@@ -39,6 +39,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
     final dark = HelperFunction.isDarkMode(context);
     final profilesAsync = ref.watch(searchProfilesProvider);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'What Service do you need ?',
@@ -50,6 +51,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
         const SizedBox(height: Sizes.spaceBtwItems),
 
         SearchContainer(
+          text: 'search name or service',
           width: screenWidth * 0.90,
           onChanged: _onSearchChanged,
           onTap: () => FocusScope.of(context).unfocus(),

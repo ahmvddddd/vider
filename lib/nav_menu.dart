@@ -3,9 +3,10 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
-import 'screens/authentication/user_details/user_dob.dart';
 import 'screens/home/home.dart';
+import 'screens/jobs/jobs_screen.dart';
 import 'screens/messages/chat.dart';
+import 'screens/service_profile/service_profile.dart';
 import 'utils/constants/custom_colors.dart';
 import 'utils/constants/sizes.dart';
 import 'utils/helpers/helper_function.dart';
@@ -81,13 +82,13 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
         case 0:
           return const HomeScreen();
         case 1:
-          return const UserDOBScreen();
+          return const JobsScreen();
         // case 2:
         //   return ChatScreen(key: UniqueKey());
         case 2:
           return const ChatScreen();
         case 3:
-          return const HomeScreen();
+          return const ServiceProfileScreen();
         default:
           return const HomeScreen();
       }

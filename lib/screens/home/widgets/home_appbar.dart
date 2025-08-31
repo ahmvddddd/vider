@@ -4,7 +4,7 @@ import '../../../common/widgets/custom_shapes/containers/rounded_container.dart'
 import '../../../controllers/user/user_controller.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
-// import '../../notifications/notifications.dart';
+import '../../notifications/notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeAppBar extends ConsumerStatefulWidget {
@@ -147,12 +147,12 @@ class _HomeAppBarState extends ConsumerState<HomeAppBar> {
                         : Colors.black.withValues(alpha: 0.1),
                 child: GestureDetector(
                   onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const NotificationsScreen(),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NotificationsScreen(),
+                      ),
+                    );
                   },
                   child: const Icon(
                     Icons.notifications,
