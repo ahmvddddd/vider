@@ -42,14 +42,18 @@ class _LocationPickerDialogState extends State<LocationPickerDialog> {
         final lat = double.parse(place['lat'] as String);
         final lon = double.parse(place['lon'] as String);
 
+        final target = LatLng(lat, lon);
+
         setState(() {
-          _pickedLocation = LatLng(lat, lon);
-          _mapController.move(_pickedLocation!, 15);
+          _pickedLocation = target;
         });
+
+        // Move map properly
+        _mapController.moveAndRotate(target, 15, 0);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("No location found")),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("No location found")));
       }
     }
   }
@@ -59,8 +63,10 @@ class _LocationPickerDialogState extends State<LocationPickerDialog> {
     final dark = HelperFunction.isDarkMode(context);
 
     return AlertDialog(
-      title: Text("Pick Location",
-      style: Theme.of(context).textTheme.bodyMedium,),
+      title: Text(
+        "Pick Location",
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
       content: SizedBox(
         width: double.maxFinite,
         height: 400,
@@ -70,12 +76,16 @@ class _LocationPickerDialogState extends State<LocationPickerDialog> {
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: "Search location...",
-                hintStyle: Theme.of(context).textTheme.labelSmall
+                hintStyle: Theme.of(context).textTheme.labelSmall,
               ),
-              onSubmitted: (value) => searchLocation(_searchController.text),
+              onSubmitted: (value) {
+                if (value.isNotEmpty) {
+                  searchLocation(_searchController.text);
+                }
+              },
             ),
 
-            const SizedBox(height: Sizes.sm,),
+            const SizedBox(height: Sizes.sm),
             Expanded(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30),
@@ -101,11 +111,12 @@ class _LocationPickerDialogState extends State<LocationPickerDialog> {
                             point: _pickedLocation!,
                             width: 40,
                             height: 40,
-                            builder: (ctx) => const Icon(
-                              Icons.location_pin,
-                              size: 40,
-                              color: Colors.red,
-                            ),
+                            builder:
+                                (ctx) => const Icon(
+                                  Icons.location_pin,
+                                  size: 40,
+                                  color: Colors.red,
+                                ),
                           ),
                         ],
                       ),
@@ -119,13 +130,24 @@ class _LocationPickerDialogState extends State<LocationPickerDialog> {
       actions: [
         TextButton(
           onPressed: _getCurrentLocation,
-          child: Text("Use My Location",
-          style: Theme.of(context).textTheme.labelMedium!.copyWith(color: dark ? CustomColors.alternate : CustomColors.primary),),
+          child: Text(
+            "Use My Location",
+            style: Theme.of(context).textTheme.labelMedium!.copyWith(
+              color: dark ? CustomColors.alternate : CustomColors.primary,
+            ),
+          ),
         ),
         TextButton(
-          onPressed: () => Navigator.pop(context, _pickedLocation),
-          child: Text("Select",
-          style: Theme.of(context).textTheme.labelMedium!.copyWith(color: dark ? CustomColors.alternate : CustomColors.primary),),
+          onPressed:
+              _pickedLocation == null
+                  ? null // disable button until location available
+                  : () => Navigator.pop(context, _pickedLocation),
+          child: Text(
+            "Select",
+            style: Theme.of(context).textTheme.labelMedium!.copyWith(
+              color: dark ? CustomColors.alternate : CustomColors.primary,
+            ),
+          ),
         ),
       ],
     );

@@ -3,10 +3,11 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import 'controllers/user/user_controller.dart';
 import 'screens/home/home.dart';
 import 'screens/jobs/jobs_screen.dart';
 import 'screens/messages/chat.dart';
-import 'screens/service_profile/service_profile.dart';
+import 'screens/settings/account_settings.dart';
 import 'utils/constants/custom_colors.dart';
 import 'utils/constants/sizes.dart';
 import 'utils/helpers/helper_function.dart';
@@ -24,6 +25,10 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() {
+        if (!mounted) return;
+        ref.read(userProvider.notifier).fetchUserDetails();
+      });
   }
 
   Future<bool> _showExitDialog() async {
@@ -88,7 +93,7 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
         case 2:
           return const ChatScreen();
         case 3:
-          return const ServiceProfileScreen();
+          return const AccountSettings();
         default:
           return const HomeScreen();
       }

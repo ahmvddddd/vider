@@ -74,6 +74,7 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                   userState.when(
                     data: (user) async {
                       setState(() => _isSubmitting = true);
+                      final vvid = await ref.read(jobRequestProvider.future);
 
                       final jobDetails = JobDetails(
                         employerId: user.userId,
@@ -88,15 +89,14 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                         startTime: DateTime.now(),
                         latitude: _selectedLocation!.latitude,
                         longitude: _selectedLocation!.longitude,
+                        vvid: vvid!
                       );
-
-                      final vvid = await ref.read(jobRequestProvider.future);
 
                       final notification = AddNotificationModel(
                         type: "job_request",
                         title: "New Job Request",
                         message:
-                            "${user.firstname} ${user.lastname} wants to hire you for $_selectedService for a duration of $_count hours. VVID: $vvid",
+                            "${user.firstname} ${user.lastname} wants to hire you for $_selectedService for a duration of $_count hours.",
                         recipientId: widget.profile.userId,
                         jobDetails: jobDetails,
                       );
