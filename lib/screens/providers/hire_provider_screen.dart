@@ -30,7 +30,15 @@ class _HireProviderState extends ConsumerState<HireProvider> {
   bool _isSubmitting = false;
   int _count = 0;
   String? _selectedService;
-  LatLng? _selectedLocation; // <-- Store picked location
+  LatLng? _selectedLocation;
+  
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+        ref.read(userProvider.notifier).fetchUserDetails();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +90,7 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                         employerImage: user.profileImage,
                         providerImage: widget.profile.profileImage,
                         employerName: user.firstname,
-                        providerName: widget.profile.firstname,
+                        providerName: '${widget.profile.firstname} ${widget.profile.lastname}',
                         jobTitle: _selectedService!,
                         pay: totalPay,
                         duration: _count,

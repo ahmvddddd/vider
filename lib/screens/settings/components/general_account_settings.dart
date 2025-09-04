@@ -7,6 +7,7 @@ import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
 import '../../transactions/change_pin.dart';
+import '../../transactions/transaction_history.dart';
 import 'change_password.dart';
 
 class GeneralAccountSettings extends StatelessWidget {
@@ -27,6 +28,19 @@ class GeneralAccountSettings extends StatelessWidget {
       backgroundColor: dark ? Colors.black : Colors.white,
       child: Column(
         children: [
+          SettingsMenuTile(
+            icon: Iconsax.bank,
+            title: 'Transactions',
+            subTitle: 'View all transactions.',
+            onTap:
+                () => HelperFunction.navigateScreen(
+                  context,
+                  TransactionHistory(),
+                ),
+            trailing: Icon(Icons.arrow_right),
+          ),
+
+          const SizedBox(height: Sizes.sm),
           SettingsMenuTile(
             onTap:
                 () => HelperFunction.navigateScreen(
@@ -59,8 +73,8 @@ class GeneralAccountSettings extends StatelessWidget {
             subTitle: 'Report a failed transaction or a problem.',
             trailing: Icon(Icons.arrow_right),
           ),
-          
-          const SizedBox(height: Sizes.spaceBtwItems,)
+
+          const SizedBox(height: Sizes.spaceBtwItems),
         ],
       ),
     );

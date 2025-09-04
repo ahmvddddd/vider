@@ -1,0 +1,88 @@
+import 'package:flutter/material.dart';
+import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
+import '../../../controllers/user/verify_profile_controller.dart';
+import '../../../utils/constants/custom_colors.dart';
+import '../../../utils/constants/sizes.dart';
+
+class VerificationPopUpContainer extends StatelessWidget {
+  const VerificationPopUpContainer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return RoundedContainer(
+      radius: Sizes.cardRadiusMd,
+      width: screenWidth * 0.90,
+      padding: const EdgeInsets.all(
+        Sizes.xs,
+      ),
+      backgroundColor: CustomColors.warning,
+      child: Row(
+        mainAxisAlignment:
+            MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              RoundedContainer(
+                radius: 100,
+                padding:
+                    const EdgeInsets.all(
+                      Sizes.xs,
+                    ),
+                backgroundColor: Colors
+                    .white
+                    .withValues(alpha: 0.3),
+                child: Center(
+                  child: Icon(
+                    Icons.warning,
+                    size: Sizes.iconM,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+    
+              const SizedBox(
+                width: Sizes.sm,
+              ),
+              Text(
+                "You are not verified",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(
+                      color: Colors.black,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          TextButton(
+            onPressed: () {
+              VerifyProfileController.launchGmailCompose();
+            },
+            style: TextButton.styleFrom(
+              padding:
+                  const EdgeInsets.symmetric(
+                    vertical: Sizes.xs,
+                    horizontal: Sizes.md,
+                  ),
+              backgroundColor: Colors.white
+                  .withValues(alpha: 0.2),
+            ),
+            child: Text(
+              'Verify Profile',
+              style: Theme.of(context)
+                  .textTheme
+                  .labelSmall!
+                  .copyWith(
+                    color: Colors.black,
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

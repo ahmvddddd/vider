@@ -23,7 +23,6 @@ final jobRequestProvider = FutureProvider.autoDispose<String?>((ref) async {
     final data = jsonDecode(response.body);
     return data['vvid']; // return verification id
   } else {
-    print(response.body);
     throw Exception(response.body);
   }
 });

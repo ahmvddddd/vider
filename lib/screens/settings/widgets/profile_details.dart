@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
-import '../../../common/widgets/image/full_screen_image_view.dart';
 import '../../../utils/constants/sizes.dart';
 
 class ProfileDetails extends ConsumerStatefulWidget {
-  final AsyncValue userProfile;
+  final Widget profileImage;
+  final String fullname;
+  final String username;
   const ProfileDetails({
     super.key,
-    required this.userProfile,
+    required this.profileImage,
+    required this.fullname,
+    required this.username,
   });
 
   @override
@@ -18,89 +21,82 @@ class ProfileDetails extends ConsumerStatefulWidget {
 class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
   @override
   Widget build(BuildContext context) {
-    return widget.userProfile.when(
-      data: (user) {
-        return Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => FullScreenImageView(
-                      images: [user.profileImage], // uses model field
-                      initialIndex: 0,
-                    ),
-                  ),
-                );
-              },
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.10,
-                width: MediaQuery.of(context).size.height * 0.10,
-                decoration: const BoxDecoration(shape: BoxShape.circle),
-                child: Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.network(
-                      user.profileImage, // <-- fixed property
-                      fit: BoxFit.cover,
-                      height: MediaQuery.of(context).size.height * 0.10,
-                      width: MediaQuery.of(context).size.height * 0.10,
-                    ),
-                  ),
-                ),
-              ),
+    return Row(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height * 0.10,
+          width: MediaQuery.of(context).size.height * 0.10,
+          decoration: const BoxDecoration(shape: BoxShape.circle),
+          child: Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: widget.profileImage,
             ),
-            const SizedBox(width: Sizes.md),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '${user.firstname} ${user.lastname}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall!
-                      .copyWith(color: Colors.white),
-                ),
-                Text(
-                  user.username,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelMedium!
-                      .copyWith(color: Colors.white),
-                ),
-              ],
+          ),
+        ),
+        const SizedBox(width: Sizes.md),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              widget.fullname,
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall!.copyWith(color: Colors.white),
+            ),
+            Text(
+              widget.username,
+              style: Theme.of(
+                context,
+              ).textTheme.labelMedium!.copyWith(color: Colors.white),
             ),
           ],
-        );
-      },
-      loading: () => Row(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.10,
-            width: MediaQuery.of(context).size.height * 0.10,
-            decoration: const BoxDecoration(shape: BoxShape.circle),
-            child: Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Icon(
-                  Iconsax.user,
-                  size: MediaQuery.of(context).size.height * 0.10,
-                ),
+        ),
+      ],
+    );
+  }
+}
+
+class ProfileDetailsDummy extends StatelessWidget {
+  const ProfileDetailsDummy({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height * 0.10,
+          width: MediaQuery.of(context).size.height * 0.10,
+          decoration: const BoxDecoration(shape: BoxShape.circle),
+          child: Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Icon(
+                Iconsax.user,
+                size: MediaQuery.of(context).size.height * 0.10,
               ),
             ),
           ),
-          const SizedBox(width: Sizes.md),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(''),
-              Text(''),
-            ],
-          ),
-        ],
-      ),
-      error: (err, stack) => Text('Error: $err'),
+        ),
+        const SizedBox(width: Sizes.md),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '',
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall!.copyWith(color: Colors.white),
+            ),
+            Text(
+              '',
+              style: Theme.of(
+                context,
+              ).textTheme.labelMedium!.copyWith(color: Colors.white),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
