@@ -1,9 +1,10 @@
-import 'dart:io'; // For exit(0)
+import 'dart:io';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
-import 'controllers/user/user_controller.dart';
+import 'controllers/notifications/message_notification_controller.dart';
+import 'controllers/services/notification_badge_service.dart';
 import 'screens/home/home.dart';
 import 'screens/jobs/jobs_screen.dart';
 import 'screens/messages/chat.dart';
@@ -26,9 +27,10 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
   void initState() {
     super.initState();
     Future.microtask(() {
-        if (!mounted) return;
-        ref.read(userProvider.notifier).fetchUserDetails();
-      });
+      final container = ProviderScope.containerOf(context);
+      final badgeService = NotificationBadgeService(container: container);
+      badgeService.init();
+    });
   }
 
   Future<bool> _showExitDialog() async {
@@ -79,8 +81,7 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
   Widget build(BuildContext context) {
     final darkMode = HelperFunction.isDarkMode(context);
     final selectedIndex = ref.watch(selectedIndexProvider);
-    int unreadCount = 5;
-    // final unreadCount = ref.watch(unreadMessageProvider);
+    final unreadCount = ref.watch(unreadMessageProvider);
 
     Widget currentScreen() {
       switch (selectedIndex) {
@@ -88,10 +89,8 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
           return const HomeScreen();
         case 1:
           return const JobsScreen();
-        // case 2:
-        //   return ChatScreen(key: UniqueKey());
         case 2:
-          return const ChatScreen();
+          return ChatScreen(key: UniqueKey());
         case 3:
           return const AccountSettings();
         default:

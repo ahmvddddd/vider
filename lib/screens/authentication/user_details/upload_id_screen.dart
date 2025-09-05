@@ -11,6 +11,7 @@ import '../../../controllers/uploads/upload_id_controller.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/helpers/helper_function.dart';
 import '../../../utils/helpers/token_secure_storage.dart';
+import '../verification/verify_email.dart';
 
 class UploadIdScreen extends ConsumerStatefulWidget {
   const UploadIdScreen({super.key});
@@ -62,6 +63,7 @@ class _UploadIdScreenState extends ConsumerState<UploadIdScreen> {
       idImage: File(idImage!.path),
       idType: selectedOption,
     );
+    HelperFunction.navigateScreen(context, VerifyEmailScreen());
   } catch (e) {
     CustomSnackbar.show(
       context: context,

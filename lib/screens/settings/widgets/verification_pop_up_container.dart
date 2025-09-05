@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import '../components/verify_id_screen.dart';
 import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
-import '../../../controllers/user/verify_profile_controller.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
+import '../../../utils/helpers/helper_function.dart';
 
 class VerificationPopUpContainer extends StatelessWidget {
   const VerificationPopUpContainer({
@@ -60,7 +61,7 @@ class VerificationPopUpContainer extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              VerifyProfileController.launchGmailCompose();
+              HelperFunction.navigateScreen(context, VerifyIdScreen());
             },
             style: TextButton.styleFrom(
               padding:

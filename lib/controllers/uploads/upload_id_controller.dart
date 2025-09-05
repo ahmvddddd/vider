@@ -6,9 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import '../../common/widgets/pop_up/custom_snackbar.dart';
-import '../../screens/authentication/verification/verify_email.dart';
 import '../../utils/constants/custom_colors.dart';
-import '../../utils/helpers/helper_function.dart';
 
 class VerifyIdController {
   static const _secureStorage = FlutterSecureStorage();
@@ -48,7 +46,6 @@ class VerifyIdController {
           icon: Icons.check_circle,
           backgroundColor: CustomColors.success,
         );
-        HelperFunction.navigateScreen(context, VerifyEmailScreen());
       } else {
         try {
           await FirebaseCrashlytics.instance.recordError(

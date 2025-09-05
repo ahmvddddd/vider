@@ -207,6 +207,14 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                           '${widget.profile.firstname} ${widget.profile.lastname}',
                       providerImage: widget.profile.profileImage,
                       onSuccess: () {
+                        CustomSnackbar.show(
+                          title: 'Success',
+                          message:
+                              'Job request has been sent to ${widget.profile.firstname} ${widget.profile.lastname}',
+                          icon: Icons.check_circle,
+                          backgroundColor: CustomColors.success,
+                          context: context,
+                        );
                         Navigator.pop(context); // ✅ go back after success
                       },
                     );

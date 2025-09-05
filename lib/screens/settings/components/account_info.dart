@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../../utils/constants/sizes.dart';
+import '../../../utils/helpers/helper_function.dart';
+import '../../transactions/deposit_screen.dart';
 
 class AccountInfo extends ConsumerStatefulWidget {
   final AsyncValue walletController;
@@ -45,7 +47,12 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
                 const SizedBox(width: Sizes.sm),
 
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    HelperFunction.navigateScreen(
+                      context,
+                      DepositScreen(cryptoAddress: wallet.cryptoAddress),
+                    );
+                  },
                   child: RoundedContainer(
                     width: MediaQuery.of(context).size.width * 0.43,
                     height: MediaQuery.of(context).size.height * 0.06,
@@ -55,9 +62,10 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
                     child: Center(
                       child: Text(
                         'Deposit',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodyMedium!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -69,57 +77,57 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
           ],
         );
       },
-      loading: () => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
+      loading:
+          () => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '\$0.00',
-                style: Theme.of(
-                  context,
-                ).textTheme.headlineMedium!.copyWith(color: Colors.white),
+              Column(
+                children: [
+                  Text(
+                    '\$0.00',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlineMedium!.copyWith(color: Colors.white),
+                  ),
+                  Text(
+                    'Balance',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelMedium!.copyWith(color: Colors.white),
+                  ),
+                ],
               ),
-              Text(
-                'Balance',
-                style: Theme.of(
-                  context,
-                ).textTheme.labelMedium!.copyWith(color: Colors.white),
-              ),
-            ],
-          ),
-      
-          const SizedBox(height: Sizes.sm),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const SizedBox(width: Sizes.sm),
-      
-              GestureDetector(
-                onTap: () {},
-                child: RoundedContainer(
-                  width: MediaQuery.of(context).size.width * 0.43,
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  radius: Sizes.cardRadiusSm,
-                  padding: const EdgeInsets.all(Sizes.sm),
-                  backgroundColor: Colors.grey,
-                  child: Center(
-                    child: Text(
-                      'Deposit',
-                      style: Theme.of(
-                        context,
-                      ).textTheme.labelMedium!.copyWith(color: Colors.white),
+
+              const SizedBox(height: Sizes.sm),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const SizedBox(width: Sizes.sm),
+
+                  GestureDetector(
+                    onTap: () {},
+                    child: RoundedContainer(
+                      width: MediaQuery.of(context).size.width * 0.43,
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      radius: Sizes.cardRadiusSm,
+                      padding: const EdgeInsets.all(Sizes.sm),
+                      backgroundColor: Colors.grey,
+                      child: Center(
+                        child: Text(
+                          'Deposit',
+                          style: Theme.of(context).textTheme.labelMedium!
+                              .copyWith(color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
+
+              const SizedBox(height: Sizes.sm),
             ],
           ),
-      
-          const SizedBox(height: Sizes.sm),
-        ],
-      ),
-      error: (err, st) =>  Text('Err: $err')
+      error: (err, st) => Text('Err: $err'),
     );
   }
 }
