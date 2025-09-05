@@ -15,8 +15,8 @@ class VerificationPopUpContainer extends StatelessWidget {
     return RoundedContainer(
       radius: Sizes.cardRadiusMd,
       width: screenWidth * 0.90,
-      padding: const EdgeInsets.all(
-        Sizes.xs,
+      padding: const EdgeInsets.symmetric(
+        horizontal: Sizes.xs, vertical: 1
       ),
       backgroundColor: CustomColors.warning,
       child: Row(
@@ -29,7 +29,7 @@ class VerificationPopUpContainer extends StatelessWidget {
                 radius: 100,
                 padding:
                     const EdgeInsets.all(
-                      Sizes.xs,
+                      Sizes.sm,
                     ),
                 backgroundColor: Colors
                     .white
@@ -37,7 +37,7 @@ class VerificationPopUpContainer extends StatelessWidget {
                 child: Center(
                   child: Icon(
                     Icons.warning,
-                    size: Sizes.iconM,
+                    size: Sizes.iconSm,
                     color: Colors.white,
                   ),
                 ),

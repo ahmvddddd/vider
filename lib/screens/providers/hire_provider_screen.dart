@@ -5,17 +5,18 @@ import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/containers/button_container.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../common/widgets/layouts/listview.dart';
+import '../../common/widgets/pop_up/custom_snackbar.dart';
 import '../../common/widgets/pop_up/location_picker_dialog.dart';
 import '../../common/widgets/texts/title_and_description.dart';
-import '../../controllers/jobs/job_request_controller.dart';
-import '../../controllers/notifications/add_notification_controller.dart';
 import '../../controllers/services/user_id_controller.dart';
+import '../../controllers/transactions/wallet_controller.dart';
 import '../../controllers/user/user_controller.dart';
-import '../../models/notification/add_notification_model.dart';
 import '../../models/providers/providers_category_model.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
+import '../transactions/validate_pin_screen.dart';
+import 'components/hire_validator.dart';
 
 class HireProvider extends ConsumerStatefulWidget {
   final ProvidersCategoryModel profile;
@@ -31,12 +32,13 @@ class _HireProviderState extends ConsumerState<HireProvider> {
   int _count = 0;
   String? _selectedService;
   LatLng? _selectedLocation;
-  
+
   @override
   void initState() {
     super.initState();
+    Future.microtask(() => ref.read(walletProvider.notifier).fetchBalance());
     Future.microtask(() {
-        ref.read(userProvider.notifier).fetchUserDetails();
+      ref.read(userProvider.notifier).fetchUserDetails();
     });
   }
 
@@ -45,8 +47,6 @@ class _HireProviderState extends ConsumerState<HireProvider> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     final dark = HelperFunction.isDarkMode(context);
-    final userState = ref.watch(userProvider);
-
     double totalPay = widget.profile.hourlyRate * _count;
 
     return Scaffold(
@@ -54,98 +54,176 @@ class _HireProviderState extends ConsumerState<HireProvider> {
         title: Text('Hire', style: Theme.of(context).textTheme.headlineSmall),
         showBackArrow: true,
       ),
+
+      // bottomNavigationBar: ButtonContainer(
+      //   text: 'Proceed',
+      //   onPressed:
+      //       _isSubmitting
+      //           ? null
+      //           : () async {
+      //             if (_selectedService == null) {
+      //               ScaffoldMessenger.of(context).showSnackBar(
+      //                 const SnackBar(content: Text("Please select a service")),
+      //               );
+      //               return;
+      //             }
+      //             if (_count <= 0) {
+      //               ScaffoldMessenger.of(context).showSnackBar(
+      //                 const SnackBar(content: Text("Please enter hours")),
+      //               );
+      //               return;
+      //             }
+      //             if (_selectedLocation == null) {
+      //               ScaffoldMessenger.of(context).showSnackBar(
+      //                 const SnackBar(content: Text("Please select a location")),
+      //               );
+      //               return;
+      //             }
+
+      //             // ✅ Check wallet balance first
+      //             final walletState = ref.read(walletProvider);
+      //             walletState.when(
+      //               data: (wallet) async {
+      //                 if (wallet.usdcBalance < totalPay) {
+      //                   ScaffoldMessenger.of(context).showSnackBar(
+      //                     const SnackBar(
+      //                       content: Text(
+      //                         "Insufficient balance to create job request",
+      //                       ),
+      //                     ),
+      //                   );
+      //                   return;
+      //                 }
+
+      //                 // ✅ Proceed if balance is enough
+      //                 userState.when(
+      //                   data: (user) async {
+      //                     setState(() => _isSubmitting = true);
+      //                     final vvid = await ref.read(
+      //                       jobRequestProvider.future,
+      //                     );
+
+      //                     final jobDetails = JobDetails(
+      //                       employerId: user.userId,
+      //                       providerId: widget.profile.userId,
+      //                       employerImage: user.profileImage,
+      //                       providerImage: widget.profile.profileImage,
+      //                       employerName: user.firstname,
+      //                       providerName:
+      //                           '${widget.profile.firstname} ${widget.profile.lastname}',
+      //                       jobTitle: _selectedService!,
+      //                       pay: totalPay,
+      //                       duration: _count,
+      //                       startTime: DateTime.now(),
+      //                       latitude: _selectedLocation!.latitude,
+      //                       longitude: _selectedLocation!.longitude,
+      //                       vvid: vvid!,
+      //                     );
+
+      //                     final notification = AddNotificationModel(
+      //                       type: "job_request",
+      //                       title: "New Job Request",
+      //                       message:
+      //                           "${user.firstname} ${user.lastname} wants to hire you for $_selectedService for a duration of $_count hours.",
+      //                       recipientId: widget.profile.userId,
+      //                       jobDetails: jobDetails,
+      //                     );
+
+      //                     try {
+      //                       await ref.read(
+      //                         addNotificationProvider(notification).future,
+      //                       );
+      //                       if (mounted) {
+      //                         ScaffoldMessenger.of(context).showSnackBar(
+      //                           const SnackBar(
+      //                             content: Text("Job created successfully"),
+      //                           ),
+      //                         );
+      //                         Navigator.pop(context);
+      //                       }
+      //                     } catch (e) {
+      //                       if (mounted) {
+      //                         ScaffoldMessenger.of(context).showSnackBar(
+      //                           SnackBar(content: Text("Error: $e")),
+      //                         );
+      //                       }
+      //                     } finally {
+      //                       if (mounted) setState(() => _isSubmitting = false);
+      //                     }
+      //                   },
+      //                   loading: () {
+      //                     ScaffoldMessenger.of(context).showSnackBar(
+      //                       const SnackBar(
+      //                         content: Text("Loading employer details"),
+      //                       ),
+      //                     );
+      //                   },
+      //                   error: (err, _) {
+      //                     ScaffoldMessenger.of(context).showSnackBar(
+      //                       SnackBar(content: Text("Error: $err")),
+      //                     );
+      //                   },
+      //                 );
+      //               },
+      //               loading: () {
+      //                 ScaffoldMessenger.of(context).showSnackBar(
+      //                   const SnackBar(
+      //                     content: Text("Checking wallet balance..."),
+      //                   ),
+      //                 );
+      //               },
+      //               error: (err, _) {
+      //                 ScaffoldMessenger.of(context).showSnackBar(
+      //                   SnackBar(content: Text("Error fetching wallet: $err")),
+      //                 );
+      //               },
+      //             );
+      //           },
+      // ),
       bottomNavigationBar: ButtonContainer(
         text: 'Proceed',
         onPressed:
             _isSubmitting
                 ? null
                 : () async {
-                  if (_selectedService == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Please select a service")),
-                    );
-                    return;
-                  }
-                  if (_count <= 0) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Please enter hours")),
-                    );
-                    return;
-                  }
-                  if (_selectedLocation == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Please select a location")),
-                    );
-                    return;
-                  }
+                  setState(() => _isSubmitting = true);
 
-                  userState.when(
-                    data: (user) async {
-                      setState(() => _isSubmitting = true);
-                      final vvid = await ref.read(jobRequestProvider.future);
-
-                      final jobDetails = JobDetails(
-                        employerId: user.userId,
-                        providerId: widget.profile.userId,
-                        employerImage: user.profileImage,
-                        providerImage: widget.profile.profileImage,
-                        employerName: user.firstname,
-                        providerName: '${widget.profile.firstname} ${widget.profile.lastname}',
-                        jobTitle: _selectedService!,
-                        pay: totalPay,
-                        duration: _count,
-                        startTime: DateTime.now(),
-                        latitude: _selectedLocation!.latitude,
-                        longitude: _selectedLocation!.longitude,
-                        vvid: vvid!
-                      );
-
-                      final notification = AddNotificationModel(
-                        type: "job_request",
-                        title: "New Job Request",
-                        message:
-                            "${user.firstname} ${user.lastname} wants to hire you for $_selectedService for a duration of $_count hours.",
-                        recipientId: widget.profile.userId,
-                        jobDetails: jobDetails,
-                      );
-
-                      try {
-                        await ref.read(
-                          addNotificationProvider(notification).future,
-                        );
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Job created successfully"),
-                            ),
-                          );
-                          Navigator.pop(context);
-                        }
-                      } catch (e) {
-                        if (mounted) {
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text("Error: $e")));
-                        }
-                      } finally {
-                        if (mounted) setState(() => _isSubmitting = false);
-                      }
-                    },
-                    loading: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Loading employer details"),
-                        ),
-                      );
-                    },
-                    error: (err, _) {
-                      ScaffoldMessenger.of(
-                        context,
-                      ).showSnackBar(SnackBar(content: Text("Error: $err")));
-                    },
+                  final isPinValid = await showDialog<bool>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => const ValidatePinDialog(),
                   );
+
+                  if (isPinValid == true) {
+                    await HireValidator.hireProvider(
+                      context: context,
+                      ref: ref,
+                      selectedService: _selectedService,
+                      count: _count,
+                      selectedLocation: _selectedLocation,
+                      totalPay: totalPay,
+                      providerId: widget.profile.userId,
+                      providerName:
+                          '${widget.profile.firstname} ${widget.profile.lastname}',
+                      providerImage: widget.profile.profileImage,
+                      onSuccess: () {
+                        Navigator.pop(context); // ✅ go back after success
+                      },
+                    );
+
+                    if (mounted) setState(() => _isSubmitting = false);
+                  } else {
+                    CustomSnackbar.show(
+                      context: context,
+                      title: 'Invalid PIN',
+                      message: 'Transaction failed',
+                      icon: Icons.error_outline,
+                      backgroundColor: CustomColors.error,
+                    );
+                  }
                 },
       ),
+
       body: Stack(
         children: [
           SingleChildScrollView(

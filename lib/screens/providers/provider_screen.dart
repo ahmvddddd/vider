@@ -74,31 +74,42 @@ class _ProviderScreenState extends ConsumerState<ProviderScreen> {
         ),
         showBackArrow: true,
       ),
-      bottomNavigationBar: ButtonContainer(
-        onPressed: () async {
-          // ✅ Use the providerId from profile to check pending jobs
-          final result = await ref
-              .read(pendingJobsProvider(widget.profile.userId).future);
+      bottomNavigationBar: Consumer(
+  builder: (context, ref, _) {
+    final pendingJobAsync =
+        ref.watch(pendingJobsProvider(widget.profile.userId));
 
-          if (result.hasPendingJob) {
-            // Show a message if provider is busy
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                    "This provider is currently busy and cannot take new jobs."),
-                backgroundColor: Colors.red,
-              ),
-            );
-          } else {
-            // Navigate if provider is available
-            HelperFunction.navigateScreen(
-              context,
-              HireProvider(profile: widget.profile),
-            );
-          }
-        },
+    return pendingJobAsync.when(
+      data: (result) {
+        final isBusy = result.hasPendingJob;
+
+        return ButtonContainer(
+          onPressed: isBusy
+              ? null
+              : () {
+                  HelperFunction.navigateScreen(
+                    context,
+                    HireProvider(profile: widget.profile),
+                  );
+                },
+          text: 'Hire',
+          backgroundColor: isBusy ? Colors.grey : CustomColors.primary,
+        );
+      },
+      loading: () => ButtonContainer(
+        onPressed: null, // Disable while loading
         text: 'Hire',
+        backgroundColor: Colors.grey,
       ),
+      error: (error, stack) => ButtonContainer(
+        onPressed: null, // Disable if error
+        text: 'Hire',
+        backgroundColor: Colors.grey,
+      ),
+    );
+  },
+),
+
       body: SingleChildScrollView(
         child: Column(
           children: [

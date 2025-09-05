@@ -49,15 +49,15 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
                   child: RoundedContainer(
                     width: MediaQuery.of(context).size.width * 0.43,
                     height: MediaQuery.of(context).size.height * 0.06,
-                    radius: Sizes.cardRadiusSm,
+                    radius: Sizes.cardRadiusLg,
                     padding: const EdgeInsets.all(Sizes.sm),
-                    backgroundColor: Colors.grey,
+                    backgroundColor: Colors.green,
                     child: Center(
                       child: Text(
                         'Deposit',
                         style: Theme.of(
                           context,
-                        ).textTheme.labelMedium!.copyWith(color: Colors.white),
+                        ).textTheme.bodyMedium!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
