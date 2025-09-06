@@ -147,7 +147,7 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
                 description:
                     'Tap the button below to upload an image of your Identity card. Make sure your photo is clear and ensure your names match with no spelling error.',
               ),
-    
+
               const SizedBox(height: Sizes.spaceBtwItems),
               idImage == null
                   ? Text(
@@ -157,14 +157,10 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
                   : Container(
                     height: screenHeight * 0.20,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        Sizes.borderRadiusMd,
-                      ),
+                      borderRadius: BorderRadius.circular(Sizes.borderRadiusMd),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(
-                        Sizes.borderRadiusMd,
-                      ),
+                      borderRadius: BorderRadius.circular(Sizes.borderRadiusMd),
                       child: Image.file(
                         File(idImage!.path),
                         height: screenHeight * 0.20,
@@ -172,7 +168,7 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
                     ),
                   ),
               const SizedBox(height: Sizes.spaceBtwItems),
-    
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -182,8 +178,7 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
                           Colors.blue,
                         ), // color
                         strokeWidth: 4.0, // thickness of the line
-                        backgroundColor:
-                            dark ? Colors.white : Colors.black, //
+                        backgroundColor: dark ? Colors.white : Colors.black, //
                       )
                       : TextButton(
                         style: TextButton.styleFrom(
@@ -198,6 +193,14 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
                         ),
                       ),
                 ],
+              ),
+
+              const SizedBox(height: Sizes.spaceBtwSections),
+              Text(
+                'ID verification is compulsory for all users. Unverified accounts can not hire providers and would end up being suspended',
+                style: Theme.of(context).textTheme.bodyMedium,
+                softWrap: true,
+                textAlign: TextAlign.center,
               ),
             ],
           ),

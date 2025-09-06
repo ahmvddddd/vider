@@ -5,6 +5,7 @@ import '../../common/widgets/custom_shapes/containers/button_container.dart';
 import '../../common/widgets/image/full_screen_image_view.dart';
 import '../../controllers/jobs/pending_jobs_controller.dart';
 import '../../controllers/services/user_id_controller.dart';
+import '../../controllers/user/user_controller.dart';
 import '../../models/providers/providers_category_model.dart';
 import '../../common/widgets/layouts/listview.dart';
 import '../../common/widgets/texts/section_heading.dart';
@@ -33,6 +34,9 @@ class _ProviderScreenState extends ConsumerState<ProviderScreen> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() {
+      ref.read(userProvider.notifier).fetchUserDetails();
+    });
     getCurrentUserId();
   }
 
@@ -78,37 +82,56 @@ class _ProviderScreenState extends ConsumerState<ProviderScreen> {
   builder: (context, ref, _) {
     final pendingJobAsync =
         ref.watch(pendingJobsProvider(widget.profile.userId));
+    final userProfile = ref.watch(userProvider);
 
     return pendingJobAsync.when(
-      data: (result) {
-        final isBusy = result.hasPendingJob;
+      data: (pendingResult) {
+        final isBusy = pendingResult.hasPendingJob;
 
-        return ButtonContainer(
-          onPressed: isBusy
-              ? null
-              : () {
-                  HelperFunction.navigateScreen(
-                    context,
-                    HireProvider(profile: widget.profile),
-                  );
-                },
-          text: 'Hire',
-          backgroundColor: isBusy ? Colors.grey : CustomColors.primary,
+        return userProfile.when(
+          data: (user) {
+            final isVerified = user.isIdVerified == true;
+
+            return ButtonContainer(
+              onPressed: (isBusy || !isVerified)
+                  ? null
+                  : () {
+                      HelperFunction.navigateScreen(
+                        context,
+                        HireProvider(profile: widget.profile),
+                      );
+                    },
+              text: 'Hire',
+              backgroundColor:
+                  (isBusy || !isVerified) ? Colors.grey : CustomColors.primary,
+            );
+          },
+          loading: () => ButtonContainer(
+            onPressed: null,
+            text: 'Hire',
+            backgroundColor: Colors.grey,
+          ),
+          error: (error, stack) => ButtonContainer(
+            onPressed: null,
+            text: 'Hire',
+            backgroundColor: Colors.grey,
+          ),
         );
       },
       loading: () => ButtonContainer(
-        onPressed: null, // Disable while loading
+        onPressed: null,
         text: 'Hire',
         backgroundColor: Colors.grey,
       ),
       error: (error, stack) => ButtonContainer(
-        onPressed: null, // Disable if error
+        onPressed: null,
         text: 'Hire',
         backgroundColor: Colors.grey,
       ),
     );
   },
 ),
+
 
       body: SingleChildScrollView(
         child: Column(
