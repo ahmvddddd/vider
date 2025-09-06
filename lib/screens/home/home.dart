@@ -1,15 +1,20 @@
 import 'dart:async';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/widgets/texts/section_heading.dart';
+import '../../controllers/notifications/unread_notifications_controller.dart';
+import '../../controllers/providers/providers_category_controller.dart';
+import '../../controllers/services/firebase_service.dart';
+import '../../controllers/services/notification_badge_service.dart';
+import '../../controllers/user/provider_profiles_controller.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
 import '../providers/all_providers_screen.dart';
 import '../providers/widgets/providers_grid.dart';
-import 'components/home_shimmer.dart';
 import 'widgets/home_appbar.dart';
 import 'widgets/home_search_bar.dart';
-import 'widgets/provider_profiles_screen.dart';
+import 'widgets/provider_profiles_widget.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -19,19 +24,35 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  bool _showShimmer = true;
+  bool isRefreshing = false;
+  NotificationBadgeService? _badgeService;
+  Future<void> refreshProvider() async {
+    setState(() {
+      isRefreshing = true;
+    });
+    setState(() {
+      isRefreshing = false;
+    });
+  }
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    Timer(const Duration(seconds: 3), () {
-      if (mounted) {
-        setState(() {
-          _showShimmer = false;
-        });
+    if (_badgeService == null) {
+      final container = ProviderScope.containerOf(context);
+      _badgeService = NotificationBadgeService(container: container);
+      _badgeService!.init();
+
+      FirebaseMessaging.instance.getInitialMessage().then((message) async {
+      if (message != null) {
+        debugPrint('🟨 getInitialMessage: App was opened by a notification: ${message.messageId}');
+        await _badgeService!.handleIncomingMessage(message);
       }
     });
+    }
+
+    saveFcmTokenToBackend();
   }
 
   
@@ -40,7 +61,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     final dark = HelperFunction.isDarkMode(context);
-    int unreadCount = 5;
+    final unreadCount = ref.watch(unreadNotificationsProvider);
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -65,31 +86,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ];
           },
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(Sizes.spaceBtwItems),
-              child: _showShimmer
-                  ? const HomeShimmer()
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: Sizes.spaceBtwSections),
-                        HomeSearchBar(),
-                        
-                        const SizedBox(height: Sizes.spaceBtwItems),
-                        ProvidersGrid(),
-                        const SizedBox(height: Sizes.spaceBtwSections),
-                        SectionHeading(
-                          title: 'Providers near you',
-                          onPressed: () => HelperFunction.navigateScreen(
-                            context,
-                            AllProvidersScreen(),
+          body: RefreshIndicator(onRefresh: () async {
+            ref.refresh(categoriesProvider);
+            ref.refresh(providerProfilesController);
+          },
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+                child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: Sizes.spaceBtwSections),
+                          HomeSearchBar(),
+                          
+                          const SizedBox(height: Sizes.spaceBtwItems),
+                          ProvidersGrid(),
+                          const SizedBox(height: Sizes.spaceBtwSections),
+                          SectionHeading(
+                            title: 'Providers near you',
+                            onPressed: () => HelperFunction.navigateScreen(
+                              context,
+                              AllProvidersScreen(),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: Sizes.sm),
-                        ProviderProfilesWidget(),
-                      ],
-                    ),
+                          const SizedBox(height: Sizes.sm),
+                          ProviderProfilesWidget(),
+                        ],
+                      ),
+              ),
             ),
           ),
         ),

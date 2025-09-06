@@ -95,8 +95,8 @@ class ProviderProfilesNotifier
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body);
         final address = data['address'] ?? {};
-        final state = address['state'] ?? address['region'] ?? 'Unknown';
-        _stateCache[cacheKey] = state; // Save to cache
+        String state = address['state'] ?? address['region'] ?? 'Unknown';
+        _stateCache[cacheKey] = state;
         return state;
       } else {
         _stateCache[cacheKey] = 'Unknown';

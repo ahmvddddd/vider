@@ -60,7 +60,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
 
                   if (notif.type == 'transaction') {
                     return NotificationCard(
-                      icon: Icons.balance,
+                      icon: Icons.account_balance,
                       borderColor:
                           notif.isRead
                               ? CustomColors.darkGrey
@@ -77,7 +77,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                         );
                       },
                       iconColor:
-                          notif.isRead ?  Colors.black
+                          notif.isRead ?  Colors.white
                           : dark ? CustomColors.primary : CustomColors.alternate,
                       title: notif.title,
                       message: notif.message,

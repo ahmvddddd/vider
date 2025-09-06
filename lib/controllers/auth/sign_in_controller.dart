@@ -74,12 +74,14 @@ class LoginController extends StateNotifier<LoginState> {
       );
 
       if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
+        dynamic responseData;
+        try {
+          responseData = jsonDecode(response.body);
+        } catch (_) {
+          responseData = {};
+        }
 
-        final user = User(
-          username: responseData['username'],
-          password: responseData['password'],
-        );
+        final user = User(username: responseData['username']);
 
         await Future.wait([
           _secureStorage.write(key: 'token', value: responseData['token']),
@@ -95,7 +97,7 @@ class LoginController extends StateNotifier<LoginState> {
           saveFcmTokenToBackend();
         });
 
-        state = state.copyWith(isLoading: false, user: user);
+        state = state.copyWith(isLoading: false, user: user, error: null);
 
         // Navigate to the main screen
         ref.read(selectedIndexProvider.notifier).state = 0;
@@ -130,7 +132,8 @@ class LoginController extends StateNotifier<LoginState> {
       );
     }
   }
-   void clearError() {
+
+  void clearError() {
     state = state.copyWith(error: null);
   }
 }

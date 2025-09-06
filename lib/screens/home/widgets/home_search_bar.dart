@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../../common/widgets/custom_shapes/containers/search_container.dart';
 import '../../../common/widgets/layouts/listview.dart';
+import '../../../common/widgets/shimmer/shimmer_widget.dart';
 import '../../../controllers/providers/search_providers_controller.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
@@ -36,6 +37,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     final dark = HelperFunction.isDarkMode(context);
     final profilesAsync = ref.watch(searchProfilesProvider);
     return Column(
@@ -169,21 +171,34 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
           },
           loading:
               () => Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                  strokeWidth: 4.0,
-                  backgroundColor: dark ? Colors.white : Colors.black,
+                child: ShimmerWidget(
+                  height: screenHeight * 0.08,
+                  width: screenWidth * 0.90,
+                  radius: Sizes.cardRadiusLg,
                 ),
               ),
           error:
               (err, stack) => Center(
-                child: Text(
-                  "$err",
-                  style: Theme.of(context).textTheme.labelMedium,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('$err', style: Theme.of(context).textTheme.bodyMedium),
+                    const SizedBox(height: Sizes.sm),
+                    TextButton(
+                      onPressed: () {
+                        ref.refresh(searchProfilesProvider);
+                      },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(Sizes.sm),
+                        backgroundColor: CustomColors.primary,
+                      ),
+                      child: Text("Retry",
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.white),),
+                    ),
+                  ],
                 ),
               ),
         ),
-        
       ],
     );
   }

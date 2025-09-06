@@ -9,6 +9,7 @@ import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
 import '../../providers/provider_screen.dart';
+import '../components/provider_profiles_shimmer.dart';
 
 class ProviderProfilesWidget extends ConsumerStatefulWidget {
   const ProviderProfilesWidget({super.key});
@@ -95,7 +96,7 @@ class _ProviderProfilesWidgetState
     }
 
     if (_stateName == null) {
-      return const Center(child: CircularProgressIndicator());
+      return ProviderProfilesShimmer();
     }
 
     return profilesState.when(
@@ -146,8 +147,27 @@ class _ProviderProfilesWidgetState
           },
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, _) => Center(child: Text('Error: $err')),
+      loading: () => const ProviderProfilesShimmer(),
+      error: (err, _) => Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('$err', style: Theme.of(context).textTheme.bodyMedium),
+                    const SizedBox(height: Sizes.sm),
+                    TextButton(
+                      onPressed: () {
+                        ref.refresh(providerProfilesController);
+                      },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(Sizes.sm),
+                        backgroundColor: CustomColors.primary,
+                      ),
+                      child: Text("Retry",
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.white),),
+                    ),
+                  ],
+                ),
+              ),
     );
   }
 }

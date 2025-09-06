@@ -4,6 +4,7 @@ import '../../../controllers/user/provider_profiles_controller.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../common/widgets/layouts/listview.dart';
+import '../../common/widgets/shimmer/shimmer_widget.dart';
 import '../../models/providers/providers_category_model.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
@@ -17,6 +18,8 @@ class AllProvidersScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final providersState = ref.watch(providerProfilesController);
     final dark = HelperFunction.isDarkMode(context);
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: TAppBar(
@@ -29,9 +32,28 @@ class AllProvidersScreen extends ConsumerWidget {
       body: providersState.when(
         data: (grouped) {
           if (grouped.isEmpty) {
-            return const Center(child: Text('No providers found.'));
+            return Center(
+              child: Text(
+                'No providers found.',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            );
           }
-          final cities = grouped.keys.toList();
+          final cityMapping =
+              grouped.keys.map((key) {
+                String display = key;
+                if (key.toLowerCase().contains('federal capital territory')) {
+                  display = 'Abuja';
+                } else {
+                  display = key.replaceAll(
+                    RegExp(r'\s*State$', caseSensitive: false),
+                    '',
+                  );
+                }
+                return MapEntry(display, key);
+              }).toList();
+
+          final cities = cityMapping.map((e) => e.key).toList();
           return DefaultTabController(
             length: cities.length,
             child: Column(
@@ -44,7 +66,12 @@ class AllProvidersScreen extends ConsumerWidget {
                   child: TabBarView(
                     children:
                         cities.map((city) {
-                          final providers = grouped[city]!;
+                          final originalKey =
+                              cityMapping
+                                  .firstWhere((entry) => entry.key == city)
+                                  .value;
+
+                          final providers = grouped[originalKey] ?? [];
                           return Padding(
                             padding: const EdgeInsets.all(Sizes.spaceBtwItems),
                             child: HomeListView(
@@ -60,14 +87,15 @@ class AllProvidersScreen extends ConsumerWidget {
                                   provider,
                                 );
                                 Color ratingColor = Colors.brown;
-                            
+
                                 if (p.rating < 1.66) {
                                   ratingColor = Colors.brown; // Low rating
                                 } else if (p.rating < 3.33) {
                                   ratingColor =
                                       CustomColors.silver; // Medium rating
                                 } else if (p.rating >= 3.33) {
-                                  ratingColor = CustomColors.gold; // High rating
+                                  ratingColor =
+                                      CustomColors.gold; // High rating
                                 }
                                 return RoundedContainer(
                                   backgroundColor:
@@ -103,7 +131,7 @@ class AllProvidersScreen extends ConsumerWidget {
                                                 context,
                                               ).textTheme.labelSmall,
                                         ),
-                            
+
                                         const SizedBox(width: Sizes.sm),
                                         Row(
                                           children: [
@@ -131,7 +159,9 @@ class AllProvidersScreen extends ConsumerWidget {
                                     subtitle: Text(
                                       p.category,
                                       style:
-                                          Theme.of(context).textTheme.labelMedium,
+                                          Theme.of(
+                                            context,
+                                          ).textTheme.labelMedium,
                                     ),
                                   ),
                                 );
@@ -145,8 +175,37 @@ class AllProvidersScreen extends ConsumerWidget {
             ),
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Error: $e')),
+        loading:
+            () => ShimmerWidget(
+              height: screenHeight * 0.08,
+              width: screenWidth * 0.90,
+              radius: Sizes.cardRadiusLg,
+            ),
+        error:
+            (err, _) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('$err', style: Theme.of(context).textTheme.bodyMedium),
+                  const SizedBox(height: Sizes.sm),
+                  TextButton(
+                    onPressed: () {
+                      ref.refresh(providerProfilesController);
+                    },
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.all(Sizes.sm),
+                      backgroundColor: CustomColors.primary,
+                    ),
+                    child: Text(
+                      "Retry",
+                      style: Theme.of(
+                        context,
+                      ).textTheme.labelMedium!.copyWith(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
       ),
     );
   }

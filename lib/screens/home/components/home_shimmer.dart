@@ -15,19 +15,19 @@ class HomeShimmer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: Sizes.spaceBtwSections),
-        ShimmerWidget(
-          height: screenHeight * 0.02,
-          width: screenHeight * 0.30,
-          radius: Sizes.cardRadiusLg,
-        ),
+        // ShimmerWidget(
+        //   height: screenHeight * 0.02,
+        //   width: screenHeight * 0.30,
+        //   radius: Sizes.cardRadiusLg,
+        // ),
 
-        const SizedBox(height: Sizes.spaceBtwItems),
-        ShimmerWidget(
-          height: screenHeight * 0.055,
-          width: screenHeight * 0.90,
-          radius: Sizes.cardRadiusLg,),
+        // const SizedBox(height: Sizes.spaceBtwItems),
+        // ShimmerWidget(
+        //   height: screenHeight * 0.055,
+        //   width: screenHeight * 0.90,
+        //   radius: Sizes.cardRadiusLg,),
 
-        const SizedBox(height: Sizes.spaceBtwItems),
+        // const SizedBox(height: Sizes.spaceBtwItems),
         GridLayout(
           mainAxisExtent: screenHeight * 0.11,
           crossAxisCount: 4,

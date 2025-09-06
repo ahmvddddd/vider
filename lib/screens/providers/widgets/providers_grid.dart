@@ -7,6 +7,7 @@ import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
 import '../all_provider_categories.dart';
+import '../components/providers_grid_shimmer.dart';
 import 'providers_tabbar.dart';
 
 class ProvidersGrid extends ConsumerWidget {
@@ -66,8 +67,27 @@ class ProvidersGrid extends ConsumerWidget {
           },
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (err, _) => Center(child: Text("Error: $err")),
+      loading: () => const ProvidersGridShimmer(),
+      error: (err, _) => Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('$err', style: Theme.of(context).textTheme.bodyMedium),
+                    const SizedBox(height: Sizes.sm),
+                    TextButton(
+                      onPressed: () {
+                        ref.refresh(categoriesProvider);
+                      },
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.all(Sizes.sm),
+                        backgroundColor: CustomColors.primary,
+                      ),
+                      child: Text("Retry",
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.white),),
+                    ),
+                  ],
+                ),
+              ),
     );
   }
 

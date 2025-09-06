@@ -67,12 +67,12 @@ class _HomeAppBarState extends ConsumerState<HomeAppBar> {
             //notifications
             GestureDetector(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const NotificationsScreen(),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationsScreen(),
+                  ),
+                );
               },
               child: RoundedContainer(
                 padding: const EdgeInsets.all(Sizes.sm),
@@ -145,20 +145,10 @@ class _HomeAppBarState extends ConsumerState<HomeAppBar> {
                     dark
                         ? Colors.white.withValues(alpha: 0.1)
                         : Colors.black.withValues(alpha: 0.1),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NotificationsScreen(),
-                      ),
-                    );
-                  },
-                  child: const Icon(
-                    Icons.notifications,
-                    size: Sizes.iconMd,
-                    color: Colors.white,
-                  ),
+                child: const Icon(
+                  Icons.notifications,
+                  size: Sizes.iconMd,
+                  color: Colors.white,
                 ),
               ),
             ],

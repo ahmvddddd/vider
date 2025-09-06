@@ -65,19 +65,31 @@ class SignupController extends StateNotifier<SignupState> {
 
         await Future.wait([
           // Save the token in secure storage
-          _secureStorage.write(key: 'token', value: responseData['token'],),
+          _secureStorage.write(key: 'token', value: responseData['token']),
+          _secureStorage.write(
+            key: 'loginTimestamp',
+            value: DateTime.now().toIso8601String(),
+          ),
+
           // Save username to local storage
-          UsernameLocalStorage.saveUsername(username)
+          UsernameLocalStorage.saveUsername(username),
         ]);
 
         FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
           saveFcmTokenToBackend();
         });
 
+        state = state.copyWith(isLoading: false, error: null);
+
         // Navigate to the new page
         HelperFunction.navigateScreenReplacement(context, UserDOBScreen());
       } else {
-        final responseData = jsonDecode(response.body);
+        dynamic responseData;
+        try {
+          responseData = jsonDecode(response.body);
+        } catch (_) {
+          responseData = {};
+        }
         final rawError = responseData['message'] ?? 'Signup failed';
 
         final formattedError =
@@ -85,10 +97,7 @@ class SignupController extends StateNotifier<SignupState> {
                 ? 'Something went wrong on our side. Please try again later.'
                 : formatBackendError(rawError);
 
-        state = state.copyWith(
-          isLoading: false,
-          error: "An error occurred. Please try again later.",
-        );
+        state = state.copyWith(isLoading: false, error: formattedError);
         await FirebaseCrashlytics.instance.recordError(
           Exception("Signup failed: $formattedError"),
           null,
@@ -107,7 +116,8 @@ class SignupController extends StateNotifier<SignupState> {
       );
     }
   }
-   void clearError() {
+
+  void clearError() {
     state = state.copyWith(error: null);
   }
 }
