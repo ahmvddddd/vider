@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../../common/widgets/custom_shapes/cards/provider_card.dart';
 import '../../../common/widgets/layouts/listview.dart';
+import '../../../common/widgets/texts/error_retry.dart';
 import '../../../controllers/user/provider_profiles_controller.dart';
 import '../../../models/providers/providers_category_model.dart';
 import '../../../utils/constants/custom_colors.dart';
@@ -148,25 +149,11 @@ class _ProviderProfilesWidgetState
         );
       },
       loading: () => const ProviderProfilesShimmer(),
-      error: (err, _) => Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('$err', style: Theme.of(context).textTheme.bodyMedium),
-                    const SizedBox(height: Sizes.sm),
-                    TextButton(
-                      onPressed: () {
-                        ref.refresh(providerProfilesController);
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(Sizes.sm),
-                        backgroundColor: CustomColors.primary,
-                      ),
-                      child: Text("Retry",
-                      style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.white),),
-                    ),
-                  ],
-                ),
+      error: (err, _) => ErrorRetry(
+                err: err,
+                onPressed: () {
+                  ref.refresh(providerProfilesController);
+                },
               ),
     );
   }

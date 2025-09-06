@@ -5,6 +5,7 @@ import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../common/widgets/layouts/listview.dart';
 import '../../common/widgets/shimmer/shimmer_widget.dart';
+import '../../common/widgets/texts/error_retry.dart';
 import '../../models/providers/providers_category_model.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
@@ -182,30 +183,12 @@ class AllProvidersScreen extends ConsumerWidget {
               radius: Sizes.cardRadiusLg,
             ),
         error:
-            (err, _) => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('$err', style: Theme.of(context).textTheme.bodyMedium),
-                  const SizedBox(height: Sizes.sm),
-                  TextButton(
-                    onPressed: () {
-                      ref.refresh(providerProfilesController);
-                    },
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.all(Sizes.sm),
-                      backgroundColor: CustomColors.primary,
-                    ),
-                    child: Text(
-                      "Retry",
-                      style: Theme.of(
-                        context,
-                      ).textTheme.labelMedium!.copyWith(color: Colors.white),
-                    ),
-                  ),
-                ],
+            (err, _) => ErrorRetry(
+                err: err,
+                onPressed: () {
+                  ref.refresh(providerProfilesController);
+                },
               ),
-            ),
       ),
     );
   }
