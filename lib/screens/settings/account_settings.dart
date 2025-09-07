@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:myapp/utils/constants/image_strings.dart';
-import 'package:myapp/utils/helpers/capitalize_text.dart';
+import '../../utils/constants/image_strings.dart';
+import '../../utils/helpers/capitalize_text.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/image/full_screen_image_view.dart';
 import '../../common/widgets/texts/section_heading.dart';

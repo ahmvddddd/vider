@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:myapp/common/widgets/custom_shapes/containers/button_container.dart';
-import 'package:myapp/common/widgets/custom_shapes/containers/rounded_container.dart';
+import '../../common/widgets/custom_shapes/containers/button_container.dart';
+import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/pop_up/custom_snackbar.dart';
 import '../../utils/constants/custom_colors.dart';

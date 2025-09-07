@@ -3,7 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:myapp/screens/providers/provider_screen.dart';
+import 'package:vider/screens/providers/provider_screen.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../controllers/user/provider_profiles_controller.dart';
 import '../../models/providers/providers_category_model.dart';
