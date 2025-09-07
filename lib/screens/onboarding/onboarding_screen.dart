@@ -26,33 +26,33 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     },
     {
       'words': ['Accept', 'Jobs', 'Effortlessly '],
-      'text': 'Get contacted and hired without hassle',
+      'text': 'In App Messaging',
     },
     {
       'words': ['Execute Job', 'And', 'Get Paid'],
-      'text': 'Receive crypto payouts',
+      'text': 'Provider Locations',
     },
   ];
 
   final List<Map<String, dynamic>> pageTexts = [
     {
       'pageText':
-          'Clients can search for you on the map. Make sure to switch on your location and set up an attractive profile to boost visibility',
+          'Hire from different categories of service providers',
     },
     {
       'pageText':
-          'Send and receive messages from clients. Check your messages regularly so you do not miss potential clients',
+          'Send and receive messages from providers.',
     },
     {
       'pageText':
-          'Your payments reflect in your wallet as soon as a job is completed. Withdrawals can be made to external wallets of your choice',
+          'View a provider\'s location on the map to confirm they are nearby.',
     },
   ];
 
   final List<Map<String, dynamic>> images = [
-    {'image': Images.carpenter},
-    {'image': Images.chef},
-    {'image': Images.hairstylist},
+    {'image': Images.onboarding1},
+    {'image': Images.onboarding2},
+    {'image': Images.onboarding3},
   ];
 
   void _nextPage() {
@@ -104,7 +104,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: screenHeight * 0.60,
+                      height: screenHeight * 0.70,
                       width: screenWidth,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(

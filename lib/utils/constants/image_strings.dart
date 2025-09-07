@@ -17,6 +17,9 @@ class Images {
   //services
   static const String bg1 = "assets/utility_images/bg_1.jpg";
   static const String bg2 = "assets/utility_images/bg_2.jpg";
+  static const String onboarding1 = "assets/utility_images/onboarding_1.png";
+  static const String onboarding2 = "assets/utility_images/onboarding_2.png";
+  static const String onboarding3 = "assets/utility_images/onboarding_3.png";
   static const String carpenter = "assets/utility_images/carpenter.png";
   static const String chef = "assets/utility_images/chef.jpg";
   static const String fashionDesigner = "assets/utility_images/fashion_designer.jpg";

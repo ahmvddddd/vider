@@ -89,7 +89,7 @@ class _ProviderProfilesWidgetState
     double screenHeight = MediaQuery.of(context).size.height;
 
     if (_loadingLocation) {
-      return const Center(child: CircularProgressIndicator());
+      return ProviderProfilesShimmer();
     }
 
     if (_locationError != null) {
