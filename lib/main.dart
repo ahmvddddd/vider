@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:awesome_notifications_fcm/awesome_notifications_fcm.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -12,6 +13,14 @@ import 'package:vider/firebase_options.dart';
 import 'app.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+final Int64List highVibrationPattern = Int64List.fromList([
+  0,
+  500,
+  1000,
+  500,
+  2000,
+]);
 
 Future<void> main() async {
   runZonedGuarded(
@@ -40,7 +49,11 @@ Future<void> main() async {
           channelKey: 'basic_channel',
           channelName: 'Basic Notifications',
           channelDescription: 'Channel for general alerts',
-          importance: NotificationImportance.High,
+          importance: NotificationImportance.Max, // 🔥 highest
+          playSound: true,
+          enableVibration: true,
+          vibrationPattern: highVibrationPattern, // custom strong vibration
+          criticalAlerts: true, // iOS critical alerts
           defaultColor: Colors.blue,
           ledColor: Colors.white,
           channelShowBadge: true,
@@ -57,7 +70,13 @@ Future<void> main() async {
       final isAllowed = await AwesomeNotifications().isNotificationAllowed();
       if (!isAllowed) {
         await AwesomeNotifications().requestPermissionToSendNotifications(
-          permissions: [NotificationPermission.Badge],
+          permissions: [
+            NotificationPermission.Alert,
+            NotificationPermission.Sound,
+            NotificationPermission.Vibration,
+            NotificationPermission.CriticalAlert,
+            NotificationPermission.Badge,
+          ],
         );
       }
 

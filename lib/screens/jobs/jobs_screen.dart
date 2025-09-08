@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'components/jobs_screen_shimmer.dart';
+import 'components/rating_dialog.dart';
 
 class JobsScreen extends ConsumerStatefulWidget {
   const JobsScreen({super.key});
@@ -203,15 +204,43 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
                                     style:
                                         Theme.of(context).textTheme.labelMedium,
                                   ),
-                                  Text(
-                                    getJobStatus(job),
-                                    style: TextStyle(
-                                      color:
-                                          getJobStatus(job) == "Executed"
-                                              ? CustomColors.success
-                                              : CustomColors.error,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        getJobStatus(job),
+                                        style: TextStyle(
+                                          color:
+                                              getJobStatus(job) == "Executed"
+                                                  ? CustomColors.success
+                                                  : CustomColors.error,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      if (getJobStatus(job) == "Executed")
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                CustomColors.primary,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 12,
+                                              vertical: 6,
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder:
+                                                  (_) => RatingDialog(
+                                                    profileId:
+                                                        job['providerId'],
+                                                  ),
+                                            );
+                                          },
+                                          child: const Text("Rate"),
+                                        ),
+                                    ],
                                   ),
                                 ],
                               ),

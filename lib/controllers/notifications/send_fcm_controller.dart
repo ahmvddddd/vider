@@ -3,7 +3,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import '../../models/notification/add_notification_model.dart';
 
 final sendNotificationProvider =

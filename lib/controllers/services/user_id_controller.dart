@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

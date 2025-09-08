@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:logger/logger.dart';
 import '../../models/providers/providers_category_model.dart';
 
 String baseUrl = dotenv.env['BASE_URL'] ?? 'https://defaulturl.com/api';
@@ -33,6 +35,7 @@ class ServiceProfilesNotifier
   final String category;
   final String service;
   Timer? _debounce;
+  final logger = Logger();
 
   ServiceProfilesNotifier({required this.category, required this.service})
     : super(const AsyncValue.loading()) {
@@ -48,8 +51,19 @@ class ServiceProfilesNotifier
             "$baseUrl/service-profiles?category=$category&service=$service";
         final res = await http.get(Uri.parse(url));
         if (res.statusCode != 200) {
+          final body = jsonDecode(res.body);
+
+        try {
+          await FirebaseCrashlytics.instance.recordError(
+            '${body['message']}',
+            null,
+            reason: 'Profile category API returned error ${res.statusCode}',
+          );
+        } catch (e) {
+          logger.i("Crashlytics logging failed: $e");
+        }
           state = AsyncValue.error(
-            "Failed to load profiles",
+            "An error occured, failed to load profiles",
             StackTrace.current,
           );
           return;
@@ -64,8 +78,13 @@ class ServiceProfilesNotifier
                 )
                 .toList();
         state = AsyncValue.data(list);
-      } catch (e, st) {
-        state = AsyncValue.error(e, st);
+      } catch (error, stackTrace) {
+        state = AsyncValue.error(error, stackTrace);
+        await FirebaseCrashlytics.instance.recordError(
+        error,
+        stackTrace,
+        reason: 'An error occured, failed to load profiles',
+      );
       }
     });
   }

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:logger/logger.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,6 +27,7 @@ class JobController extends StateNotifier<AsyncValue<void>> {
     try {
       String hireProviderURL = dotenv.env['HIRE_PROVIDER_URL'] ?? 'https://defaulturl.com/api';
 
+      final logger = Logger();
       final response = await http.post(
         Uri.parse(hireProviderURL),
         headers: {"Content-Type": "application/json"},
@@ -46,13 +49,31 @@ class JobController extends StateNotifier<AsyncValue<void>> {
       if (response.statusCode == 201) {
         state = const AsyncValue.data(null);
       } else {
+        final body = jsonDecode(response.body);
+        final exception = 'Unable to hire Provider';
+        
+        try {
+          await FirebaseCrashlytics.instance.recordError(
+            '${body['message']}',
+            null,
+            reason: 'Hire provider API returned error ${response.statusCode}',
+          );
+        } catch (e) {
+          logger.i("Crashlytics logging failed: $e");
+        }
         state = AsyncValue.error(
-          "Failed to add employee: ${response.body}",
+          "An error occured",
           StackTrace.current,
         );
+        throw exception;
       }
     } catch (e, st) {
       state = AsyncValue.error(e, st);
+      await FirebaseCrashlytics.instance.recordError(
+        e,
+        st,
+        reason: 'Hire Provider controller failed',
+      );
     }
   }
 }

@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
-
 import 'package:logger/logger.dart';
 
 final unreadMessageProvider = StateNotifierProvider<UnreadMessageNotifier, int>(

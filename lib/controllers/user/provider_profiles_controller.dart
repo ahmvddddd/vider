@@ -1,8 +1,9 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 final providerProfilesController = StateNotifierProvider<
   ProviderProfilesNotifier,
@@ -17,6 +18,7 @@ class ProviderProfilesNotifier
 
   // Cache for coordinates -> state
   final Map<String, String> _stateCache = {};
+  final logger = Logger();
 
   Future<void> fetchAndGroupProviders() async {
     state = const AsyncValue.loading();
@@ -63,14 +65,29 @@ class ProviderProfilesNotifier
 
         state = AsyncValue.data(grouped);
       } else {
+        final body = jsonDecode(res.body);
+
+        try {
         state = AsyncValue.error(
           'Failed to fetch providers',
           StackTrace.current,
         );
+          await FirebaseCrashlytics.instance.recordError(
+            '${body['message']}',
+            null,
+            reason: 'Fetch Providers API returned error ${res.statusCode}',
+          );
+        } catch (e) {
+          logger.i("Crashlytics logging failed: $e");
+        }
       }
-    } catch (e, st) {
-      debugPrint(e.toString());
-      state = AsyncValue.error(e, st);
+    } catch (error, stackTrace) {
+      state = AsyncValue.error('An error occured, failed to fetch providers', stackTrace);
+      await FirebaseCrashlytics.instance.recordError(
+        error,
+        stackTrace,
+        reason: 'Change Password controller failed',
+      );
     }
   }
 

@@ -58,13 +58,13 @@ class _ProviderProfilesWidgetState
       }
 
       // Get location
-      // final position = await Geolocator.getCurrentPosition(
-      //   desiredAccuracy: LocationAccuracy.high,
-      // );
+      final pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
 
       setState(() {
-        lat = 9.0882; // using fixed coords as before
-        lon = 7.4934;
+        lat = pos.latitude; // using fixed coords as before
+        lon = pos.longitude;
       });
 
       // fetch state once
@@ -93,7 +93,12 @@ class _ProviderProfilesWidgetState
     }
 
     if (_locationError != null) {
-      return Center(child: Text(_locationError!));
+      return Center(
+        child: Text(
+          'No providers in your location',
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      );
     }
 
     if (_stateName == null) {
@@ -105,21 +110,24 @@ class _ProviderProfilesWidgetState
         final providers = groupedProfiles[_stateName] ?? [];
 
         if (providers.isEmpty) {
-          return const SizedBox.shrink();
+          return Center(
+            child: Text(
+              'No providers in your location yet',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          );
         }
 
         return HomeListView(
           sizedBoxHeight: screenHeight * 0.28,
-          seperatorBuilder: (context, index) =>
-              const SizedBox(height: Sizes.sm),
+          seperatorBuilder:
+              (context, index) => const SizedBox(height: Sizes.sm),
           scrollDirection: Axis.horizontal,
           itemCount: providers.length,
           itemBuilder: (context, index) {
             final provider = providers[index];
-            final p = ProvidersCategoryModel.fromJson(
-              provider,
-            );
-        
+            final p = ProvidersCategoryModel.fromJson(provider);
+
             Color ratingColor = Colors.brown;
             if (p.rating < 1.66) {
               ratingColor = Colors.brown;
@@ -128,7 +136,7 @@ class _ProviderProfilesWidgetState
             } else {
               ratingColor = CustomColors.gold;
             }
-        
+
             return GestureDetector(
               onTap: () {
                 HelperFunction.navigateScreen(
@@ -149,12 +157,13 @@ class _ProviderProfilesWidgetState
         );
       },
       loading: () => const ProviderProfilesShimmer(),
-      error: (err, _) => ErrorRetry(
-                err: err,
-                onPressed: () {
-                  ref.refresh(providerProfilesController);
-                },
-              ),
+      error:
+          (err, _) => ErrorRetry(
+            err: err,
+            onPressed: () {
+              ref.refresh(providerProfilesController);
+            },
+          ),
     );
   }
 }

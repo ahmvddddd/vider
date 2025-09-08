@@ -43,8 +43,12 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
       permission = await Geolocator.requestPermission();
     }
 
+    final pos = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
     setState(() {
-      _currentUserLocation = LatLng(9.0882, 7.4934); // demo location
+      _currentUserLocation = LatLng(pos.latitude, pos.longitude); // demo location
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

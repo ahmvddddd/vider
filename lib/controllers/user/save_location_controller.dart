@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -9,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
-
 import '../../common/widgets/pop_up/custom_snackbar.dart';
 import '../../repository/user/location_state_storage.dart';
 import '../../utils/constants/custom_colors.dart';

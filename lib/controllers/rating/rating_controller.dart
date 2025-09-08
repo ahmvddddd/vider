@@ -2,49 +2,71 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final ratingControllerProvider =
     StateNotifierProvider<RatingController, AsyncValue<void>>((ref) {
-  return RatingController();
-});
+      return RatingController();
+    });
 
 class RatingController extends StateNotifier<AsyncValue<void>> {
   RatingController() : super(const AsyncValue.data(null));
 
   final _storage = const FlutterSecureStorage();
-  final String ratingURL = dotenv.env["RATING_URL"] ?? 'https://defaulturl.com/api';
+  final logger = Logger();
+  final String ratingURL =
+      dotenv.env["RATING_URL"] ?? 'https://defaulturl.com/api';
 
   Future<void> rateUser(String profileId, int rating) async {
     state = const AsyncValue.loading();
     try {
-      final token = await _storage.read(key: "token"); // if you use auth
+      final token = await _storage.read(key: "token");
+      if (token == null) {
+        throw Exception('Authentication token not found');
+      }
       final response = await http.post(
         Uri.parse("$ratingURL/rate"),
         headers: {
           "Content-Type": "application/json",
           if (token != null) "Authorization": "Bearer $token",
         },
-        body: jsonEncode({
-          "profileId": profileId,
-          "rating": rating,
-        }),
+        body: jsonEncode({"profileId": profileId, "rating": rating}),
       );
 
       if (response.statusCode == 200) {
         state = const AsyncValue.data(null);
       } else {
+        final body = jsonDecode(response.body);
         state = AsyncValue.error(
-          response.body,
+          'An error occured, could not rate this provider',
           StackTrace.current,
         );
+
+        try {
+          await FirebaseCrashlytics.instance.recordError(
+            '${body['message']}',
+            null,
+            reason: 'Rate provider API returned error ${response.statusCode}',
+          );
+        } catch (e) {
+          logger.i("Crashlytics logging failed: $e");
+        }
       }
-    } catch (e, st) {
-      state = AsyncValue.error(e, st);
+    } catch (error, stackTrace) {
+      state = AsyncValue.error(
+        'An error occured, could not rate this provider',
+        stackTrace,
+      );
+      await FirebaseCrashlytics.instance.recordError(
+        error,
+        stackTrace,
+        reason: 'Rate Provider controller failed',
+      );
     }
   }
 }
-
 
 // import 'package:flutter/material.dart';
 // import 'package:flutter_rating_bar/flutter_rating_bar.dart';

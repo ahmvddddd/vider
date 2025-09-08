@@ -2,11 +2,11 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import '../../screens/messages/chat.dart';
-// import '../../screens/notifications/notifications.dart';
+import '../../screens/messages/chat.dart';
+import '../../screens/notifications/notifications.dart';
 import '../notifications/message_notification_controller.dart';
 import '../notifications/unread_notifications_controller.dart';
-import '../../main.dart'; // ✅ import where your navigatorKey is defined
+import '../../main.dart';
 
 class NotificationBadgeService {
   final ProviderContainer container;
@@ -66,13 +66,13 @@ Future<void> onNotificationActionTap(ReceivedAction action) async {
 
   if (navigatorKey.currentState == null) return;
 
-  // if (type == 'chat') {
-  //   navigatorKey.currentState?.push(
-  //     MaterialPageRoute(builder: (_) => ChatScreen()),
-  //   );
-  // } else if (type == 'notification') {
-  //   navigatorKey.currentState?.push(
-  //     MaterialPageRoute(builder: (_) => NotificationsScreen()),
-  //   );
-  // }
+  if (type == 'chat') {
+    navigatorKey.currentState?.push(
+      MaterialPageRoute(builder: (_) => ChatScreen()),
+    );
+  } else if (type == 'notification') {
+    navigatorKey.currentState?.push(
+      MaterialPageRoute(builder: (_) => NotificationsScreen()),
+    );
+  }
 }

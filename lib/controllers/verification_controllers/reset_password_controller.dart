@@ -5,7 +5,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
-
 import '../../common/widgets/pop_up/custom_snackbar.dart';
 import '../../screens/authentication/auth_screen.dart';
 import '../../utils/constants/custom_colors.dart';
