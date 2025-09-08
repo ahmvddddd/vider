@@ -68,10 +68,10 @@ class ProviderProfilesNotifier
         final body = jsonDecode(res.body);
 
         try {
-        state = AsyncValue.error(
-          'Failed to fetch providers',
-          StackTrace.current,
-        );
+          state = AsyncValue.error(
+            'Failed to fetch providers',
+            StackTrace.current,
+          );
           await FirebaseCrashlytics.instance.recordError(
             '${body['message']}',
             null,
@@ -82,7 +82,10 @@ class ProviderProfilesNotifier
         }
       }
     } catch (error, stackTrace) {
-      state = AsyncValue.error('An error occured, failed to fetch providers', stackTrace);
+      state = AsyncValue.error(
+        'An error occured, failed to fetch providers',
+        stackTrace,
+      );
       await FirebaseCrashlytics.instance.recordError(
         error,
         stackTrace,
@@ -116,6 +119,17 @@ class ProviderProfilesNotifier
         _stateCache[cacheKey] = state;
         return state;
       } else {
+        final body = jsonDecode(res.body);
+
+        try {
+          await FirebaseCrashlytics.instance.recordError(
+            '${body['message']}',
+            null,
+            reason: 'OSM State coordinates API returned error ${res.statusCode}',
+          );
+        } catch (e) {
+          logger.i("Crashlytics logging failed: $e");
+        }
         _stateCache[cacheKey] = 'Unknown';
         return 'Unknown';
       }
