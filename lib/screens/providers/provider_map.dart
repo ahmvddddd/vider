@@ -4,6 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../utils/constants/custom_colors.dart';
+import '../../utils/helpers/helper_function.dart';
 
 class ProviderMapScreen extends StatefulWidget {
   final double profileLatitude;
@@ -14,7 +15,7 @@ class ProviderMapScreen extends StatefulWidget {
     super.key,
     required this.profileLatitude,
     required this.profileLongitude,
-    required this.profileImage
+    required this.profileImage,
   });
 
   @override
@@ -81,6 +82,7 @@ class _ProviderMapScreenState extends State<ProviderMapScreen> {
       widget.profileLatitude,
       widget.profileLongitude,
     );
+    final dark = HelperFunction.isDarkMode(context);
 
     return Scaffold(
       appBar: TAppBar(
@@ -89,7 +91,13 @@ class _ProviderMapScreenState extends State<ProviderMapScreen> {
       ),
       body:
           currentUserLocation == null
-              ? const Center(child: CircularProgressIndicator())
+              ? Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  strokeWidth: 4.0,
+                  backgroundColor: dark ? Colors.white : Colors.black,
+                ),
+              )
               : ClipRRect(
                 borderRadius: BorderRadius.circular(30),
                 child: FlutterMap(
@@ -107,7 +115,7 @@ class _ProviderMapScreenState extends State<ProviderMapScreen> {
                     MarkerLayer(
                       markers: [
                         // current user marker
-                        
+
                         // profile marker
                         Marker(
                           point: profileLocation,
@@ -118,13 +126,15 @@ class _ProviderMapScreenState extends State<ProviderMapScreen> {
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                     color: CustomColors.alternate,
-                                    width: 3
+                                    width: 3,
                                   ),
                                   borderRadius: BorderRadius.circular(100),
                                 ),
                                 child: CircleAvatar(
                                   radius: 25,
-                                  backgroundImage: NetworkImage(widget.profileImage,),
+                                  backgroundImage: NetworkImage(
+                                    widget.profileImage,
+                                  ),
                                 ),
                               ),
                         ),

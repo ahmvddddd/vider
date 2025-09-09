@@ -104,6 +104,14 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                'ID verification is compulsory for all users. Unverified accounts can not hire providers and would end up being suspended',
+                style: Theme.of(context).textTheme.bodyMedium,
+                softWrap: true,
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: Sizes.spaceBtwSections),
               const TitleAndDescription(
                 textAlign: TextAlign.left,
                 title: 'Id Type',
@@ -195,13 +203,7 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
                 ],
               ),
 
-              const SizedBox(height: Sizes.spaceBtwSections),
-              Text(
-                'ID verification is compulsory for all users. Unverified accounts can not hire providers and would end up being suspended',
-                style: Theme.of(context).textTheme.bodyMedium,
-                softWrap: true,
-                textAlign: TextAlign.center,
-              ),
+              
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vider/utils/helpers/capitalize_text.dart';
 import '../../../common/widgets/appbar/appbar.dart';
 import '../../../common/widgets/custom_shapes/cards/category_card.dart';
 import '../../../common/widgets/layouts/listview.dart';
@@ -133,8 +134,9 @@ class _ProvidersTabBarScreenState extends ConsumerState<ProvidersTabBarScreen>
                 ),
               ),
           error:
-              (e, _) => const Center(
-                child: Text("An error occured, Could not load providers"),
+              (e, _) => Center(
+                child: Text("An error occured, Could not load providers",
+                style: Theme.of(context).textTheme.bodySmall,),
               ),
         ),
       ),
@@ -195,7 +197,7 @@ class _ServiceTabBody extends ConsumerWidget {
             child: CategoryCard(
               potfolioImage: profile.portfolioImages[1],
               imageAvatar: profile.profileImage,
-              fullname: '${profile.firstname} ${profile.lastname}',
+              fullname: '${profile.firstname.capitalizeEachWord()} ${profile.lastname.capitalizeEachWord()}',
               service: profile.service,
               description: profile.bio,
               hourlyRate: profile.hourlyRate,

@@ -290,35 +290,33 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
           },
           loading: () => const JobsScreenShimmer(),
           error:
-              (e, _) => Padding(
-                padding: const EdgeInsets.all(Sizes.spaceBtwItems),
-                child: Column(
-                  children: [
-                    SizedBox(height: 200),
-                    Text(
-                      e.toString().replaceAll('Exception:', '').trim(),
-                      style: Theme.of(context).textTheme.bodySmall,
-                      softWrap: true,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: Sizes.spaceBtwItems),
-                    IconButton(
-                      style: IconButton.styleFrom(
-                        backgroundColor: CustomColors.primary,
-                        padding: const EdgeInsets.all(Sizes.sm),
+              (e, _) => Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.center, // 👈 center horizontally
+                    children: [
+                      Text(
+                        e.toString().replaceAll('Exception:', '').trim(),
+                        style: Theme.of(context).textTheme.bodySmall,
+                        softWrap: true,
+                        textAlign: TextAlign.center, // 👈 center text content
                       ),
-                      icon: Icon(Icons.refresh, color: Colors.white),
-                      onPressed: () async {
-                        setState(() {
-                          isRefreshing = true;
-                        });
-                        ref.refresh(jobsFutureProvider.future);
-                        setState(() {
-                          isRefreshing = false;
-                        });
-                      },
-                    ),
-                  ],
+                      const SizedBox(height: Sizes.spaceBtwItems),
+                      IconButton(
+                        style: IconButton.styleFrom(
+                          backgroundColor: CustomColors.primary,
+                          padding: const EdgeInsets.all(Sizes.sm),
+                        ),
+                        icon: const Icon(Icons.refresh, color: Colors.white),
+                        onPressed: () {
+                          ref.refresh(jobsFutureProvider);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
         ),

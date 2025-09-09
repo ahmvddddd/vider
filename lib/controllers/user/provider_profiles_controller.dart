@@ -89,7 +89,7 @@ class ProviderProfilesNotifier
       await FirebaseCrashlytics.instance.recordError(
         error,
         stackTrace,
-        reason: 'Change Password controller failed',
+        reason: 'Fetch Providers controller failed',
       );
     }
   }

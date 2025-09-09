@@ -30,6 +30,7 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
       final container = ProviderScope.containerOf(context);
       final badgeService = NotificationBadgeService(container: container);
       badgeService.init();
+      ref.read(unreadMessageProvider.notifier).fetchUnreadMessages();
     });
   }
 
@@ -117,7 +118,8 @@ class _NavigationMenuState extends ConsumerState<NavigationMenu> {
             ref.read(selectedIndexProvider.notifier).state = index;
           },
           backgroundColor: darkMode ? CustomColors.dark : CustomColors.light,
-          selectedItemColor: CustomColors.primary,
+          selectedItemColor:
+              darkMode ? CustomColors.alternate : CustomColors.primary,
           unselectedItemColor:
               darkMode ? CustomColors.darkGrey : CustomColors.darkerGrey,
           items: [

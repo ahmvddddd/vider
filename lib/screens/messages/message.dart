@@ -206,7 +206,7 @@ class _MessageState extends ConsumerState<MessageScreen> {
               ),
             ),
             RoundedContainer(
-              radius: Sizes.cardRadiusLg,
+              radius: 50,
               backgroundColor: 
               dark ? Colors.white.withValues(alpha: 0.1)
               : Colors.black.withValues(alpha: 0.1),
@@ -214,17 +214,21 @@ class _MessageState extends ConsumerState<MessageScreen> {
               child: Row(
                 children: [
                   Flexible(
-                    child: TextField(
-                      focusNode: myFocusNode,
-                      controller: _messageController,
-                      decoration: InputDecoration(
-                        hintText: 'Type a message...',
-                        hintStyle: Theme.of(context).textTheme.labelSmall,
-                        fillColor: dark ? CustomColors.dark : CustomColors.light,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: TextField(
+                        focusNode: myFocusNode,
+                        controller: _messageController,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.only(left: Sizes.sm),
+                          hintText: 'Type a message...',
+                          hintStyle: Theme.of(context).textTheme.labelSmall,
+                          fillColor: dark ? CustomColors.dark : CustomColors.light,
+                                      focusedBorder: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      errorBorder: InputBorder.none,
+                                      disabledBorder: InputBorder.none,
+                        ),
                       ),
                     ),
                   ),

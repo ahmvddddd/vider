@@ -17,14 +17,14 @@ class ProvidersGrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoriesAsync = ref.watch(categoriesProvider);
-    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     final dark = HelperFunction.isDarkMode(context);
 
     return categoriesAsync.when(
       data: (categories) {
         return GridLayout(
           crossAxisCount: 4,
-          mainAxisExtent: screenHeight * 0.11,
+          mainAxisExtent: screenWidth * 0.20,
           itemCount: categories.length > 8 ? 8 : categories.length,
           itemBuilder: (context, index) {
             final category = categories[index];
@@ -42,7 +42,7 @@ class ProvidersGrid extends ConsumerWidget {
                   child: _buildCategoryBox(
                     context,
                     dark,
-                    screenHeight,
+                    screenWidth,
                     'View More',
                     isViewMore: true,
                   ),
@@ -60,7 +60,7 @@ class ProvidersGrid extends ConsumerWidget {
                   child: _buildCategoryBox(
                     context,
                     dark,
-                    screenHeight,
+                    screenWidth,
                     category,
                     isViewMore: false,
                   ),
@@ -82,13 +82,13 @@ class ProvidersGrid extends ConsumerWidget {
   Widget _buildCategoryBox(
     BuildContext context,
     bool dark,
-    double screenHeight,
+    double screenWidth,
     String title, {
     bool isViewMore = false,
   }) {
     return RoundedContainer(
-      height: screenHeight * 0.11,
-      width: screenHeight * 0.11,
+      height: screenWidth * 0.20,
+      width: screenWidth * 0.20,
       padding: const EdgeInsets.all(2),
       backgroundColor:
           isViewMore

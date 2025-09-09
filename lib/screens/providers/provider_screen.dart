@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../utils/helpers/capitalize_text.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/containers/button_container.dart';
 import '../../common/widgets/image/full_screen_image_view.dart';
@@ -154,7 +155,7 @@ class _ProviderScreenState extends ConsumerState<ProviderScreen> {
               child: ProfileImage(
                 imageAvatar: widget.profile.profileImage,
                 fullname:
-                    '${widget.profile.firstname} ${widget.profile.lastname}',
+                    '${widget.profile.firstname.capitalizeEachWord()} ${widget.profile.lastname.capitalizeEachWord()}',
                 ratingColor: ratingColor,
                 rating: widget.profile.rating,
                 service: widget.profile.service,

@@ -48,7 +48,10 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
     );
 
     setState(() {
-      _currentUserLocation = LatLng(pos.latitude, pos.longitude); // demo location
+      _currentUserLocation = LatLng(
+        pos.latitude,
+        pos.longitude,
+      ); // demo location
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -118,22 +121,17 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                     ),
                   ),
                   const SizedBox(width: Sizes.sm),
-                  RoundedContainer(
-                    radius: 6,
-                    backgroundColor: ratingColor,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Sizes.xs + 4,
-                      vertical: 2,
-                    ),
-                    child: Center(
-                      child: Text(
-                        provider.rating.toString(),
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  Row(
+                    children: [
+                      Icon(Icons.star, color: ratingColor, size: Sizes.iconMd),
+                      Text(
+                        '${provider.rating}',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: dark ? Colors.white : Colors.black,
                           fontFamily: 'JosefinSans',
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
@@ -252,6 +250,7 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
   @override
   Widget build(BuildContext context) {
     final providersState = ref.watch(providersMapController);
+    final dark = HelperFunction.isDarkMode(context);
 
     return Scaffold(
       appBar: TAppBar(
@@ -260,7 +259,13 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
       ),
       body:
           _currentUserLocation == null
-              ? const Center(child: CircularProgressIndicator())
+              ? Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  strokeWidth: 4.0,
+                  backgroundColor: dark ? Colors.white : Colors.black,
+                ),
+              )
               : Column(
                 children: [
                   SizedBox(
@@ -350,8 +355,8 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                                                 providerIcon = Icons.build;
                                                 break;
                                               case 'health & fitness':
-                                                providerIcon = Icons.fitness_center;
-                                              
+                                                providerIcon =
+                                                    Icons.fitness_center;
                                             }
                                             return GestureDetector(
                                               onTap:
@@ -359,10 +364,18 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                                                     context,
                                                     p,
                                                   ),
-                                              child: Icon(
-                                                providerIcon,
-                                                size: 40,
-                                                color: CustomColors.primary,
+                                              child: RoundedContainer(
+                                                radius: 100,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                showBorder: true,
+                                                borderColor:
+                                                    CustomColors.primary,
+                                                child: Icon(
+                                                  providerIcon,
+                                                  size: 40,
+                                                  color: CustomColors.primary,
+                                                ),
                                               ),
                                             );
                                           },

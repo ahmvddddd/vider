@@ -47,7 +47,7 @@ class ProviderButtons extends StatelessWidget {
           );
 
           if (confirm == true) {
-            ReportIssueController.launchGmailCompose('Report $employeruserName');
+            ReportIssueController.launchGmailCompose(context, 'Report $employeruserName');
           }
         },
                 child: Container(

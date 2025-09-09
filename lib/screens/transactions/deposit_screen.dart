@@ -4,6 +4,7 @@ import '../../common/widgets/custom_shapes/containers/button_container.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/pop_up/custom_snackbar.dart';
+import '../../common/widgets/texts/title_and_description.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
@@ -42,14 +43,12 @@ class DepositScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Your Crypto Address',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            Text(
-              'Click the button bellow to copy to clipboard',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
+            const TitleAndDescription(
+                textAlign: TextAlign.left,
+                title: 'Your Crypto Address',
+                description:
+                    'Click the copy button at the bottom of the screen to copy address to clipboard',
+              ),
 
             const SizedBox(height: Sizes.spaceBtwSections),
             RoundedContainer(
@@ -63,11 +62,10 @@ class DepositScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  SelectableText(
                     cryptoAddress,
-                    style: Theme.of(context).textTheme.headlineSmall,
+                    style: Theme.of(context).textTheme.bodyMedium,
                     textAlign: TextAlign.center,
-                    softWrap: true,
                   ),
                 ],
               ),

@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import '../../../nav_menu.dart';
-import '../../models/user/user_model.dart';
+import '../../models/user/auth_model.dart';
 import '../../repository/user/username_local_storage.dart';
 import '../../utils/helpers/helper_function.dart';
 import '../services/firebase_service.dart';

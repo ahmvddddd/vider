@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vider/utils/helpers/capitalize_text.dart';
 import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../../common/widgets/custom_shapes/containers/search_container.dart';
 import '../../../common/widgets/layouts/listview.dart';
@@ -136,7 +137,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
                     title: Row(
                       children: [
                         Text(
-                          "${p.firstname} ${p.lastname}",
+                          "${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}",
                           style: Theme.of(context).textTheme.labelSmall,
                         ),
 

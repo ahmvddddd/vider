@@ -109,7 +109,7 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
                     child: RoundedContainer(
                       width: MediaQuery.of(context).size.width * 0.43,
                       height: MediaQuery.of(context).size.height * 0.06,
-                      radius: Sizes.cardRadiusSm,
+                      radius: Sizes.cardRadiusLg,
                       padding: const EdgeInsets.all(Sizes.sm),
                       backgroundColor: Colors.grey,
                       child: Center(
@@ -127,7 +127,55 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
               const SizedBox(height: Sizes.sm),
             ],
           ),
-      error: (err, st) => Text('Err: $err'),
+      error: (err, st) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    '\$0.00',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlineMedium!.copyWith(color: Colors.white),
+                  ),
+                  Text(
+                    'Balance',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelMedium!.copyWith(color: Colors.white),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: Sizes.sm),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const SizedBox(width: Sizes.sm),
+
+                  GestureDetector(
+                    onTap: () {},
+                    child: RoundedContainer(
+                      width: MediaQuery.of(context).size.width * 0.43,
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      radius: Sizes.cardRadiusLg,
+                      padding: const EdgeInsets.all(Sizes.sm),
+                      backgroundColor: Colors.grey,
+                      child: Center(
+                        child: Text(
+                          'Deposit',
+                          style: Theme.of(context).textTheme.labelMedium!
+                              .copyWith(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: Sizes.sm),
+            ],
+          ),
     );
   }
 }

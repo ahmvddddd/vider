@@ -48,25 +48,28 @@ class SearchContainer extends StatelessWidget {
                 showBackground
                     ? (dark ? CustomColors.dark : CustomColors.light)
                     : Colors.transparent,
-            borderRadius: BorderRadius.circular(Sizes.cardRadiusLg),
+            borderRadius: BorderRadius.circular(50),
             border: showBorder ? Border.all(color: CustomColors.grey) : null,
           ),
           child: Center(
-            child: TextFormField(
-              controller: controller,
-              onChanged: onChanged,
-              onFieldSubmitted: onSubmitted, // ✅ handles Enter/Done
-              onEditingComplete: onEditingComplete, // ✅ handles focus loss
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  icon,
-                  color: CustomColors.darkerGrey,
-                  size: Sizes.iconSm,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: TextFormField(
+                controller: controller,
+                onChanged: onChanged,
+                onFieldSubmitted: onSubmitted, // ✅ handles Enter/Done
+                onEditingComplete: onEditingComplete, // ✅ handles focus loss
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    icon,
+                    color: CustomColors.darkerGrey,
+                    size: Sizes.iconSm,
+                  ),
+                  suffixIcon: suffixIcon,
+                  border: InputBorder.none,
+                  hintText: text,
+                  hintStyle: Theme.of(context).textTheme.labelLarge,
                 ),
-                suffixIcon: suffixIcon,
-                border: InputBorder.none,
-                hintText: text,
-                hintStyle: Theme.of(context).textTheme.labelLarge,
               ),
             ),
           ),

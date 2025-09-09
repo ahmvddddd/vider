@@ -16,19 +16,19 @@ class TitleAndDescription extends StatelessWidget {
     return Column(
       children: [
       SizedBox(
-          width: screenWidth * 0.90,  
+          width: screenWidth * 0.70,  
         child: Text(
           title,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.labelLarge,
           textAlign: textAlign,
         ),
       ),
       const SizedBox(height: Sizes.sm),
         SizedBox(
-          width: screenWidth * 0.90,
+          width: screenWidth * 0.70,
           child: Text(
             description,
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(overflow: TextOverflow.ellipsis),
+            style: Theme.of(context).textTheme.labelMedium,
             softWrap: true,
             maxLines: 3,
             textAlign: textAlign,
@@ -38,4 +38,3 @@ class TitleAndDescription extends StatelessWidget {
     );
   }
 }
-

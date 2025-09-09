@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../utils/helpers/capitalize_text.dart';
 import '../../../controllers/user/provider_profiles_controller.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
@@ -126,7 +127,7 @@ class AllProvidersScreen extends ConsumerWidget {
                                     title: Row(
                                       children: [
                                         Text(
-                                          "${p.firstname} ${p.lastname}",
+                                          "${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}",
                                           style:
                                               Theme.of(
                                                 context,

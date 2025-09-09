@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:vider/utils/helpers/capitalize_text.dart';
 import '../../../common/widgets/custom_shapes/cards/provider_card.dart';
 import '../../../common/widgets/layouts/listview.dart';
 import '../../../common/widgets/texts/error_retry.dart';
@@ -145,7 +146,7 @@ class _ProviderProfilesWidgetState
                 );
               },
               child: ProviderCard(
-                fullname: '${p.firstname} ${p.lastname}',
+                fullname: '${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}',
                 service: p.service,
                 portfolioImage: p.portfolioImages[1],
                 imageAvatar: p.profileImage,

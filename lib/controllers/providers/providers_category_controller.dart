@@ -79,7 +79,7 @@ class ServiceProfilesNotifier
                 .toList();
         state = AsyncValue.data(list);
       } catch (error, stackTrace) {
-        state = AsyncValue.error(error, stackTrace);
+        state = AsyncValue.error('An error occured, failed to load profiles', stackTrace);
         await FirebaseCrashlytics.instance.recordError(
         error,
         stackTrace,

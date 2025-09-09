@@ -66,7 +66,7 @@ class GeneralAccountSettings extends StatelessWidget {
           const SizedBox(height: Sizes.sm),
           SettingsMenuTile(
             onTap: () async {
-              ReportIssueController.launchGmailCompose('Report An Issue');
+              ReportIssueController.launchGmailCompose(context, 'Report An Issue');
             },
             icon: Iconsax.security_safe,
             title: 'Safety',

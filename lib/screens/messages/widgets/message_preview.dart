@@ -28,8 +28,8 @@ class MessagePreview extends StatelessWidget {
       padding: const EdgeInsets.all(Sizes.spaceBtwItems),
       child: RoundedContainer(
         padding: const EdgeInsets.all(Sizes.sm),
-        radius: Sizes.borderRadiusMd,
-        backgroundColor: Colors.transparent,
+        radius: Sizes.cardRadiusMd,
+        backgroundColor: dark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.1),
         width: screenWidth * 0.90,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
