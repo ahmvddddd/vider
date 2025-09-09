@@ -71,7 +71,7 @@ class ProvidersGrid extends ConsumerWidget {
       loading: () => const ProvidersGridShimmer(),
       error:
           (err, _) => ErrorRetry(
-            err: err,
+            err: 'An error occured. Could not load categories',
             onPressed: () {
               ref.refresh(categoriesProvider);
             },

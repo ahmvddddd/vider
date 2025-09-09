@@ -181,7 +181,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
               ),
           error:
               (err, stack) => ErrorRetry(
-                err: err,
+                err: 'An error occured, failed to fetch providers',
                 onPressed: () {
                   ref.refresh(searchProfilesProvider);
                 },

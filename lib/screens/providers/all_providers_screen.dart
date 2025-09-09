@@ -185,7 +185,7 @@ class AllProvidersScreen extends ConsumerWidget {
             ),
         error:
             (err, _) => ErrorRetry(
-                err: err,
+                err: 'An error occured, failed to fetch providers',
                 onPressed: () {
                   ref.refresh(providerProfilesController);
                 },

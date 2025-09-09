@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../../common/widgets/list_tile/settings_menu_tile.dart';
-import '../../../controllers/user/report_issue_controller.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
@@ -66,7 +66,13 @@ class GeneralAccountSettings extends StatelessWidget {
           const SizedBox(height: Sizes.sm),
           SettingsMenuTile(
             onTap: () async {
-              ReportIssueController.launchGmailCompose(context, 'Report An Issue');
+              // ReportIssueController.launchGmailCompose(context, 'Report An Issue');
+                final Uri emailLaunchUri = Uri(
+                  scheme: 'mailto',
+                  path: 'vider_support@gmail.com',
+                  query: Uri.encodeQueryComponent('subject=Report An Issue'),
+                );
+                await launchUrl(emailLaunchUri);
             },
             icon: Iconsax.security_safe,
             title: 'Safety',

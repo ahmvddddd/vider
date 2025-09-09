@@ -58,7 +58,7 @@ Future<void> main() async {
           ledColor: Colors.white,
           channelShowBadge: true,
         ),
-      ]);
+      ], debug: false);
 
       // 🔑 FCM + Awesome Notifications
       await AwesomeNotificationsFcm().initialize(
