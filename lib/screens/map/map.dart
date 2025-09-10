@@ -5,7 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:vider/screens/providers/provider_screen.dart';
 import '../../common/widgets/appbar/appbar.dart';
-import '../../controllers/user/provider_profiles_controller.dart';
+import '../../controllers/providers/provider_profiles_controller.dart';
 import '../../models/providers/providers_category_model.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/helpers/helper_function.dart';

@@ -13,6 +13,7 @@ class UserProfileModel {
   final List<String> portfolioImages;
   final double rating;
   final bool isIdVerified;
+  final String verificationStatus;
 
   UserProfileModel({
     required this.userId,
@@ -28,7 +29,8 @@ class UserProfileModel {
     required this.hourlyRate,
     required this.portfolioImages,
     required this.rating,
-    required this.isIdVerified
+    required this.isIdVerified,
+    required this.verificationStatus
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
@@ -46,7 +48,8 @@ class UserProfileModel {
       skills: List<String>.from(json['skills'] ?? []),
       portfolioImages: List<String>.from(json['portfolioImages'] ?? []),
       rating: (json['rating'] ?? 0).toDouble(),
-      isIdVerified: (json['isIdVerified'] ?? false)
+      isIdVerified: (json['isIdVerified'] ?? false),
+      verificationStatus: json['verificationStatus'] ?? '',
     );
   }
 
@@ -66,6 +69,7 @@ class UserProfileModel {
       'portfolioImages': portfolioImages,
       'rating': rating,
       'isIdVerified': isIdVerified,
+      'verificationStatus': verificationStatus
     };
   }
 }

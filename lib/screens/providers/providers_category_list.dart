@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/cards/category_card.dart';
 import '../../common/widgets/layouts/listview.dart';
-import '../../controllers/user/provider_profiles_controller.dart';
+import '../../controllers/providers/provider_profiles_controller.dart';
 import '../../utils/constants/sizes.dart';
 
 class ProvidersCategoryList extends ConsumerWidget {

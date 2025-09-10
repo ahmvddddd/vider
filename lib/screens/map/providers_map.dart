@@ -288,7 +288,7 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                   ),
                   const SizedBox(height: Sizes.sm),
                   Expanded(
-                    // ✅ Expanded fixes overflow
+                    
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(30),
                       child: FlutterMap(
@@ -366,6 +366,7 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                                                   ),
                                               child: RoundedContainer(
                                                 radius: 100,
+                                                padding: const EdgeInsets.all(Sizes.xs),
                                                 backgroundColor:
                                                     Colors.transparent,
                                                 showBorder: true,
@@ -373,7 +374,7 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                                                     CustomColors.primary,
                                                 child: Icon(
                                                   providerIcon,
-                                                  size: 40,
+                                                  size: 35,
                                                   color: CustomColors.primary,
                                                 ),
                                               ),

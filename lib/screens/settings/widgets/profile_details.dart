@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 
 class ProfileDetails extends ConsumerStatefulWidget {
@@ -21,12 +22,14 @@ class ProfileDetails extends ConsumerStatefulWidget {
 class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Row(
       children: [
         Container(
           height: MediaQuery.of(context).size.height * 0.10,
           width: MediaQuery.of(context).size.height * 0.10,
-          decoration: const BoxDecoration(shape: BoxShape.circle),
+          decoration: BoxDecoration(shape: BoxShape.circle,
+          border: Border.all(color: CustomColors.alternate, width: 4)),
           child: Center(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100),
@@ -38,17 +41,21 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.fullname,
-              style: Theme.of(
-                context,
-              ).textTheme.bodySmall!.copyWith(color: Colors.white),
+            SizedBox(
+              width: screenWidth * 0.50,
+              child: Text(
+                widget.fullname,
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineSmall!.copyWith(color: Colors.white,
+                overflow: TextOverflow.ellipsis),
+              ),
             ),
             Text(
-              widget.username,
+              '@${widget.username}',
               style: Theme.of(
                 context,
-              ).textTheme.labelMedium!.copyWith(color: Colors.white),
+              ).textTheme.labelMedium!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -67,7 +74,8 @@ class ProfileDetailsDummy extends StatelessWidget {
         Container(
           height: MediaQuery.of(context).size.height * 0.10,
           width: MediaQuery.of(context).size.height * 0.10,
-          decoration: const BoxDecoration(shape: BoxShape.circle),
+          decoration: BoxDecoration(shape: BoxShape.circle,
+          border: Border.all(color: CustomColors.alternate, width: 4)),
           child: Center(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(100),

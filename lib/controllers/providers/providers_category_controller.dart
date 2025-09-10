@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:logger/logger.dart';
 import '../../models/providers/providers_category_model.dart';
+import '../../utils/helpers/connectivity_helper.dart';
 
 String baseUrl = dotenv.env['BASE_URL'] ?? 'https://defaulturl.com/api';
 
@@ -36,9 +37,13 @@ class ServiceProfilesNotifier
   final String service;
   Timer? _debounce;
   final logger = Logger();
+  final Ref ref;
 
-  ServiceProfilesNotifier({required this.category, required this.service})
-    : super(const AsyncValue.loading()) {
+  ServiceProfilesNotifier({
+    required this.category,
+    required this.service,
+    required this.ref,
+  }) : super(const AsyncValue.loading()) {
     _fetch(); // load for this (category,service)
   }
 
@@ -53,15 +58,21 @@ class ServiceProfilesNotifier
         if (res.statusCode != 200) {
           final body = jsonDecode(res.body);
 
-        try {
-          await FirebaseCrashlytics.instance.recordError(
-            '${body['message']}',
-            null,
-            reason: 'Profile category API returned error ${res.statusCode}',
-          );
-        } catch (e) {
-          logger.i("Crashlytics logging failed: $e");
-        }
+          try {
+            final connectivity = ref.read(connectivityProvider);
+            if (!connectivity.isOnline) {
+              throw Exception(
+                'No Internet. Please check your internet connection',
+              );
+            }
+            await FirebaseCrashlytics.instance.recordError(
+              '${body['message']}',
+              null,
+              reason: 'Profile category API returned error ${res.statusCode}',
+            );
+          } catch (e) {
+            logger.i("Crashlytics logging failed: $e");
+          }
           state = AsyncValue.error(
             "An error occured, failed to load profiles",
             StackTrace.current,
@@ -79,12 +90,15 @@ class ServiceProfilesNotifier
                 .toList();
         state = AsyncValue.data(list);
       } catch (error, stackTrace) {
-        state = AsyncValue.error('An error occured, failed to load profiles', stackTrace);
+        state = AsyncValue.error(
+          'An error occured, failed to load profiles',
+          stackTrace,
+        );
         await FirebaseCrashlytics.instance.recordError(
-        error,
-        stackTrace,
-        reason: 'An error occured, failed to load profiles',
-      );
+          error,
+          stackTrace,
+          reason: 'An error occured, failed to load profiles',
+        );
       }
     });
   }
@@ -102,5 +116,9 @@ final serviceProfilesProvider = StateNotifierProvider.family.autoDispose<
   ({String category, String service})
 >((ref, key) {
   // autoDispose ensures tabs you leave stop holding memory/network.
-  return ServiceProfilesNotifier(category: key.category, service: key.service);
+  return ServiceProfilesNotifier(
+    category: key.category,
+    service: key.service,
+    ref: ref,
+  );
 });

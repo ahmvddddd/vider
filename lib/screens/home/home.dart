@@ -7,7 +7,7 @@ import '../../controllers/notifications/unread_notifications_controller.dart';
 import '../../controllers/providers/providers_category_controller.dart';
 import '../../controllers/services/firebase_service.dart';
 import '../../controllers/services/notification_badge_service.dart';
-import '../../controllers/user/provider_profiles_controller.dart';
+import '../../controllers/providers/provider_profiles_controller.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
 import '../providers/all_providers_screen.dart';

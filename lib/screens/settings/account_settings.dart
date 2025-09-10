@@ -76,7 +76,7 @@ class _AccountSettingsState extends ConsumerState<AccountSettings> {
                           data: (user) {
                             return Column(
                               children: [
-                                user.isIdVerified == true
+                                user.verificationStatus == 'pending'
                                     ? const SizedBox.shrink()
                                     : Column(
                                       children: [

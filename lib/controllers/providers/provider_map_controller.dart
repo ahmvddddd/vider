@@ -5,15 +5,17 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import '../../models/providers/providers_category_model.dart';
+import '../../utils/helpers/connectivity_helper.dart';
 
 final providersMapController = StateNotifierProvider<
   ProvidersMapNotifier,
   AsyncValue<List<ProvidersCategoryModel>>
->((ref) => ProvidersMapNotifier());
+>((ref) => ProvidersMapNotifier(ref));
 
 class ProvidersMapNotifier
     extends StateNotifier<AsyncValue<List<ProvidersCategoryModel>>> {
-  ProvidersMapNotifier() : super(const AsyncValue.data([]));
+      final Ref ref;
+  ProvidersMapNotifier(this.ref) : super(const AsyncValue.data([]));
 
   Future<void> fetchProviders({
     required double northEastLat,
@@ -24,6 +26,11 @@ class ProvidersMapNotifier
     state = const AsyncValue.loading();
     final logger = Logger();
     try {
+      final connectivity = ref.read(connectivityProvider);
+      if (!connectivity.isOnline) {
+        throw Exception('No Internet. Please check your internet connection');
+      }
+      
       String providersMapURL =
           dotenv.env['PROVIDERS_MAP'] ?? 'https://defaulturl.com/api';
       final url = Uri.parse(

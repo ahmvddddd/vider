@@ -5,7 +5,7 @@ import 'package:vider/utils/helpers/capitalize_text.dart';
 import '../../../common/widgets/custom_shapes/cards/provider_card.dart';
 import '../../../common/widgets/layouts/listview.dart';
 import '../../../common/widgets/texts/error_retry.dart';
-import '../../../controllers/user/provider_profiles_controller.dart';
+import '../../../controllers/providers/provider_profiles_controller.dart';
 import '../../../models/providers/providers_category_model.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
@@ -78,7 +78,7 @@ class _ProviderProfilesWidgetState
       });
     } catch (e) {
       setState(() {
-        _locationError = "Failed to get location: $e";
+        _locationError = "Failed to get location";
         _loadingLocation = false;
       });
     }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../utils/helpers/capitalize_text.dart';
-import '../../../controllers/user/provider_profiles_controller.dart';
+import '../../controllers/providers/provider_profiles_controller.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../common/widgets/layouts/listview.dart';

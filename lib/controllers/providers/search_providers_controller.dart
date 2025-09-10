@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import '../../models/providers/providers_category_model.dart';
+import '../../utils/helpers/connectivity_helper.dart';
 
 final searchQueryProvider = StateProvider<String>((ref) => "");
 
@@ -18,6 +19,11 @@ final searchProfilesProvider =
       final logger = Logger();
 
       try {
+        final connectivity = ref.read(connectivityProvider);
+        if (!connectivity.isOnline) {
+          throw Exception('No Internet. Please check your internet connection');
+        }
+
         final uri = Uri.parse(
           searchProvidersURL,
         ).replace(queryParameters: {'q': query});

@@ -223,7 +223,7 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
                                 ),
                                 SizedBox(
                                   width: screenWidth * 0.60,
-                                  child: Text(
+                                  child: SelectableText(
                                     transaction.transactionId,
                                     style: Theme.of(
                                       context,
