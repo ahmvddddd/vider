@@ -25,6 +25,7 @@ class _SigninFormState extends ConsumerState<SignInForm> {
   final passwordController = TextEditingController();
   final hidePassword = ValueNotifier<bool>(true);
   bool _dialogShown = false;
+  bool _submitted = false;
 
   @override
   void initState() {
@@ -54,26 +55,51 @@ class _SigninFormState extends ConsumerState<SignInForm> {
     double screenHeight = MediaQuery.of(context).size.height;
     final username = usernameController.text.trim();
 
- WidgetsBinding.instance.addPostFrameCallback((_) {
-    if (!_dialogShown &&
-        loginState.error != null &&
-        loginState.error!.toLowerCase().contains('suspended')) {
-      _dialogShown = true; // ✅ prevent reopening
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("Account @$username Suspended",
-          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: CustomColors.error, fontWeight: FontWeight.bold),),
-          content: Text(loginState.error!,
-          style: Theme.of(context).textTheme.bodySmall,),
-          actions: [
-            TextButton( onPressed: () async { final Uri emailLaunchUri = Uri( scheme: 'mailto', path: 'vider_support@gmail.com', query: Uri.encodeQueryComponent( 'subject=Account Suspension Appeal&body=Hello, my account @$username was suspended and I would like to appeal.', ), ); await launchUrl(emailLaunchUri); }, child: Text( 'File Complaint', style: Theme.of(context).textTheme.bodySmall!.copyWith( fontWeight: FontWeight.bold, ), ), ),
-          ],
-        ),
-      );
-      ref.read(loginControllerProvider.notifier).clearError();
-    }
-  });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_dialogShown &&
+          loginState.error != null &&
+          loginState.error!.toLowerCase().contains('suspended')) {
+        _dialogShown = true; // ✅ prevent reopening
+        showDialog(
+          context: context,
+          builder:
+              (context) => AlertDialog(
+                title: Text(
+                  "Account @$username Suspended",
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: CustomColors.error,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                content: Text(
+                  loginState.error!,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () async {
+                      final Uri emailLaunchUri = Uri(
+                        scheme: 'mailto',
+                        path: 'vider_support@gmail.com',
+                        query: Uri.encodeQueryComponent(
+                          'subject=Account Suspension Appeal&body=Hello, my account @$username was suspended and I would like to appeal.',
+                        ),
+                      );
+                      await launchUrl(emailLaunchUri);
+                    },
+                    child: Text(
+                      'File Complaint',
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+        );
+        ref.read(loginControllerProvider.notifier).clearError();
+      }
+    });
 
     return Form(
       key: formKey,
@@ -153,11 +179,23 @@ class _SigninFormState extends ConsumerState<SignInForm> {
 
                         loginController.clearError();
 
+                        if (mounted) {
+                          setState(() {
+                            _submitted = true;
+                          });
+                        }
+
                         await loginController.login(
                           context,
                           usernameController.text.trim(),
                           passwordController.text,
                         );
+
+                        if (mounted) {
+                          setState(() {
+                            _submitted = false;
+                          });
+                        }
                       }
                     },
                     child: RoundedContainer(
@@ -176,7 +214,7 @@ class _SigninFormState extends ConsumerState<SignInForm> {
                   ),
                 ),
 
-            if (loginState.error != null)
+            if (!_submitted && loginState.error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Text(

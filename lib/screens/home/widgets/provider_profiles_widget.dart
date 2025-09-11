@@ -27,7 +27,7 @@ class _ProviderProfilesWidgetState
   double? lon;
   bool _loadingLocation = true;
   String? _locationError;
-  String? _stateName; // <-- store fetched state here
+  String? _stateName;
 
   @override
   void initState() {
@@ -42,6 +42,7 @@ class _ProviderProfilesWidgetState
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
+          if (!mounted) return;
           setState(() {
             _locationError = "Location permission denied";
             _loadingLocation = false;
@@ -51,6 +52,7 @@ class _ProviderProfilesWidgetState
       }
 
       if (permission == LocationPermission.deniedForever) {
+        if (!mounted) return;
         setState(() {
           _locationError = "Location permissions are permanently denied";
           _loadingLocation = false;
@@ -146,7 +148,8 @@ class _ProviderProfilesWidgetState
                 );
               },
               child: ProviderCard(
-                fullname: '${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}',
+                fullname:
+                    '${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}',
                 service: p.service,
                 portfolioImage: p.portfolioImages[1],
                 imageAvatar: p.profileImage,

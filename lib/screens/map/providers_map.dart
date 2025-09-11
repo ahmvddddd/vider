@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
@@ -12,7 +10,7 @@ import '../../controllers/providers/provider_map_controller.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
-import '../providers/provider_screen.dart';
+import 'widgets/map_helper.dart';
 
 class ProvidersMapPage extends ConsumerStatefulWidget {
   const ProvidersMapPage({super.key});
@@ -47,204 +45,36 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
       desiredAccuracy: LocationAccuracy.high,
     );
 
+    if (!mounted) return;
     setState(() {
-      _currentUserLocation = LatLng(
-        pos.latitude,
-        pos.longitude,
-      ); // demo location
+      _currentUserLocation = LatLng(pos.latitude, pos.longitude);
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _fetchProvidersForBounds();
+      MapHelper.fetchProvidersForBounds(_mapController, ref);
     });
   }
 
-  void _fetchProvidersForBounds() {
-    final bounds = _mapController.bounds;
-    if (bounds == null) return;
-
-    final northEast = bounds.northEast;
-    final southWest = bounds.southWest;
-
-    ref
-        .read(providersMapController.notifier)
-        .fetchProviders(
-          northEastLat: northEast.latitude,
-          northEastLng: northEast.longitude,
-          southWestLat: southWest.latitude,
-          southWestLng: southWest.longitude,
-        );
-  }
-
-  /// ✅ Popup for provider
-  void _showProviderPopup(BuildContext context, dynamic provider) {
-    final dark = HelperFunction.isDarkMode(context);
-    Color ratingColor = Colors.brown;
-
-    if (provider.rating < 1.66) {
-      ratingColor = Colors.brown;
-    } else if (provider.rating < 3.33) {
-      ratingColor = CustomColors.silver;
-    } else {
-      ratingColor = CustomColors.gold;
-    }
-
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (ctx) {
-        return Padding(
-          padding: const EdgeInsets.all(Sizes.spaceBtwItems),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              RoundedContainer(
-                showBorder: true,
-                borderColor: CustomColors.primary,
-                radius: 100,
-                child: CircleAvatar(
-                  radius: 40,
-                  backgroundImage: NetworkImage(provider.profileImage ?? ""),
-                ),
-              ),
-              const SizedBox(height: Sizes.sm),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "${provider.firstname} ${provider.lastname}",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(width: Sizes.sm),
-                  Row(
-                    children: [
-                      Icon(Icons.star, color: ratingColor, size: Sizes.iconMd),
-                      Text(
-                        '${provider.rating}',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: dark ? Colors.white : Colors.black,
-                          fontFamily: 'JosefinSans',
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Text(
-                provider.service ?? " ",
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color: dark ? Colors.white : Colors.black,
-                ),
-              ),
-              const SizedBox(height: Sizes.spaceBtwItems),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(ctx);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ProviderScreen(profile: provider),
-                    ),
-                  );
-                },
-                child: RoundedContainer(
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width * 0.80,
-                  padding: const EdgeInsets.all(Sizes.sm),
-                  backgroundColor: CustomColors.primary,
-                  child: Center(
-                    child: Text(
-                      "View Profile",
-                      style: Theme.of(
-                        context,
-                      ).textTheme.labelSmall!.copyWith(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: Sizes.spaceBtwItems),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> searchLocation({
-    required String query,
-    required MapController mapController,
-  }) async {
-    if (query.isEmpty) {
-      return;
-    }
-
-    try {
-      final url = Uri.parse(
-        "https://nominatim.openstreetmap.org/search?q=$query&format=json&limit=1",
-      );
-
-      final response = await http.get(
-        url,
-        headers: {
-          "User-Agent":
-              "ViderApp/1.0 (your_email@example.com)", // required by Nominatim
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final List results = jsonDecode(response.body);
-        if (results.isNotEmpty) {
-          final lat = double.parse(results[0]['lat']);
-          final lon = double.parse(results[0]['lon']);
-
-          // 2. Move the map to the searched location
-          mapController.move(LatLng(lat, lon), 14);
-
-          // 3. Define bounding box around the location (±0.05 for example)
-          final northEastLat = lat + 0.05;
-          final northEastLng = lon + 0.05;
-          final southWestLat = lat - 0.05;
-          final southWestLng = lon - 0.05;
-
-          // 4. Fetch providers in that bounding box
-          await ref
-              .read(providersMapController.notifier)
-              .fetchProviders(
-                northEastLat: northEastLat,
-                northEastLng: northEastLng,
-                southWestLat: southWestLat,
-                southWestLng: southWestLng,
-              );
-        } else {
-          return;
-        }
-      } else {
-        return;
-      }
-    } catch (e) {
-      throw Exception("Failed to fetch location");
-    }
-  }
-
   bool _isSearching = false;
-
   Future<void> _onSearch() async {
-    if (_isSearching) return; // ✅ ignore if already searching
-
+    if (_isSearching) return;
     final query = searchController.text.trim();
-
     if (query.isEmpty) {
       return;
     }
-
     _isSearching = true;
-    await searchLocation(query: query, mapController: _mapController);
+    await MapHelper.searchLocation(
+      query: query,
+      mapController: _mapController,
+      ref: ref,
+    );
     _isSearching = false;
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -254,7 +84,10 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
 
     return Scaffold(
       appBar: TAppBar(
-        title: Text("Map", style: Theme.of(context).textTheme.headlineSmall),
+        title: Text(
+          "Map Screen",
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
         showBackArrow: true,
       ),
       body:
@@ -288,7 +121,6 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                   ),
                   const SizedBox(height: Sizes.sm),
                   Expanded(
-                    
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(30),
                       child: FlutterMap(
@@ -298,7 +130,10 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                           zoom: 13,
                           onMapEvent: (event) {
                             if (event is MapEventMoveEnd) {
-                              _fetchProvidersForBounds();
+                              MapHelper.fetchProvidersForBounds(
+                                _mapController,
+                                ref,
+                              );
                             }
                           },
                         ),
@@ -360,22 +195,27 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                                             }
                                             return GestureDetector(
                                               onTap:
-                                                  () => _showProviderPopup(
-                                                    context,
-                                                    p,
-                                                  ),
+                                                  () =>
+                                                      MapHelper.showProviderPopup(
+                                                        context,
+                                                        p,
+                                                      ),
                                               child: RoundedContainer(
                                                 radius: 100,
-                                                padding: const EdgeInsets.all(Sizes.xs),
+                                                padding: const EdgeInsets.all(
+                                                  Sizes.sm,
+                                                ),
                                                 backgroundColor:
                                                     Colors.transparent,
                                                 showBorder: true,
                                                 borderColor:
                                                     CustomColors.primary,
-                                                child: Icon(
-                                                  providerIcon,
-                                                  size: 35,
-                                                  color: CustomColors.primary,
+                                                child: Center(
+                                                  child: Icon(
+                                                    providerIcon,
+                                                    size: 35,
+                                                    color: CustomColors.primary,
+                                                  ),
                                                 ),
                                               ),
                                             );

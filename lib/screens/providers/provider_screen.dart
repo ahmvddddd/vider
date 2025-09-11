@@ -200,7 +200,7 @@ class _ProviderScreenState extends ConsumerState<ProviderScreen> {
                     messageWidget: MessageScreen(
                       participants: participants,
                       receiverImage: widget.profile.profileImage,
-                      receiverName: widget.profile.username,
+                      receiverName: '${widget.profile.firstname.capitalizeEachWord()} ${widget.profile.lastname.capitalizeEachWord()}',
                     ),
                     providerMapWidget: ProviderMapScreen(
                       profileLatitude: widget.profile.latitude,

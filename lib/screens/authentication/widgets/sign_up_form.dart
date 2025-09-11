@@ -29,6 +29,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
   final hidePassword = ValueNotifier<bool>(true);
   final hideConfirmPassword = ValueNotifier<bool>(true);
   final termsAccepted = ValueNotifier<bool>(false);
+  bool _submitted = false;
 
   @override
   void initState() {
@@ -194,12 +195,9 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
                 : SizedBox(
                   width: double.infinity,
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (!termsAccepted.value) {
-                        FocusScope.of(context).unfocus();
-
                         signupController.clearError();
-
                         CustomSnackbar.show(
                           context: context,
                           title: 'Accept Terms and conditions',
@@ -213,7 +211,13 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
                       if (formKey.currentState!.validate()) {
                         FocusScope.of(context).unfocus();
 
-                        signupController.signup(
+                        if (mounted) {
+                          setState(() {
+                            _submitted = true; // 👈 hide old error immediately
+                          });
+                        }
+
+                        await signupController.signup(
                           context,
                           firstnameController.text.trim(),
                           lastnameController.text.trim(),
@@ -221,6 +225,12 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
                           emailController.text.trim(),
                           passwordController.text.trim(),
                         );
+
+                        if (mounted) {
+                          setState(() {
+                            _submitted = false; // 👈 allow error again
+                          });
+                        }
                       }
                     },
                     child: RoundedContainer(
@@ -239,7 +249,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
                   ),
                 ),
 
-            if (signupState.error != null)
+            if (!_submitted && signupState.error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Text(
