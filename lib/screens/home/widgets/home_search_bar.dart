@@ -21,8 +21,12 @@ class HomeSearchBar extends ConsumerStatefulWidget {
   ConsumerState<HomeSearchBar> createState() => _HomeSearchbarState();
 }
 
+final searchFocusProvider = StateProvider<bool>((ref) => false);
+
+
 class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
   Timer? _debounce;
+  final FocusNode _focusNode = FocusNode();
   void _onSearchChanged(String value) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 400), () {
@@ -30,10 +34,12 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
     });
   }
 
-  @override
-  void dispose() {
-    _debounce?.cancel();
-    super.dispose();
+   @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      ref.read(searchFocusProvider.notifier).state = _focusNode.hasFocus;
+    });
   }
 
   @override
@@ -58,7 +64,8 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
           text: 'search name or service',
           width: screenWidth * 0.90,
           onChanged: _onSearchChanged,
-          onTap: () => FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).requestFocus(_focusNode),
+          focusNode: _focusNode,
           suffixIcon: Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: Container(
@@ -112,61 +119,15 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
                 } else if (p.rating >= 3.33) {
                   ratingColor = CustomColors.gold; // High rating
                 }
-                return RoundedContainer(
-                  backgroundColor: dark ? Colors.black : Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: CustomColors.darkGrey,
-                      blurRadius: 5,
-                      spreadRadius: 0.5,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                  radius: Sizes.cardRadiusLg,
-                  padding: const EdgeInsets.all(0),
-                  child: ListTile(
-                    onTap: () {
+                return GestureDetector(
+                                      onTap: () {
                       HelperFunction.navigateScreen(
                         context,
                         ProviderScreen(profile: p),
                       );
                     },
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(p.profileImage),
-                    ),
-                    title: Row(
-                      children: [
-                        Text(
-                          "${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}",
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
-
-                        const SizedBox(width: Sizes.sm),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: ratingColor,
-                              size: Sizes.iconMd,
-                            ),
-                            Text(
-                              p.rating.toString(),
-                              style: Theme.of(
-                                context,
-                              ).textTheme.bodyMedium!.copyWith(
-                                color: dark ? Colors.white : Colors.black,
-                                fontFamily: 'JosefinSans',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    subtitle: Text(
-                      p.category,
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                  ),
+                  child: someContainer(context, "${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}",
+                   ratingColor, p.profileImage, "${p.rating}"),
                 );
               },
             );
@@ -174,7 +135,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
           loading:
               () => Center(
                 child: ShimmerWidget(
-                  height: screenHeight * 0.08,
+                  height: screenHeight * 0.07,
                   width: screenWidth * 0.90,
                   radius: Sizes.cardRadiusLg,
                 ),
@@ -190,4 +151,63 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
       ],
     );
   }
+  Widget someContainer(BuildContext context,
+  String fullname,
+  Color ratingColor,
+  String profileImage,
+  String rating
+  ) {
+    final dark = HelperFunction.isDarkMode(context);
+    return RoundedContainer(
+      width: MediaQuery.of(context).size.width * 0.90,
+      height: MediaQuery.of(context).size.height * 0.07,
+      padding: const EdgeInsets.all(Sizes.xs),
+      radius: Sizes.cardRadiusLg,
+      backgroundColor: dark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.1),
+      child: Column(
+          children: [
+            Row(
+              children: [
+                 CircleAvatar(
+                            backgroundImage: NetworkImage(profileImage),
+                          ),
+                          const SizedBox(width: Sizes.sm,),
+                          Row(
+                      children: [
+                        Text(
+                          fullname,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+
+                        const SizedBox(width: Sizes.sm),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.star,
+                                  color: ratingColor,
+                                  size: Sizes.iconMd,
+                                ),
+                                Text(
+                                  rating,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.bodyMedium!.copyWith(
+                                    color: dark ? Colors.white : Colors.black,
+                                    fontFamily: 'JosefinSans',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+              ],
+            ),
+          ],
+        ),
+    ]));
+  }
 }
+

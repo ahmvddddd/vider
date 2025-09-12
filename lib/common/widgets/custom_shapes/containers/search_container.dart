@@ -15,6 +15,7 @@ class SearchContainer extends StatelessWidget {
     this.showBackground = true,
     this.showBorder = true,
     this.onTap,
+    this.focusNode,
     this.onChanged,
     this.onSubmitted, // for Enter/Done
     this.onEditingComplete, // for focus loss or submit
@@ -28,6 +29,7 @@ class SearchContainer extends StatelessWidget {
   final IconData? icon;
   final bool showBackground, showBorder;
   final VoidCallback? onTap;
+  final FocusNode? focusNode;
   final EdgeInsetsGeometry padding;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted; // returns the text
@@ -57,6 +59,7 @@ class SearchContainer extends StatelessWidget {
               child: TextFormField(
                 controller: controller,
                 onChanged: onChanged,
+                focusNode: focusNode,
                 onFieldSubmitted: onSubmitted, // ✅ handles Enter/Done
                 onEditingComplete: onEditingComplete, // ✅ handles focus loss
                 decoration: InputDecoration(

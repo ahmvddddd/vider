@@ -21,3 +21,21 @@ class Occupation {
     };
   }
 }
+
+class CategoryModel {
+  final String name;
+  final String categoryImage;
+
+  CategoryModel({
+    required this.name,
+    required this.categoryImage,
+  });
+
+  factory CategoryModel.fromJson(Map<String, dynamic> json) {
+    return CategoryModel(
+      name: json['category'] ?? '',
+      categoryImage: json['categoryImage'] ?? '',
+    );
+  }
+}
+

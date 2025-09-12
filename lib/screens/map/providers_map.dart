@@ -47,7 +47,7 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
 
     if (!mounted) return;
     setState(() {
-      _currentUserLocation = LatLng(pos.latitude, pos.longitude);
+      _currentUserLocation = LatLng(9.0319, 7.4828);
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -181,7 +181,7 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                                                 providerIcon = Icons.spa;
                                                 break;
                                               case 'construction':
-                                                providerIcon = Icons.handyman;
+                                                providerIcon = Icons.settings;
                                                 break;
                                               case 'food':
                                                 providerIcon = Icons.restaurant;
@@ -189,7 +189,7 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                                               case 'maintenance':
                                                 providerIcon = Icons.build;
                                                 break;
-                                              case 'health & fitness':
+                                              case 'fitness':
                                                 providerIcon =
                                                     Icons.fitness_center;
                                             }
@@ -200,22 +200,11 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                                                         context,
                                                         p,
                                                       ),
-                                              child: RoundedContainer(
-                                                radius: 100,
-                                                padding: const EdgeInsets.all(
-                                                  Sizes.sm,
-                                                ),
-                                                backgroundColor:
-                                                    Colors.transparent,
-                                                showBorder: true,
-                                                borderColor:
-                                                    CustomColors.primary,
-                                                child: Center(
-                                                  child: Icon(
-                                                    providerIcon,
-                                                    size: 35,
-                                                    color: CustomColors.primary,
-                                                  ),
+                                              child: Center(
+                                                child: Icon(
+                                                  providerIcon,
+                                                  size: 40,
+                                                  color: CustomColors.primary,
                                                 ),
                                               ),
                                             );

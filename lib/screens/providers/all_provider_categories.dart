@@ -46,14 +46,14 @@ class _AllProviderCategoriesState extends ConsumerState<AllProviderCategories> {
                     onTap: () {
                       HelperFunction.navigateScreen(
                         context,
-                        ProvidersTabBarScreen(category: category),
+                        ProvidersTabBarScreen(category: category.name),
                       );
                     },
                     child: _buildCategoryBox(
                       context,
                       dark,
                       screenHeight,
-                      category,
+                      category.name,
                       isViewMore: true,
                     ),
                   );

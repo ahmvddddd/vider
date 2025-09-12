@@ -62,6 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     final dark = HelperFunction.isDarkMode(context);
     final unreadCount = ref.watch(unreadNotificationsProvider);
+    final isSearchFocused = ref.watch(searchFocusProvider); 
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -99,6 +100,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           const SizedBox(height: Sizes.spaceBtwSections),
                           HomeSearchBar(),
                           
+                          if (!isSearchFocused) ...[
                           const SizedBox(height: Sizes.spaceBtwItems),
                           ProvidersGrid(),
                           const SizedBox(height: Sizes.spaceBtwSections),
@@ -110,7 +112,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                           ),
                           const SizedBox(height: Sizes.sm),
-                          ProviderProfilesWidget(),
+                          ProviderProfilesWidget(),]
                         ],
                       ),
               ),

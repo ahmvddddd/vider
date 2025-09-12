@@ -26,7 +26,7 @@ class AllProvidersScreen extends ConsumerWidget {
     return Scaffold(
       appBar: TAppBar(
         title: Text(
-          'Providers by City',
+          'City',
           style: Theme.of(context).textTheme.headlineSmall,
         ),
         showBackArrow: true,
@@ -140,7 +140,7 @@ class AllProvidersScreen extends ConsumerWidget {
                                             Icon(
                                               Icons.star,
                                               color: ratingColor,
-                                              size: Sizes.iconMd,
+                                              size: Sizes.iconSm,
                                             ),
                                             Text(
                                               p.rating.toString(),

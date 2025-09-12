@@ -5,17 +5,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:logger/logger.dart';
+import '../../models/jobs/occupations_model.dart';
 import '../../models/providers/providers_category_model.dart';
 import '../../utils/helpers/connectivity_helper.dart';
 
 String baseUrl = dotenv.env['BASE_URL'] ?? 'https://defaulturl.com/api';
 
 // Categories
-final categoriesProvider = FutureProvider<List<String>>((ref) async {
+final categoriesProvider = FutureProvider<List<CategoryModel>>((ref) async {
   final res = await http.get(Uri.parse("$baseUrl/grouped-categories"));
   if (res.statusCode != 200) throw Exception("Failed to load categories");
+  // final json = jsonDecode(res.body) as Map<String, dynamic>;
+  // return List<String>.from(json['data'] ?? []);
+
   final json = jsonDecode(res.body) as Map<String, dynamic>;
-  return List<String>.from(json['data'] ?? []);
+  final data = json['data'] as List? ?? [];
+
+  return data.map((e) => CategoryModel.fromJson(e)).toList();
 });
 
 // Services by category
@@ -24,7 +30,9 @@ final servicesProvider = FutureProvider.family<List<String>, String>((
   category,
 ) async {
   final res = await http.get(Uri.parse("$baseUrl/services?category=$category"));
-  if (res.statusCode != 200) throw Exception("Failed to load services");
+  if (res.statusCode != 200) {
+    throw Exception("Failed to load services");
+  }
   final json = jsonDecode(res.body) as Map<String, dynamic>;
   return List<String>.from(json['data'] ?? []);
 });

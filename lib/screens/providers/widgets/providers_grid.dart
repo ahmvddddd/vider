@@ -24,7 +24,7 @@ class ProvidersGrid extends ConsumerWidget {
       data: (categories) {
         return GridLayout(
           crossAxisCount: 4,
-          mainAxisExtent: screenWidth * 0.20,
+          mainAxisExtent: screenWidth * 0.25,
           itemCount: categories.length > 8 ? 8 : categories.length,
           itemBuilder: (context, index) {
             final category = categories[index];
@@ -44,6 +44,7 @@ class ProvidersGrid extends ConsumerWidget {
                     dark,
                     screenWidth,
                     'View More',
+                    const Icon(Icons.more_horiz, size: Sizes.iconLg),
                     isViewMore: true,
                   ),
                 )
@@ -53,7 +54,8 @@ class ProvidersGrid extends ConsumerWidget {
                       context,
                       MaterialPageRoute(
                         builder:
-                            (_) => ProvidersTabBarScreen(category: category),
+                            (_) =>
+                                ProvidersTabBarScreen(category: category.name),
                       ),
                     );
                   },
@@ -61,7 +63,18 @@ class ProvidersGrid extends ConsumerWidget {
                     context,
                     dark,
                     screenWidth,
-                    category,
+                    category.name,
+                    Center(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(Sizes.cardRadiusLg),
+                        child: Image(
+                          image: NetworkImage(category.categoryImage),
+                          height: screenWidth * 0.20,
+                          width: screenWidth * 0.20,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                     isViewMore: false,
                   ),
                 );
@@ -83,31 +96,40 @@ class ProvidersGrid extends ConsumerWidget {
     BuildContext context,
     bool dark,
     double screenWidth,
-    String title, {
+    String title,
+    Widget categoryImage, {
     bool isViewMore = false,
   }) {
-    return RoundedContainer(
-      height: screenWidth * 0.20,
-      width: screenWidth * 0.20,
-      padding: const EdgeInsets.all(2),
-      backgroundColor:
-          isViewMore
-              ? (dark ? CustomColors.alternate : CustomColors.primary)
-              : (dark ? Colors.black : Colors.white),
-      boxShadow:
-          isViewMore
-              ? null
-              : [
-                BoxShadow(
-                  color: dark ? CustomColors.darkerGrey : CustomColors.darkGrey,
-                  blurRadius: 5,
-                  spreadRadius: 0.5,
-                  offset: const Offset(0, 1),
-                ),
-              ],
-      radius: Sizes.cardRadiusLg,
-      child: Center(
-        child: Text(
+    return Column(
+      children: [
+        RoundedContainer(
+          height: screenWidth * 0.20,
+          width: screenWidth * 0.20,
+          padding: const EdgeInsets.all(2),
+          backgroundColor:
+              isViewMore
+                  ? (dark ? CustomColors.alternate : CustomColors.primary)
+                  : (dark ? Colors.black : Colors.white),
+          boxShadow:
+              isViewMore
+                  ? null
+                  : [
+                    BoxShadow(
+                      color:
+                          dark
+                              ? CustomColors.darkerGrey
+                              : CustomColors.darkGrey,
+                      blurRadius: 5,
+                      spreadRadius: 0.5,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+          radius: Sizes.cardRadiusLg,
+          child: categoryImage,
+        ),
+
+        const SizedBox(height: Sizes.xs),
+        Text(
           title,
           style: Theme.of(context).textTheme.labelSmall!.copyWith(
             color:
@@ -116,10 +138,8 @@ class ProvidersGrid extends ConsumerWidget {
                     : (dark ? Colors.white : Colors.black),
             fontSize: 10,
           ),
-          softWrap: true,
-          textAlign: TextAlign.center,
         ),
-      ),
+      ],
     );
   }
 }
