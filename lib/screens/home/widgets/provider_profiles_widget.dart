@@ -7,6 +7,7 @@ import '../../../common/widgets/layouts/listview.dart';
 import '../../../common/widgets/texts/error_retry.dart';
 import '../../../controllers/providers/provider_profiles_controller.dart';
 import '../../../models/providers/providers_category_model.dart';
+import '../../../repository/user/get_matching_location_storage.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
@@ -36,55 +37,71 @@ class _ProviderProfilesWidgetState
   }
 
   Future<void> _getCurrentLocation() async {
-    try {
-      // Request permission
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          if (!mounted) return;
-          setState(() {
-            _locationError = "Location permission denied";
-            _loadingLocation = false;
-          });
-          return;
-        }
-      }
+  try {
+    // 🔹 Step 1: Check SharedPreferences cache
+    final cached = await MatchingLocationStorage.loadLocation();
+    if (cached != null) {
+      setState(() {
+        lat = cached['lat'];
+        lon = cached['lon'];
+        _stateName = cached['state'];
+        _loadingLocation = false;
+      });
+      return;
+    }
 
-      if (permission == LocationPermission.deniedForever) {
+    // 🔹 Step 2: Request permissions
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
         if (!mounted) return;
         setState(() {
-          _locationError = "Location permissions are permanently denied";
+          _locationError = "Location permission denied";
           _loadingLocation = false;
         });
         return;
       }
-
-      // Get location
-      final pos = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      setState(() {
-        lat = pos.latitude; // using fixed coords as before
-        lon = pos.longitude;
-      });
-
-      // fetch state once
-      final notifier = ref.read(providerProfilesController.notifier);
-      final stateName = await notifier.getStateFromCoordinates(lat!, lon!);
-
-      setState(() {
-        _stateName = stateName;
-        _loadingLocation = false;
-      });
-    } catch (e) {
-      setState(() {
-        _locationError = "Failed to get location";
-        _loadingLocation = false;
-      });
     }
+
+    if (permission == LocationPermission.deniedForever) {
+      if (!mounted) return;
+      setState(() {
+        _locationError = "Location permissions are permanently denied";
+        _loadingLocation = false;
+      });
+      return;
+    }
+
+    // 🔹 Step 3: Get location from GPS
+    final pos = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    final notifier = ref.read(providerProfilesController.notifier);
+    final stateName = await notifier.getStateFromCoordinates(
+      pos.latitude,
+      pos.longitude,
+    );
+
+    // 🔹 Step 4: Save to SharedPreferences
+    await MatchingLocationStorage.saveLocation(pos.latitude, pos.longitude, stateName);
+
+    if (!mounted) return;
+    setState(() {
+      lat = pos.latitude;
+      lon = pos.longitude;
+      _stateName = stateName;
+      _loadingLocation = false;
+    });
+  } catch (e) {
+    setState(() {
+      _locationError = "Failed to get location";
+      _loadingLocation = false;
+    });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

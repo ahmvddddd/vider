@@ -168,7 +168,7 @@ class _AccountSettingsState extends ConsumerState<AccountSettings> {
                 title: 'General Settings',
                 showActionButton: false,
               ),
-              const SizedBox(height: Sizes.sm),
+              const SizedBox(height: Sizes.spaceBtwItems),
               GeneralAccountSettings(),
 
               const SizedBox(height: Sizes.spaceBtwSections),

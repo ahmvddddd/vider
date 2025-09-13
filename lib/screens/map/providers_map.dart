@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import '../../common/widgets/appbar/appbar.dart';
-import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../common/widgets/custom_shapes/containers/search_container.dart';
 import '../../controllers/providers/provider_map_controller.dart';
 import '../../utils/constants/custom_colors.dart';
@@ -47,7 +46,7 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
 
     if (!mounted) return;
     setState(() {
-      _currentUserLocation = LatLng(9.0319, 7.4828);
+      _currentUserLocation = LatLng(pos.latitude, pos.longitude);
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -181,13 +180,13 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                                                 providerIcon = Icons.spa;
                                                 break;
                                               case 'construction':
-                                                providerIcon = Icons.settings;
+                                                providerIcon = Icons.handyman;
                                                 break;
                                               case 'food':
                                                 providerIcon = Icons.restaurant;
                                                 break;
                                               case 'maintenance':
-                                                providerIcon = Icons.build;
+                                                providerIcon = Icons.settings;
                                                 break;
                                               case 'fitness':
                                                 providerIcon =
@@ -203,7 +202,7 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                                               child: Center(
                                                 child: Icon(
                                                   providerIcon,
-                                                  size: 40,
+                                                  size: 35,
                                                   color: CustomColors.primary,
                                                 ),
                                               ),

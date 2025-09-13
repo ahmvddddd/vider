@@ -22,13 +22,6 @@ class ChatShimmer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: Sizes.spaceBtwSections),
-              ShimmerWidget(
-                width: screenWidth * 0.80,
-                height: screenHeight * 0.01,
-                radius: 50,
-              ),
-    
-              const SizedBox(height: Sizes.spaceBtwItems),
               HomeListView(
                 scrollDirection: Axis.vertical,
                 seperatorBuilder:
