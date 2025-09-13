@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
@@ -71,14 +70,6 @@ class MessagePreview extends StatelessWidget {
                           sender,
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
-                        const SizedBox(
-                          width: 2,
-                        ),
-                        const Icon(
-                          Iconsax.verify,
-                          color: Colors.amber,
-                          size: Sizes.iconSm,
-                        )
                       ],
                     ),
                     const SizedBox(

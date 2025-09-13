@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../screens/jobs/components/jobs_screen_shimmer.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/layouts/listview.dart';
 import '../../controllers/notifications/notification_controller.dart';
@@ -6,8 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../controllers/notifications/read_notification_controller.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/helpers/helper_function.dart';
-import '../messages/components/chat_shimmer.dart';
-// import '../transactions/transaction_history.dart';
 import '../transactions/transaction_history.dart';
 import 'notification_view_screen.dart';
 import 'widgets/notification_card.dart';
@@ -56,7 +55,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 itemBuilder: (context, index) {
                   final notif = notifications[index];
 
-                  if (isRefreshing) const ChatShimmer();
+                  if (isRefreshing) const JobsScreenShimmer();
 
                   if (notif.type == 'transaction') {
                     return NotificationCard(
@@ -117,7 +116,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
             loading:
                 () => SizedBox(
                   height: MediaQuery.of(context).size.height,
-                  child: const ChatShimmer(),
+                  child: const JobsScreenShimmer(),
                 ),
             error:
                 (err, _) => Padding(

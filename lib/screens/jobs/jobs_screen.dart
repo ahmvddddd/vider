@@ -12,7 +12,6 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'components/jobs_screen_shimmer.dart';
 import 'components/rating_dialog.dart';
 

@@ -148,11 +148,16 @@ class _UploadIdScreenState extends ConsumerState<UploadIdScreen> {
                       'Tap the button below to upload an image of your Identity card. Make sure your photo is clear and ensure your names match with no spelling error.',
                 ),
 
-                const SizedBox(height: Sizes.spaceBtwItems),
+                const SizedBox(height: Sizes.spaceBtwSections),
                 idImage == null
-                    ? Text(
-                      'No Image Selected',
-                      style: Theme.of(context).textTheme.labelLarge,
+                    ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'No Image Selected',
+                          style: Theme.of(context).textTheme.labelLarge,
+                        ),
+                      ],
                     )
                     : Container(
                       height: screenHeight * 0.20,

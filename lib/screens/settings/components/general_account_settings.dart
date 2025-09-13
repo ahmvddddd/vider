@@ -132,13 +132,13 @@ class _GeneralAccountSettingsState
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: Sizes.xs, horizontal: Sizes.spaceBtwItems),
+        padding: const EdgeInsets.symmetric(vertical: Sizes.sm, horizontal: Sizes.spaceBtwItems),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                Icon(icon, size: Sizes.iconM,),
+                Icon(icon, size: Sizes.iconSm,),
                 
                 const SizedBox(width: Sizes.spaceBtwItems),
                 Column(
@@ -146,11 +146,14 @@ class _GeneralAccountSettingsState
                   children: [
                     Text(
                       title,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.labelMedium,
                     ),
-                    Text(
-                      subTitle,
-                      style: Theme.of(context).textTheme.bodySmall,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.50,
+                      child: Text(
+                        subTitle,
+                        style: Theme.of(context).textTheme.labelSmall!.copyWith(overflow: TextOverflow.ellipsis),
+                      ),
                     ),
                   ],
                 )

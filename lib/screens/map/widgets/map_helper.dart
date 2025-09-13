@@ -115,10 +115,10 @@ class MapHelper {
                   const SizedBox(width: Sizes.sm),
                   Row(
                     children: [
-                      Icon(Icons.star, color: ratingColor, size: Sizes.iconMd),
+                      Icon(Icons.star, color: ratingColor, size: Sizes.iconSm),
                       Text(
                         '${provider.rating}',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: dark ? Colors.white : Colors.black,
                           fontFamily: 'JosefinSans',
                         ),

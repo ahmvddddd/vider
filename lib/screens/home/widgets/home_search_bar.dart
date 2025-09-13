@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vider/screens/providers/widgets/some_container.dart';
 import 'package:vider/utils/helpers/capitalize_text.dart';
 import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../../common/widgets/custom_shapes/containers/search_container.dart';
@@ -23,7 +24,6 @@ class HomeSearchBar extends ConsumerStatefulWidget {
 
 final searchFocusProvider = StateProvider<bool>((ref) => false);
 
-
 class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
   Timer? _debounce;
   final FocusNode _focusNode = FocusNode();
@@ -34,7 +34,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
     });
   }
 
-   @override
+  @override
   void initState() {
     super.initState();
     _focusNode.addListener(() {
@@ -69,7 +69,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
           suffixIcon: Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: Container(
-              padding: const EdgeInsets.all(2),
+              padding: const EdgeInsets.all(Sizes.xs),
               decoration: BoxDecoration(
                 color:
                     dark
@@ -120,14 +120,19 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
                   ratingColor = CustomColors.gold; // High rating
                 }
                 return GestureDetector(
-                                      onTap: () {
-                      HelperFunction.navigateScreen(
-                        context,
-                        ProviderScreen(profile: p),
-                      );
-                    },
-                  child: someContainer(context, "${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}",
-                   ratingColor, p.profileImage, "${p.rating}"),
+                  onTap: () {
+                    HelperFunction.navigateScreen(
+                      context,
+                      ProviderScreen(profile: p),
+                    );
+                  },
+                  child: SomeContainer(
+                    profileImage: p.profileImage,
+                    fullname:
+                        "${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}",
+                    ratingColor: ratingColor,
+                    rating: "${p.rating}",
+                  ),
                 );
               },
             );
@@ -151,63 +156,63 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
       ],
     );
   }
-  Widget someContainer(BuildContext context,
-  String fullname,
-  Color ratingColor,
-  String profileImage,
-  String rating
+
+  Widget someContainer(
+    BuildContext context,
+    String fullname,
+    Color ratingColor,
+    String profileImage,
+    String rating,
   ) {
     final dark = HelperFunction.isDarkMode(context);
     return RoundedContainer(
       width: MediaQuery.of(context).size.width * 0.90,
-      height: MediaQuery.of(context).size.height * 0.07,
       padding: const EdgeInsets.all(Sizes.xs),
       radius: Sizes.cardRadiusLg,
-      backgroundColor: dark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.1),
+      backgroundColor:
+          dark
+              ? Colors.white.withValues(alpha: 0.1)
+              : Colors.black.withValues(alpha: 0.1),
       child: Column(
-          children: [
-            Row(
-              children: [
-                 CircleAvatar(
-                            backgroundImage: NetworkImage(profileImage),
-                          ),
-                          const SizedBox(width: Sizes.sm,),
-                          Row(
-                      children: [
-                        Text(
-                          fullname,
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
+        children: [
+          Row(
+            children: [
+              CircleAvatar(backgroundImage: NetworkImage(profileImage)),
+              const SizedBox(width: Sizes.sm),
+              Row(
+                children: [
+                  Text(fullname, style: Theme.of(context).textTheme.labelSmall),
 
-                        const SizedBox(width: Sizes.sm),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: ratingColor,
-                                  size: Sizes.iconMd,
-                                ),
-                                Text(
-                                  rating,
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.bodyMedium!.copyWith(
-                                    color: dark ? Colors.white : Colors.black,
-                                    fontFamily: 'JosefinSans',
-                                  ),
-                                ),
-                              ],
+                  const SizedBox(width: Sizes.sm),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.star,
+                            color: ratingColor,
+                            size: Sizes.iconSm,
+                          ),
+                          Text(
+                            rating,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodyMedium!.copyWith(
+                              color: dark ? Colors.white : Colors.black,
+                              fontFamily: 'JosefinSans',
                             ),
-                          ],
-                        ),
-              ],
-            ),
-          ],
-        ),
-    ]));
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
-

@@ -22,12 +22,14 @@ class ProvidersGrid extends ConsumerWidget {
 
     return categoriesAsync.when(
       data: (categories) {
+        final sortedCategories = [...categories]
+    ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
         return GridLayout(
           crossAxisCount: 4,
           mainAxisExtent: screenWidth * 0.25,
-          itemCount: categories.length > 8 ? 8 : categories.length,
+          itemCount: sortedCategories.length > 8 ? 8 : sortedCategories.length,
           itemBuilder: (context, index) {
-            final category = categories[index];
+            final category = sortedCategories[index];
             final isViewMore = index == 7 && categories.length > 8;
             return isViewMore
                 ? GestureDetector(

@@ -3,15 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../utils/helpers/capitalize_text.dart';
 import '../../controllers/providers/provider_profiles_controller.dart';
 import '../../common/widgets/appbar/appbar.dart';
-import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../common/widgets/layouts/listview.dart';
-import '../../common/widgets/shimmer/shimmer_widget.dart';
 import '../../common/widgets/texts/error_retry.dart';
 import '../../models/providers/providers_category_model.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
 import 'provider_screen.dart';
+import 'widgets/some_container.dart';
 
 class AllProvidersScreen extends ConsumerWidget {
   const AllProvidersScreen({super.key});
@@ -20,15 +19,9 @@ class AllProvidersScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final providersState = ref.watch(providerProfilesController);
     final dark = HelperFunction.isDarkMode(context);
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: TAppBar(
-        title: Text(
-          'City',
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
+        title: Text('City', style: Theme.of(context).textTheme.headlineSmall),
         showBackArrow: true,
       ),
       body: providersState.when(
@@ -99,72 +92,18 @@ class AllProvidersScreen extends ConsumerWidget {
                                   ratingColor =
                                       CustomColors.gold; // High rating
                                 }
-                                return RoundedContainer(
-                                  backgroundColor:
-                                      dark ? Colors.black : Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: CustomColors.darkGrey,
-                                      blurRadius: 5,
-                                      spreadRadius: 0.5,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                  radius: Sizes.cardRadiusLg,
-                                  padding: const EdgeInsets.all(0),
-                                  child: ListTile(
-                                    onTap: () {
+                                return GestureDetector(
+                                  onTap: () {
                                       HelperFunction.navigateScreen(
                                         context,
                                         ProviderScreen(profile: p),
                                       );
                                     },
-                                    leading: CircleAvatar(
-                                      backgroundImage: NetworkImage(
-                                        p.profileImage,
-                                      ),
-                                    ),
-                                    title: Row(
-                                      children: [
-                                        Text(
-                                          "${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}",
-                                          style:
-                                              Theme.of(
-                                                context,
-                                              ).textTheme.labelSmall,
-                                        ),
-
-                                        const SizedBox(width: Sizes.sm),
-                                        Row(
-                                          children: [
-                                            Icon(
-                                              Icons.star,
-                                              color: ratingColor,
-                                              size: Sizes.iconSm,
-                                            ),
-                                            Text(
-                                              p.rating.toString(),
-                                              style: Theme.of(
-                                                context,
-                                              ).textTheme.bodyMedium!.copyWith(
-                                                color:
-                                                    dark
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                fontFamily: 'JosefinSans',
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    subtitle: Text(
-                                      p.category,
-                                      style:
-                                          Theme.of(
-                                            context,
-                                          ).textTheme.labelMedium,
-                                    ),
+                                  child: SomeContainer(
+                                    profileImage: p.profileImage,
+                                    fullname: "${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}",
+                                    rating: p.rating.toString(),
+                                    ratingColor: ratingColor,
                                   ),
                                 );
                               },
@@ -178,18 +117,18 @@ class AllProvidersScreen extends ConsumerWidget {
           );
         },
         loading:
-            () => ShimmerWidget(
-              height: screenHeight * 0.08,
-              width: screenWidth * 0.90,
-              radius: Sizes.cardRadiusLg,
+            () => CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              strokeWidth: 4.0,
+              backgroundColor: dark ? Colors.white : Colors.black,
             ),
         error:
             (err, _) => ErrorRetry(
-                err: 'An error occured, failed to fetch providers',
-                onPressed: () {
-                  ref.refresh(providerProfilesController);
-                },
-              ),
+              err: 'An error occured, failed to fetch providers',
+              onPressed: () {
+                ref.refresh(providerProfilesController);
+              },
+            ),
       ),
     );
   }

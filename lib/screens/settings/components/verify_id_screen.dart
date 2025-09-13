@@ -191,7 +191,7 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
                           Colors.blue,
                         ), // color
                         strokeWidth: 4.0, // thickness of the line
-                        backgroundColor: dark ? Colors.white : Colors.black, //
+                        backgroundColor: dark ? Colors.white : Colors.black,
                       )
                       : TextButton(
                         style: TextButton.styleFrom(
@@ -207,8 +207,6 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
                       ),
                 ],
               ),
-
-              
             ],
           ),
         ),

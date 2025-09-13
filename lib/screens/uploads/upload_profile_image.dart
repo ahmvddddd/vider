@@ -124,14 +124,10 @@ class UploadProfileImageScreen extends ConsumerWidget {
                                         valueColor:
                                             AlwaysStoppedAnimation<Color>(
                                               Colors.blue,
-                                            ), // color
-                                        strokeWidth:
-                                            4.0, // thickness of the line
+                                            ),
+                                        strokeWidth: 4.0,
                                         backgroundColor:
-                                            dark
-                                                ? Colors.white
-                                                : Colors
-                                                    .black, // background circle color
+                                            dark ? Colors.white : Colors.black,
                                       ),
                                     )
                                     : Text(
