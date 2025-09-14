@@ -130,7 +130,7 @@ class CategoryCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(
                       overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 3,
+                    maxLines: 2,
                     softWrap: true,
                   ),
                 ),

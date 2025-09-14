@@ -94,7 +94,7 @@ class _ProviderScreenState extends ConsumerState<ProviderScreen> {
             final isVerified = user.isIdVerified == true;
 
             return ButtonContainer(
-              onPressed: (isBusy || !isVerified)
+              onPressed: (isBusy || !isVerified || !widget.profile.isIdVerified)
                   ? null
                   : () {
                       HelperFunction.navigateScreen(

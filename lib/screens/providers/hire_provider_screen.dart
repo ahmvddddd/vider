@@ -89,7 +89,7 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                           backgroundColor: CustomColors.success,
                           context: context,
                         );
-                        Navigator.pop(context); // ✅ go back after success
+                        Navigator.pop(context);
                       },
                     );
 
