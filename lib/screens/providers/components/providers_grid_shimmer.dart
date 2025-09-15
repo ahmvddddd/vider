@@ -8,20 +8,20 @@ class ProvidersGridShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
 
         const SizedBox(height: Sizes.spaceBtwItems),
         GridLayout(
-          mainAxisExtent: screenHeight * 0.11,
+          mainAxisExtent: screenWidth * 0.20,
           crossAxisCount: 4,
           itemCount: 8,
           itemBuilder: (_, _) {
             return ShimmerWidget(
-              height: screenHeight * 0.11,
-              width: screenHeight * 0.13,
+          height: screenWidth * 0.20,
+          width: screenWidth * 0.20,
               radius: Sizes.cardRadiusLg,
             );
           },

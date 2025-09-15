@@ -58,21 +58,15 @@ class _GeneralAccountSettingsState
           'View all transactions.',
           ),
 
-          Padding(padding: const EdgeInsets.symmetric(vertical: Sizes.sm, horizontal: Sizes.spaceBtwSections),
-          child: Divider(
-            color: dark ? CustomColors.alternate : CustomColors.primary,
-          ),),
-
+          
+          const SizedBox(height: Sizes.spaceBtwItems),
           _settingsTile(context, () => HelperFunction.navigateScreen(
                   context,
                   ChangePasswordPage(),
                 ),
                 Iconsax.password_check, 'Password', 'Change your account password'),
 
-          Padding(padding: const EdgeInsets.symmetric(vertical: Sizes.sm, horizontal: Sizes.spaceBtwSections),
-          child: Divider(
-            color: dark ? CustomColors.alternate : CustomColors.primary,
-          ),),
+          const SizedBox(height: Sizes.spaceBtwItems),
           _settingsTile(
             context,
            () => HelperFunction.navigateScreen(context, ChangePinPage()),
@@ -81,10 +75,7 @@ class _GeneralAccountSettingsState
            'Change your transaction PIN'
            ),
           
-          Padding(padding: const EdgeInsets.symmetric(vertical: Sizes.sm, horizontal: Sizes.spaceBtwSections),
-          child: Divider(
-            color: dark ? CustomColors.alternate : CustomColors.primary,
-          ),),
+          const SizedBox(height: Sizes.spaceBtwItems),
           _settingsTile(context, 
           () async {
               final userState = ref.read(userProvider);
@@ -160,7 +151,7 @@ class _GeneralAccountSettingsState
               ],
             ),
         
-            Icon(Iconsax.arrow_right_1, size: Sizes.iconM,)
+            Icon(Iconsax.arrow_right_1, size: Sizes.iconSm,)
           ],
         ),
       ),

@@ -16,17 +16,15 @@ class ErrorRetry extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('$err', style: Theme.of(context).textTheme.bodyMedium),
+                    Text('$err', style: Theme.of(context).textTheme.labelMedium),
                     const SizedBox(height: Sizes.sm),
-                    TextButton(
+                    IconButton(
                       onPressed: onPressed,
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(Sizes.sm),
-                        backgroundColor: CustomColors.primary,
-                      ),
-                      child: Text("Retry",
-                      style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.white),),
-                    ),
+                        style: IconButton.styleFrom(
+                          backgroundColor: CustomColors.primary,
+                          padding: const EdgeInsets.all(Sizes.sm),
+                        ),
+                        icon: const Icon(Icons.refresh, color: Colors.white),)
                   ],
                 ),
               );

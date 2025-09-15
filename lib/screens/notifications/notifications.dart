@@ -126,7 +126,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                       const SizedBox(height: 200),
                       Text(
                         'Could not load screen, check your internet connection',
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.labelMedium,
                         softWrap: true,
                         textAlign: TextAlign.center,
                       ),

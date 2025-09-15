@@ -4,13 +4,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:vider/utils/helpers/capitalize_text.dart';
 import '../../../common/widgets/custom_shapes/cards/provider_card.dart';
 import '../../../common/widgets/layouts/listview.dart';
-import '../../../common/widgets/texts/error_retry.dart';
+import '../../../common/widgets/texts/section_heading.dart';
 import '../../../controllers/providers/provider_profiles_controller.dart';
 import '../../../models/providers/providers_category_model.dart';
 import '../../../repository/user/get_matching_location_storage.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../providers/all_providers_screen.dart';
 import '../../providers/provider_screen.dart';
 import '../components/provider_profiles_shimmer.dart';
 
@@ -138,53 +139,60 @@ class _ProviderProfilesWidgetState
           );
         }
 
-        return HomeListView(
-          sizedBoxHeight: screenHeight * 0.28,
-          seperatorBuilder:
-              (context, index) => const SizedBox(height: Sizes.sm),
-          scrollDirection: Axis.horizontal,
-          itemCount: providers.length,
-          itemBuilder: (context, index) {
-            final provider = providers[index];
-            final p = ProvidersCategoryModel.fromJson(provider);
-
-            Color ratingColor = Colors.brown;
-            if (p.rating < 1.66) {
-              ratingColor = Colors.brown;
-            } else if (p.rating < 3.33) {
-              ratingColor = CustomColors.silver;
-            } else {
-              ratingColor = CustomColors.gold;
-            }
-
-            return GestureDetector(
-              onTap: () {
-                HelperFunction.navigateScreen(
-                  context,
-                  ProviderScreen(profile: p),
+        return Column(
+          children: [
+            SectionHeading(
+                            title: 'Providers near you',
+                            onPressed: () => HelperFunction.navigateScreen(
+                              context,
+                              AllProvidersScreen(),
+                            ),
+                          ),
+                          const SizedBox(height: Sizes.sm),
+            HomeListView(
+              sizedBoxHeight: screenHeight * 0.28,
+              seperatorBuilder:
+                  (context, index) => const SizedBox(height: Sizes.sm),
+              scrollDirection: Axis.horizontal,
+              itemCount: providers.length,
+              itemBuilder: (context, index) {
+                final provider = providers[index];
+                final p = ProvidersCategoryModel.fromJson(provider);
+            
+                Color ratingColor = Colors.brown;
+                if (p.rating < 1.66) {
+                  ratingColor = Colors.brown;
+                } else if (p.rating < 3.33) {
+                  ratingColor = CustomColors.silver;
+                } else {
+                  ratingColor = CustomColors.gold;
+                }
+            
+                return GestureDetector(
+                  onTap: () {
+                    HelperFunction.navigateScreen(
+                      context,
+                      ProviderScreen(profile: p),
+                    );
+                  },
+                  child: ProviderCard(
+                    fullname:
+                        '${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}',
+                    service: p.service,
+                    portfolioImage: p.portfolioImages[1],
+                    imageAvatar: p.profileImage,
+                    rating: p.rating,
+                    ratingColor: ratingColor,
+                  ),
                 );
               },
-              child: ProviderCard(
-                fullname:
-                    '${p.firstname.capitalizeEachWord()} ${p.lastname.capitalizeEachWord()}',
-                service: p.service,
-                portfolioImage: p.portfolioImages[1],
-                imageAvatar: p.profileImage,
-                rating: p.rating,
-                ratingColor: ratingColor,
-              ),
-            );
-          },
+            ),
+          ],
         );
       },
       loading: () => const ProviderProfilesShimmer(),
       error:
-          (err, _) => ErrorRetry(
-            err: err,
-            onPressed: () {
-              ref.refresh(providerProfilesController);
-            },
-          ),
+          (err, _) => SizedBox.shrink()
     );
   }
 }

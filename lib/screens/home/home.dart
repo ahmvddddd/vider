@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../common/widgets/texts/section_heading.dart';
 import '../../controllers/notifications/unread_notifications_controller.dart';
 import '../../controllers/providers/providers_category_controller.dart';
 import '../../controllers/services/firebase_service.dart';
@@ -11,7 +10,6 @@ import '../../controllers/providers/provider_profiles_controller.dart';
 import '../../repository/user/get_matching_location_storage.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
-import '../providers/all_providers_screen.dart';
 import '../providers/widgets/providers_grid.dart';
 import 'widgets/home_appbar.dart';
 import 'widgets/home_search_bar.dart';
@@ -106,14 +104,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           const SizedBox(height: Sizes.spaceBtwItems),
                           ProvidersGrid(),
                           const SizedBox(height: Sizes.spaceBtwSections),
-                          SectionHeading(
-                            title: 'Providers near you',
-                            onPressed: () => HelperFunction.navigateScreen(
-                              context,
-                              AllProvidersScreen(),
-                            ),
-                          ),
-                          const SizedBox(height: Sizes.sm),
+                          
                           ProviderProfilesWidget(),]
                         ],
                       ),

@@ -299,7 +299,7 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
                     children: [
                       Text(
                         e.toString().replaceAll('Exception:', '').trim(),
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: Theme.of(context).textTheme.labelMedium,
                         softWrap: true,
                         textAlign: TextAlign.center, // 👈 center text content
                       ),
