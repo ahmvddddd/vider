@@ -26,41 +26,43 @@ class MessageHeader extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dark = HelperFunction.isDarkMode(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Sizes.sm),
-      child: AppBar(
-        automaticallyImplyLeading: false,
-        leading:
-            showBackArrow
-                ? IconButton(
-                  onPressed: () {
-                    Future.microtask(() {
-                      final container = ProviderScope.containerOf(context);
-                      final badgeService = NotificationBadgeService(container: container);
-                      badgeService.init();
-                    });
-                    ref.read(selectedIndexProvider.notifier).state = 2;
-
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NavigationMenu(),
-                      ),
-                    );
-                  },
-                  icon: Icon(
-                    Iconsax.arrow_left,
-                    color: dark ? CustomColors.white : CustomColors.dark,
-                  ),
-                )
-                : leadingIcon != null
-                ? IconButton(
-                  onPressed: leadingOnPressed,
-                  icon: Icon(leadingIcon),
-                )
-                : null,
-        title: title,
-        actions: actions,
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: Sizes.sm),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          leading:
+              showBackArrow
+                  ? IconButton(
+                    onPressed: () {
+                      Future.microtask(() {
+                        final container = ProviderScope.containerOf(context);
+                        final badgeService = NotificationBadgeService(container: container);
+                        badgeService.init();
+                      });
+                      ref.read(selectedIndexProvider.notifier).state = 2;
+      
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NavigationMenu(),
+                        ),
+                      );
+                    },
+                    icon: Icon(
+                      Iconsax.arrow_left,
+                      color: dark ? CustomColors.white : CustomColors.dark,
+                    ),
+                  )
+                  : leadingIcon != null
+                  ? IconButton(
+                    onPressed: leadingOnPressed,
+                    icon: Icon(leadingIcon),
+                  )
+                  : null,
+          title: title,
+          actions: actions,
+        ),
       ),
     );
   }

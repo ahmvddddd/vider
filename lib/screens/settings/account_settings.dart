@@ -63,7 +63,7 @@ class _AccountSettingsState extends ConsumerState<AccountSettings> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Sizes.cardRadiusMd),
                   image: DecorationImage(
-                    image: AssetImage(Images.bg2),
+                    image: AssetImage(Images.bg1),
                     fit: BoxFit.cover,
                   ),
                 ),

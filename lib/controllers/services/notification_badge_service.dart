@@ -2,7 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../screens/messages/chat.dart';
+import 'package:vider/nav_menu.dart';
 import '../../screens/notifications/notifications.dart';
 import '../notifications/message_notification_controller.dart';
 import '../notifications/unread_notifications_controller.dart';
@@ -68,7 +68,7 @@ Future<void> onNotificationActionTap(ReceivedAction action) async {
 
   if (type == 'chat') {
     navigatorKey.currentState?.push(
-      MaterialPageRoute(builder: (_) => ChatScreen()),
+      MaterialPageRoute(builder: (_) => NavigationMenu()),
     );
   } else if (type == 'notification') {
     navigatorKey.currentState?.push(

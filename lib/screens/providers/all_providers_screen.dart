@@ -18,7 +18,7 @@ class AllProvidersScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final providersState = ref.watch(providerProfilesController);
-
+    final dark = HelperFunction.isDarkMode(context);
     return Scaffold(
       appBar: TAppBar(
         title: Text('City', style: Theme.of(context).textTheme.headlineSmall),
@@ -177,9 +177,9 @@ class AllProvidersScreen extends ConsumerWidget {
         loading:
             () => Center(
               child: CircularProgressIndicator(
-                valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                 strokeWidth: 4.0,
-                backgroundColor: Colors.transparent,
+                backgroundColor: dark ? Colors.white : Colors.black,
               ),
             ),
         error:

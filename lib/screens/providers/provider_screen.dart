@@ -13,8 +13,8 @@ import '../../common/widgets/texts/section_heading.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
-import '../messages/message.dart';
 import 'hire_provider_screen.dart';
+import 'message_provider_screen.dart';
 import 'provider_map.dart';
 import 'widgets/provider_buttons.dart';
 import 'widgets/provider_profile_image.dart';
@@ -197,7 +197,7 @@ class _ProviderScreenState extends ConsumerState<ProviderScreen> {
                   ProviderButtons(
                     hasValidLocation: hasValidLocation,
                     employeruserName: widget.profile.username,
-                    messageWidget: MessageScreen(
+                    messageWidget: MessageProviderScreen(
                       participants: participants,
                       receiverImage: widget.profile.profileImage,
                       receiverName: '${widget.profile.firstname.capitalizeEachWord()} ${widget.profile.lastname.capitalizeEachWord()}',

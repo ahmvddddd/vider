@@ -234,7 +234,7 @@ class _SigninFormState extends ConsumerState<SignInForm> {
                 },
                 child: Text(
                   'Forgot Password?',
-                  style: Theme.of(context).textTheme.labelMedium,
+                  style: Theme.of(context).textTheme.labelMedium!.copyWith(color: CustomColors.primary),
                 ),
               ),
             ),

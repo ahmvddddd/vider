@@ -62,9 +62,9 @@ class _AllProviderCategoriesState extends ConsumerState<AllProviderCategories> {
             },
             loading:
                 () => CircularProgressIndicator(
-                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
-                  strokeWidth: 4.0,
-                  backgroundColor: dark ? Colors.white : Colors.black,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                    strokeWidth: 4.0,
+                    backgroundColor: dark ? Colors.white : Colors.black,
                 ),
             error:
                 (err, _) => Center(
