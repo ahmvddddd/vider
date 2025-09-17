@@ -6,21 +6,23 @@ class UserChatState {
   final String currentUserId;
   final List<dynamic> participants;
 
-  UserChatState(
-      {this.chatList = const [],
-      this.isLoading = false,
-      this.senderId = '',
-      this.receiverId = '',
-      this.currentUserId = '',
-      this.participants = const []});
+  UserChatState({
+    this.chatList = const [],
+    this.isLoading = false,
+    this.senderId = '',
+    this.receiverId = '',
+    this.currentUserId = '',
+    this.participants = const [],
+  });
 
-  UserChatState copyWith(
-      {List? chatList,
-      bool? isLoading,
-      String? senderId,
-      String? receiverId,
-      String? currentUserId,
-      List<dynamic>? participants}) {
+  UserChatState copyWith({
+    List? chatList,
+    bool? isLoading,
+    String? senderId,
+    String? receiverId,
+    String? currentUserId,
+    List<dynamic>? participants,
+  }) {
     return UserChatState(
       chatList: chatList ?? this.chatList,
       isLoading: isLoading ?? this.isLoading,
@@ -32,7 +34,6 @@ class UserChatState {
   }
 }
 
-
 class ChatModel {
   final String senderId;
   final String receiverId;
@@ -43,18 +44,20 @@ class ChatModel {
   final String color;
   final String lastMessage;
   final List<dynamic> participants;
+  final DateTime updatedAt;
 
   ChatModel({
-     required this.senderId,
-     required this.receiverId,
-     required this.senderName,
-     required this.receiverName,
-     required this.senderImage,
-     required this.receiverImage,
-     required this.lastMessage,
-     required this.participants,
-     required this.color,
-      });
+    required this.senderId,
+    required this.receiverId,
+    required this.senderName,
+    required this.receiverName,
+    required this.senderImage,
+    required this.receiverImage,
+    required this.lastMessage,
+    required this.participants,
+    required this.color,
+    required this.updatedAt
+  });
 
   factory ChatModel.fromJson(Map<String, dynamic> json) {
     return ChatModel(
@@ -66,8 +69,8 @@ class ChatModel {
       receiverImage: json['receiverImage'] ?? '',
       lastMessage: json['lastMessage'] ?? '',
       participants: List<String>.from(json['participants'] ?? []),
-      color: json['color'] ?? ''
+      color: json['color'] ?? '',
+      updatedAt: DateTime.tryParse(json['updatedAt'] ?? '') ?? DateTime.now(),
     );
   }
 }
-

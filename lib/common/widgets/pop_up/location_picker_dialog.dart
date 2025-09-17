@@ -31,32 +31,40 @@ class _LocationPickerDialogState extends State<LocationPickerDialog> {
   }
 
   Future<void> searchLocation(String query) async {
-    final url =
-        "https://nominatim.openstreetmap.org/search?q=$query&format=json&limit=1";
-    final response = await http.get(Uri.parse(url));
+  final encodedQuery = Uri.encodeComponent(query); // FIX: safely encode
+  final url =
+      "https://nominatim.openstreetmap.org/search?q=$encodedQuery&format=json&addressdetails=1&limit=5"; 
+  final response = await http.get(
+    Uri.parse(url),
+    headers: {"User-Agent": "vider/1.0 (vider_support@gmail.com)"},
+  );
 
-    if (response.statusCode == 200) {
-      final results = json.decode(response.body) as List;
-      if (results.isNotEmpty) {
-        final place = results[0];
-        final lat = double.parse(place['lat'] as String);
-        final lon = double.parse(place['lon'] as String);
+  if (response.statusCode == 200) {
+    final results = json.decode(response.body) as List;
+    if (results.isNotEmpty) {
+      final place = results[0]; // pick best match
+      final lat = double.parse(place['lat'] as String);
+      final lon = double.parse(place['lon'] as String);
 
-        final target = LatLng(lat, lon);
+      final target = LatLng(lat, lon);
 
-        setState(() {
-          _pickedLocation = target;
-        });
+      setState(() {
+        _pickedLocation = target;
+      });
 
-        // Move map properly
-        _mapController.moveAndRotate(target, 15, 0);
-      } else {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text("No location found")));
-      }
+      _mapController.moveAndRotate(target, 15, 0);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("No location found")),
+      );
     }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Search failed: ${response.statusCode}")),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

@@ -88,7 +88,6 @@ class ProviderCard extends StatelessWidget {
                   service,
                   style: Theme.of(context).textTheme.labelSmall!.copyWith(
                     fontSize: 9,
-                    color: CustomColors.primary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

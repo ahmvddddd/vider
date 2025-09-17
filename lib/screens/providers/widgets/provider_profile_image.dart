@@ -85,7 +85,7 @@ class ProfileImage extends StatelessWidget {
         Text(service, style: Theme.of(context).textTheme.bodySmall),
         Text(
           '\$$hourlyRate',
-          style: Theme.of(context).textTheme.labelMedium!.copyWith(
+          style: Theme.of(context).textTheme.labelLarge!.copyWith(
             color: CustomColors.success,
             fontFamily: 'JosefinSans',
           ),

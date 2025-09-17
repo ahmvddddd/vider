@@ -146,7 +146,7 @@ class HireValidator {
           type: "job_request",
           title: "New Job Request",
           message:
-              "${user.firstname} ${user.lastname} wants to hire you for $selectedService for $count hours.",
+              "${user.firstname} ${user.lastname} wants to hire you for $selectedService for $count hour(s).",
           recipientId: providerId,
           jobDetails: jobDetails,
         );

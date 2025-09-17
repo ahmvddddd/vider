@@ -45,7 +45,6 @@ class _HireProviderState extends ConsumerState<HireProvider> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     final dark = HelperFunction.isDarkMode(context);
     double totalPay = widget.profile.hourlyRate * _count;
@@ -155,7 +154,6 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                           setState(() => _selectedService = skill);
                         },
                         child: RoundedContainer(
-                          width: screenWidth * 0.30,
                           height: screenHeight * 0.08,
                           padding: const EdgeInsets.all(Sizes.sm),
                           radius: Sizes.cardRadiusMd,
@@ -171,7 +169,6 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                               style: Theme.of(
                                 context,
                               ).textTheme.bodySmall!.copyWith(
-                                overflow: TextOverflow.ellipsis,
                                 color:
                                     isSelected
                                         ? Colors.white

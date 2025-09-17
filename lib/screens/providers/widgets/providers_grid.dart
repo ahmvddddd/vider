@@ -26,7 +26,7 @@ class ProvidersGrid extends ConsumerWidget {
     ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
         return GridLayout(
           crossAxisCount: 4,
-          mainAxisExtent: screenWidth * 0.25,
+          mainAxisExtent: screenWidth * 0.27,
           itemCount: sortedCategories.length > 8 ? 8 : sortedCategories.length,
           itemBuilder: (context, index) {
             final category = sortedCategories[index];
@@ -130,7 +130,7 @@ class ProvidersGrid extends ConsumerWidget {
           child: categoryImage,
         ),
 
-        const SizedBox(height: Sizes.xs),
+        const SizedBox(height: Sizes.xs + 2),
         Text(
           title,
           style: Theme.of(context).textTheme.labelSmall!.copyWith(
