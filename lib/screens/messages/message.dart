@@ -150,100 +150,106 @@ class _MessageState extends ConsumerState<MessageScreen> {
   @override
   Widget build(BuildContext context) {
     final dark = HelperFunction.isDarkMode(context);
-    return Scaffold(
-      appBar: MessageHeader(
-        title: Text(widget.receiverName,
-        style: Theme.of(context).textTheme.headlineSmall,),
-        showBackArrow: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(Sizes.spaceBtwItems),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: messages.length,
-                itemBuilder: (context, index) {
-                  final message = messages[index];
-                  final isMine = message['senderId'] == currentUserId;
-
-                  return Align(
-                    alignment:
-                        isMine ? Alignment.centerRight : Alignment.centerLeft,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 5,
-                        horizontal: 10,
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color:
-                            isMine
-                                ? CustomColors.primary
-                                : dark
-                                ? Colors.white.withValues(alpha: 0.1)
-                                : Colors.black.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(Sizes.cardRadiusLg),
-                      ),
-                      child: Text(
-                        message['content'],
-                        style: Theme.of(context).textTheme.labelMedium!.copyWith(
+    return GestureDetector(
+       onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: MessageHeader(
+          title: Text(widget.receiverName,
+          style: Theme.of(context).textTheme.headlineSmall,),
+          showBackArrow: true,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    final message = messages[index];
+                    final isMine = message['senderId'] == currentUserId;
+      
+                    return Align(
+                      alignment:
+                          isMine ? Alignment.centerRight : Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 5,
+                          horizontal: 10,
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
                           color:
                               isMine
-                                  ? Colors.white
+                                  ? CustomColors.primary
                                   : dark
-                                  ? Colors.white
-                                  : Colors.black,
+                                  ? Colors.white.withValues(alpha: 0.1)
+                                  : Colors.black.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(Sizes.cardRadiusLg),
                         ),
-                        softWrap: true,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            RoundedContainer(
-              radius: 50,
-              backgroundColor: 
-              dark ? Colors.white.withValues(alpha: 0.1)
-              : Colors.black.withValues(alpha: 0.1),
-              padding: const EdgeInsets.all(Sizes.xs),
-              child: Row(
-                children: [
-                  Flexible(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: TextField(
-                        focusNode: myFocusNode,
-                        controller: _messageController,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.only(left: Sizes.sm),
-                          hintText: 'Type a message...',
-                          hintStyle: Theme.of(context).textTheme.labelSmall,
-                          fillColor: dark ? CustomColors.dark : CustomColors.light,
-                                      focusedBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      disabledBorder: InputBorder.none,
+                        child: Text(
+                          message['content'],
+                          style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                            color:
+                                isMine
+                                    ? Colors.white
+                                    : dark
+                                    ? Colors.white
+                                    : Colors.black,
+                          ),
+                          softWrap: true,
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  IconButton(
-                    style: IconButton.styleFrom(
-                      backgroundColor: CustomColors.primary,
-                      padding: const EdgeInsets.all(Sizes.sm),
-                      shape: CircleBorder()
-                    ),
-                    onPressed: () => sendMessage(_messageController.text),
-                    icon: const Icon(Icons.send, color: Colors.white),
-                  ),
-                ],
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+              RoundedContainer(
+                radius: 50,
+                backgroundColor: 
+                dark ? Colors.white.withValues(alpha: 0.1)
+                : Colors.black.withValues(alpha: 0.1),
+                padding: const EdgeInsets.all(Sizes.xs),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: TextField(
+                          focusNode: myFocusNode,
+                          controller: _messageController,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.only(left: Sizes.sm),
+                            hintText: 'Type a message...',
+                            hintStyle: Theme.of(context).textTheme.labelSmall,
+                            fillColor: dark ? CustomColors.dark : CustomColors.light,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    IconButton(
+                      style: IconButton.styleFrom(
+                        backgroundColor: CustomColors.primary,
+                        padding: const EdgeInsets.all(Sizes.sm),
+                        shape: CircleBorder()
+                      ),
+                      onPressed: ()  {
+                        FocusScope.of(context).unfocus();
+                        sendMessage(_messageController.text);
+                        },
+                      icon: const Icon(Icons.send, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

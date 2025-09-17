@@ -140,6 +140,7 @@ class _ProviderProfilesWidgetState
         }
 
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SectionHeading(
                             title: 'Providers near you',
@@ -152,7 +153,7 @@ class _ProviderProfilesWidgetState
             HomeListView(
               sizedBoxHeight: screenHeight * 0.28,
               seperatorBuilder:
-                  (context, index) => const SizedBox(height: Sizes.sm),
+                  (context, index) => const SizedBox(width: Sizes.sm),
               scrollDirection: Axis.horizontal,
               itemCount: providers.length,
               itemBuilder: (context, index) {

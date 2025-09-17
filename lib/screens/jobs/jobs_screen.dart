@@ -1,4 +1,3 @@
-import 'package:iconsax/iconsax.dart';
 import '../../common/styles/shadows.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
@@ -157,12 +156,6 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
                                               context,
                                             ).textTheme.labelSmall,
                                         softWrap: true,
-                                      ),
-                                      const SizedBox(width: Sizes.xs),
-                                      const Icon(
-                                        Iconsax.verify,
-                                        size: Sizes.iconSm,
-                                        color: Colors.amber,
                                       ),
                                     ],
                                   ),

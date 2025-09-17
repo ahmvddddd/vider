@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import '../../utils/helpers/capitalize_text.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/custom_shapes/containers/button_container.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
@@ -78,7 +79,7 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                       totalPay: totalPay,
                       providerId: widget.profile.userId,
                       providerName:
-                          '${widget.profile.firstname} ${widget.profile.lastname}',
+                          '${widget.profile.firstname.capitalizeEachWord()} ${widget.profile.lastname.capitalizeEachWord()}',
                       providerImage: widget.profile.profileImage,
                       onSuccess: () {
                         CustomSnackbar.show(
@@ -154,8 +155,8 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                           setState(() => _selectedService = skill);
                         },
                         child: RoundedContainer(
-                          width: screenWidth * 0.25,
-                          height: screenHeight * 0.06,
+                          width: screenWidth * 0.30,
+                          height: screenHeight * 0.08,
                           padding: const EdgeInsets.all(Sizes.sm),
                           radius: Sizes.cardRadiusMd,
                           backgroundColor:
@@ -170,6 +171,7 @@ class _HireProviderState extends ConsumerState<HireProvider> {
                               style: Theme.of(
                                 context,
                               ).textTheme.bodySmall!.copyWith(
+                                overflow: TextOverflow.ellipsis,
                                 color:
                                     isSelected
                                         ? Colors.white

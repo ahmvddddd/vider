@@ -75,14 +75,12 @@ class ProfileDetailsDummy extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.10,
           width: MediaQuery.of(context).size.height * 0.10,
           decoration: BoxDecoration(shape: BoxShape.circle,
-          border: Border.all(color: CustomColors.alternate, width: 4)),
+          border: Border.all(color: CustomColors.alternate, width: 2)),
           child: Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: Icon(
-                Iconsax.user,
-                size: MediaQuery.of(context).size.height * 0.10,
-              ),
+            child: Icon(
+              Iconsax.user,
+              size: MediaQuery.of(context).size.height * 0.07,
+              color: Colors.white,
             ),
           ),
         ),

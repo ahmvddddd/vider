@@ -35,7 +35,7 @@ class UserProfileModel {
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     return UserProfileModel(
-      userId: json['_id'] ?? '',
+      userId: json['userId'] ?? '',
       profileImage: json['profileImage'] ?? '',
       username: json['username'] ?? '',
       firstname: json['firstname'] ?? '',

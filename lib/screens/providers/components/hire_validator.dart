@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import '../../../utils/helpers/capitalize_text.dart';
 import '../../../common/widgets/pop_up/custom_snackbar.dart';
 import '../../../controllers/jobs/job_request_controller.dart';
 import '../../../controllers/notifications/add_notification_controller.dart';
@@ -130,7 +131,7 @@ class HireValidator {
           providerId: providerId,
           employerImage: user.profileImage,
           providerImage: providerImage,
-          employerName: user.firstname,
+          employerName: "${user.firstname.capitalizeEachWord()} ${user.lastname.capitalizeEachWord()}",
           providerName: providerName,
           jobTitle: selectedService!,
           pay: totalPay,

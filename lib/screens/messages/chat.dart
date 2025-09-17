@@ -87,52 +87,55 @@ class _ChatState extends ConsumerState<ChatScreen> {
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                         )
-                        : HomeListView(
-                          scrollDirection: Axis.vertical,
-                          seperatorBuilder:
-                              (context, index) =>
-                                  const SizedBox(height: Sizes.sm),
-                          itemCount: chatController.length,
-                          itemBuilder: (context, index) {
-                            final chats = chatController[index];
-                            final backgroundColor = Color(
-                              int.parse(chats.color),
-                            );
-
-                            String avatar = chats.senderImage;
-                            String sender = chats.senderName;
-
-                            if (chats.senderId == currentUserId) {
-                              avatar = chats.receiverImage;
-                              sender = chats.receiverName;
-                            } else if (chats.receiverId == currentUserId) {
-                              avatar = chats.senderImage;
-                              sender = chats.senderName;
-                            }
-
-                            return GestureDetector(
-                              onTap: () async {
-                                await readChatController.readChat(
-                                  context,
-                                  chats.senderId,
-                                  chats.receiverId,
-                                  currentUserId!,
-                                  sender,
-                                  avatar,
-                                  chats.participants,
-                                );
-                              },
-                              child: MessagePreview(
-                                avatar: avatar,
-                                sender: sender,
-                                messageText: chats.lastMessage,
-                                backgroundColor:
-                                    chats.senderId != currentUserId
-                                        ? backgroundColor
-                                        : Colors.transparent,
-                              ),
-                            );
-                          },
+                        : Padding(
+                          padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+                          child: HomeListView(
+                            scrollDirection: Axis.vertical,
+                            seperatorBuilder:
+                                (context, index) =>
+                                    const SizedBox(height: Sizes.sm),
+                            itemCount: chatController.length,
+                            itemBuilder: (context, index) {
+                              final chats = chatController[index];
+                              final backgroundColor = Color(
+                                int.parse(chats.color),
+                              );
+                          
+                              String avatar = chats.senderImage;
+                              String sender = chats.senderName;
+                          
+                              if (chats.senderId == currentUserId) {
+                                avatar = chats.receiverImage;
+                                sender = chats.receiverName;
+                              } else if (chats.receiverId == currentUserId) {
+                                avatar = chats.senderImage;
+                                sender = chats.senderName;
+                              }
+                          
+                              return GestureDetector(
+                                onTap: () async {
+                                  await readChatController.readChat(
+                                    context,
+                                    chats.senderId,
+                                    chats.receiverId,
+                                    currentUserId!,
+                                    sender,
+                                    avatar,
+                                    chats.participants,
+                                  );
+                                },
+                                child: MessagePreview(
+                                  avatar: avatar,
+                                  sender: sender,
+                                  messageText: chats.lastMessage,
+                                  backgroundColor:
+                                      chats.senderId != currentUserId
+                                          ? backgroundColor
+                                          : Colors.transparent,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                   ],
                 ),
