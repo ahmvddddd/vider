@@ -13,7 +13,7 @@ The app is built with **Flutter** for the frontend, **Node.js** for the backend,
 
 ---
 
-## 🏗 Architecture
+## Architecture
 
 The app follows a **Model–View–Controller (MVC)** software architecture:
 
@@ -31,13 +31,13 @@ The app follows a **Model–View–Controller (MVC)** software architecture:
   Handle user input, process requests, and decide what data from the Model goes to the View.  
   Example: `transaction_controller` fetches transactions from the backend and displays transaction details in the transaction history screen using the `transaction_model`.  
 
-👉 All **state management** logic is handled with **flutter_riverpod**.  
+ All **state management** logic is handled with **flutter_riverpod**.  
 
 ---
 
-## 📱 Screenshots & Features
+## Screenshots & Features
 
-### 🔑 Authentication
+### Authentication
 - Sign In and Sign Up screens with all required form fields.  
 - Input values are validated before submission.  
 - Authentication tokens are stored securely.
@@ -47,38 +47,40 @@ The app follows a **Model–View–Controller (MVC)** software architecture:
 <img src="assets/screenshots/sign_up.png" alt="Sign Up" width="220" height="500"/>
 </p>
 
-### 📊 Home Screen
+### Home Screen
 - Displayed after login.  
-- Shows the **total amount earned** by the provider since joining.  
-- Includes a **job heatmap** and **average job duration** statistics.
+- The screen includes a search bar that displays matching results as soon as you type a letter.  
+- A map button is attached to the search box, allowing quick navigation to the map screen.
+- A grid view of service categories displays all available providers, grouped by category.
+- A quick-access list of nearby service providers helps speed up the job initiation process.
 
 <img src="assets/screenshots/home.png" alt="Home" width="220" height="500"/>
 
-### 🔔 Map Screen 
+### Map Screen 
 - Shows current location of the user.  
-- Displays locations of all available service provdier.  
-- A search box that allows users to search for locations by name.  
+- Shows the locations of all available service provider  
+- ncludes a search box that allows users to find locations, with the map camera automatically zooming in on the selected result.  
 
 <img src="assets/screenshots/map.png" alt="Map" width="220" height="500"/>
 
-### 🔔 Notifications Screen 
+### Notifications Screen 
 - Shows a list of notifications including transactions, job updates, and other events.  
 - Unread notifications are marked with colored indicators.  
 - Notification badges are displayed on the home screen to alert users of new notifications.  
 
 <img src="assets/screenshots/notifications.png" alt="Notifications" width="220" height="500"/>
 
-### 🛠 Jobs
+### Jobs
 - Displays all jobs, with **active jobs pinned at the top**.  
 - Includes a **timer indicator** to show remaining time for active jobs.  
-- The hire screen allows users to specify job details before sending a request.
+- The hire provider screen allows users to specify job details before sending a request.
 
 <p align="center">
 <img src="assets/screenshots/jobs.png" alt="Jobs" width="220" height="500"/>
 <img src="assets/screenshots/hire.png" alt="Hire Provider" width="220" height="500"/>
 </p>
 
-### 💬 Chat & Messaging
+### Chat & Messaging
 - Chat screen lists all client conversations with **unread indicators**.  
 - Instant messaging powered by **WebSockets**.  
 - Integrated with **Firebase Cloud Messaging (FCM)** so providers never miss messages or job updates.  
@@ -88,7 +90,7 @@ The app follows a **Model–View–Controller (MVC)** software architecture:
 <img src="assets/screenshots/message.gif" alt="Message" width="220" height="500"/>
 </p>
 
-### 👤 Settings
+### Settings
 - Settings screen provides access to:  
   - Wallet (balance + token deposits).  
   - App and profile customization options.  
