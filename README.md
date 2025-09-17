@@ -68,6 +68,7 @@ The app follows a **Model–View–Controller (MVC)** software architecture:
 - Unread notifications are marked with colored indicators.  
 - Notification badges are displayed on the home screen to alert users of new notifications.  
 
+
 <img src="assets/screenshots/notifications.png" alt="Notifications" width="220" height="500"/>
 
 ### Jobs
@@ -96,6 +97,58 @@ The app follows a **Model–View–Controller (MVC)** software architecture:
   - App and profile customization options.  
 
 <img src="assets/screenshots/settings.png" alt="Settings" width="220" height="500"/>
+
+
+---
+
+flowchart TD
+
+%% Users
+U[Client/User] -->|Login / Register| A[Flutter Frontend]
+P[Service Provider] -->|Login / Register| A
+
+%% Authentication
+A -->|Send credentials| B[Node.js Backend]
+B -->|Verify & Store| C[(MongoDB)]
+B -->|Return token| A
+
+%% Home & Search
+U -->|Search providers / categories| A
+A -->|API Request: Search| B
+B -->|Fetch providers| C
+C -->|Return provider data| B
+B -->|Send results| A
+A -->|Show providers list / map| U
+
+%% Jobs
+U -->|Send job request| A
+A -->|API Request: Create Job| B
+B -->|Store job| C
+B -->|Notify provider| WS[WebSockets/FCM]
+P -->|Accept/Reject job| A
+A -->|Update job status| B
+B -->|Update job record| C
+
+%% Messaging
+U -->|Chat message| A
+A -->|Send via WebSocket| WS
+WS -->|Deliver message| P
+P -->|Reply| WS
+WS -->|Deliver reply| U
+
+%% Payments
+U -->|Pay after job| A
+A -->|Payment request| B
+B -->|Crypto API| PAY[Crypto Payment Gateway]
+PAY -->|Confirm payment| B
+B -->|Update wallet| C
+B -->|Notify provider| WS
+
+%% Notifications
+B -->|Send updates| WS
+WS -->|Push notifications| U
+WS -->|Push notifications| P
+
 
 ---
 

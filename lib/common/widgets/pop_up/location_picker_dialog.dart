@@ -7,6 +7,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import 'custom_snackbar.dart';
 
 class LocationPickerDialog extends StatefulWidget {
   const LocationPickerDialog({super.key});
@@ -54,14 +55,22 @@ class _LocationPickerDialogState extends State<LocationPickerDialog> {
 
       _mapController.moveAndRotate(target, 15, 0);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("No location found")),
+      CustomSnackbar.show(
+        context: context,
+        icon: Icons.error_outline,
+        title: 'An error occured',
+        message: 'Unable to find loctaion',
+        backgroundColor: CustomColors.error,
       );
     }
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Search failed: ${response.statusCode}")),
-    );
+    CustomSnackbar.show(
+        context: context,
+        icon: Icons.error_outline,
+        title: 'An error occured',
+        message: 'Search failed',
+        backgroundColor: CustomColors.error,
+      );
   }
 }
 
