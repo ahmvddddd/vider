@@ -398,26 +398,26 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
             ),
           );
         } else {
-          // Provider marker
-          // IconData providerIcon = Icons.location_on;
-          // final category = (item.category ?? '').toString().toLowerCase();
-          // switch (category) {
-          //   case 'beauty':
-          //     providerIcon = Icons.spa;
-          //     break;
-          //   case 'construction':
-          //     providerIcon = Icons.handyman;
-          //     break;
-          //   case 'food':
-          //     providerIcon = Icons.restaurant;
-          //     break;
-          //   case 'maintenance':
-          //     providerIcon = Icons.settings;
-          //     break;
-          //   case 'fitness':
-          //     providerIcon = Icons.fitness_center;
-          //     break;
-          // }
+          //Provider marker
+          IconData providerIcon = Icons.location_on;
+          final category = (item.category ?? '').toString().toLowerCase();
+          switch (category) {
+            case 'beauty':
+              providerIcon = Icons.spa;
+              break;
+            case 'construction':
+              providerIcon = Icons.handyman;
+              break;
+            case 'food':
+              providerIcon = Icons.restaurant;
+              break;
+            case 'maintenance':
+              providerIcon = Icons.settings;
+              break;
+            case 'fitness':
+              providerIcon = Icons.fitness_center;
+              break;
+          }
 
           markers.add(
             Marker(
@@ -428,7 +428,7 @@ class _ProvidersMapPageState extends ConsumerState<ProvidersMapPage> {
                 onTap: () => MapHelper.showProviderPopup(context, item),
                 child: Center(
                   child: Icon(
-                    Icons.person_pin_circle,
+                    providerIcon,
                     size: 35,
                     color: CustomColors.primary,
                   ),

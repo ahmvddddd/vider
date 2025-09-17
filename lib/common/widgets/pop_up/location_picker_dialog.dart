@@ -31,46 +31,70 @@ class _LocationPickerDialogState extends State<LocationPickerDialog> {
     });
   }
 
-  Future<void> searchLocation(String query) async {
-  final encodedQuery = Uri.encodeComponent(query); // FIX: safely encode
+
+Future<void> searchLocation(String query) async {
+  final encodedQuery = Uri.encodeComponent(query);
   final url =
-      "https://nominatim.openstreetmap.org/search?q=$encodedQuery&format=json&addressdetails=1&limit=5"; 
-  final response = await http.get(
-    Uri.parse(url),
-    headers: {"User-Agent": "vider/1.0 (vider_support@gmail.com)"},
-  );
+      "https://nominatim.openstreetmap.org/search?q=$encodedQuery&format=json&addressdetails=1&limit=5";
 
-  if (response.statusCode == 200) {
-    final results = json.decode(response.body) as List;
-    if (results.isNotEmpty) {
-      final place = results[0]; // pick best match
-      final lat = double.parse(place['lat'] as String);
-      final lon = double.parse(place['lon'] as String);
+  try {
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {"User-Agent": "vider/1.0 (vider_support@gmail.com)"},
+    );
 
-      final target = LatLng(lat, lon);
+    if (response.statusCode == 200) {
+      final decoded = json.decode(response.body);
 
-      setState(() {
-        _pickedLocation = target;
-      });
+      if (decoded is List && decoded.isNotEmpty) {
+        // find first result with valid lat/lon
+        final place = decoded.firstWhere(
+          (p) => p['lat'] != null && p['lon'] != null,
+          orElse: () => null,
+        );
 
-      _mapController.moveAndRotate(target, 15, 0);
+        if (place != null) {
+          final lat = double.tryParse(place['lat'].toString());
+          final lon = double.tryParse(place['lon'].toString());
+
+          if (lat != null && lon != null) {
+            final target = LatLng(lat, lon);
+
+            setState(() {
+              _pickedLocation = target;
+            });
+
+            _mapController.moveAndRotate(target, 15, 0);
+            return;
+          }
+        }
+      }
+
+      // fallback if no valid results
+      CustomSnackbar.show(
+        context: context,
+        icon: Icons.error_outline,
+        title: 'No Results',
+        message: 'Could not find a valid location.',
+        backgroundColor: CustomColors.error,
+      );
     } else {
       CustomSnackbar.show(
         context: context,
         icon: Icons.error_outline,
-        title: 'An error occured',
-        message: 'Unable to find loctaion',
+        title: 'Search Failed',
+        message: 'Could not find a valid location.',
         backgroundColor: CustomColors.error,
       );
     }
-  } else {
+  } catch (e) {
     CustomSnackbar.show(
-        context: context,
-        icon: Icons.error_outline,
-        title: 'An error occured',
-        message: 'Search failed',
-        backgroundColor: CustomColors.error,
-      );
+      context: context,
+      icon: Icons.error_outline,
+      title: 'Error',
+      message: 'Something went wrong: $e',
+      backgroundColor: CustomColors.error,
+    );
   }
 }
 
