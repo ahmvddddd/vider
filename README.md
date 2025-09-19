@@ -13,6 +13,54 @@ The app is built with **Flutter** for the frontend, **Node.js** for the backend,
 
 ---
 
+## Download APK (Beta)
+
+If you want to try the Android app quickly, download the latest APK:
+
+[![Download APK](https://img.shields.io/badge/APK-download-brightgreen)](https://drive.google.com/drive/folders/1dWddvh0wEG59eH0ZC3gdfpZAK6wdE_uT?usp=sharing)
+
+You can also check out the Vider Provider Repository:
+
+[Vider Provider](https://github.com/ahmvddddd/vider_provider)
+Companion app for service providers to manage portfolios, accept jobs, chat with clients, and receive payments.
+
+---
+## Quick Start Guide
+
+1. **Sign Up / Log In**  
+   - Create an account by submitting all required details or log in using your existing credentials.  
+
+2. **Fund Your Wallet**  
+   - Navigate to the profile tab and click on deposit to copy your crypto address. Fund your wallet by sending tokens to the address.
+
+3. **Search for a Provider**  
+   - Use the **home search bar** or **map screen** to find service providers near you.  
+
+4. **View Provider Details**  
+   - Open a provider’s profile to view their portfolio, ratings, and available services.  
+
+5. **Send Job Request**  
+   - Enter your **transaction PIN** and send a job request with details like job type, duration, and pay.  
+
+6. **Provider Accepts**  
+   - You would receive a notification if the provider accepts your request, the job will be initiated.  
+
+7. **Job in Progress**  
+   - Track the job’s status in the **Jobs screen** (active jobs appear at the top with a timer).  
+
+8. **Payment**  
+   - Once the job is completed, payment fee would be deducted from your wallet.  
+
+---
+
+## Data Flow
+
+A simple diagram of how the app works:
+
+<img src="assets/screenshots/vider_DFD.jpg" alt="Sign In" width="220" height="500"/>
+
+---
+
 ## Architecture
 
 The app follows a **Model–View–Controller (MVC)** software architecture:
@@ -58,8 +106,8 @@ The app follows a **Model–View–Controller (MVC)** software architecture:
 
 ### Map Screen 
 - Shows current location of the user.  
-- Shows the locations of all available service provider  
-- ncludes a search box that allows users to find locations, with the map camera automatically zooming in on the selected result.  
+- Shows the locations of all available service providers.  
+- Includes a search box that allows users to find locations, with the map camera automatically zooming in on the selected result.  
 
 <img src="assets/screenshots/map.png" alt="Map" width="220" height="500"/>
 
@@ -109,3 +157,54 @@ The app follows a **Model–View–Controller (MVC)** software architecture:
 - **Payments:** Crypto-based payments  
 
 ---
+
+## Developer Guide — Clone & Run
+
+### Prerequisites
+- Flutter SDK (stable channel) and Android SDK
+- A GitHub account (for cloning/pushing)
+- Optional: `flutter_dotenv` for environment variables in Flutter
+
+1. Clone the repository
+```
+   git clone https://github.com/ahmvddddd/vider.git
+```
+Navigate to the project directory:
+```
+cd vider
+```
+
+2. Install dependencies
+Run the following command to fetch all the packages:
+```
+flutter pub get
+```
+
+3. Run the app
+Make sure a device or emulator is running, then execute:
+```
+flutter run
+```
+
+4. Build APK (Android)
+To build a release APK:
+```
+flutter build apk
+```
+Build for iOS (MacOS only)
+To build the app for iOS:
+```
+flutter build ios
+```
+
+5. Troubleshooting
+Run flutter doctor to check for setup issues:
+```
+flutter doctor
+
+```
+To clean the build:
+```
+flutter clean
+flutter pub get
+```
