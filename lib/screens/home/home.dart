@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../utils/helpers/responsive_size.dart';
 import '../../controllers/notifications/unread_notifications_controller.dart';
 import '../../controllers/providers/providers_category_controller.dart';
 import '../../controllers/services/firebase_service.dart';
@@ -76,7 +77,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 expandedHeight: screenHeight * 0.09,
                 backgroundColor: dark ? Colors.black : Colors.white,
                 flexibleSpace: Padding(
-                  padding: const EdgeInsets.all(Sizes.sm),
+                  padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                   child: ListView(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -93,17 +94,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           },
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+                padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
                 child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: Sizes.spaceBtwSections),
+                          SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
                           HomeSearchBar(),
                           
                           if (!isSearchFocused) ...[
-                          const SizedBox(height: Sizes.spaceBtwItems),
+                          SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                           ProvidersGrid(),
-                          const SizedBox(height: Sizes.spaceBtwSections),
+                          SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
                           
                           ProviderProfilesWidget(),]
                         ],

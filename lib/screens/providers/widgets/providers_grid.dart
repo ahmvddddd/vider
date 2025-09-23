@@ -7,6 +7,7 @@ import '../../../controllers/providers/providers_category_controller.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../all_provider_categories.dart';
 import '../components/providers_grid_shimmer.dart';
 import 'providers_tabbar.dart';
@@ -46,7 +47,7 @@ class ProvidersGrid extends ConsumerWidget {
                     dark,
                     screenWidth,
                     'View More',
-                    const Icon(Icons.more_horiz, size: Sizes.iconLg),
+                    Icon(Icons.more_horiz, size: responsiveSize(context, Sizes.iconLg)),
                     isViewMore: true,
                   ),
                 )
@@ -130,15 +131,20 @@ class ProvidersGrid extends ConsumerWidget {
           child: categoryImage,
         ),
 
-        const SizedBox(height: Sizes.xs + 2),
-        Text(
-          title,
-          style: Theme.of(context).textTheme.labelSmall!.copyWith(
-            color:
-                isViewMore
-                    ? (dark ? Colors.black : Colors.white)
-                    : (dark ? Colors.white : Colors.black),
-            fontSize: 10,
+        SizedBox(height: responsiveSize(context, Sizes.sm)),
+        SizedBox(
+          width: screenWidth * 0.20,
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.labelSmall!.copyWith(
+              color:
+                  isViewMore
+                      ? (dark ? Colors.black : Colors.white)
+                      : (dark ? Colors.white : Colors.black),
+              fontSize: 10,
+              overflow: TextOverflow.ellipsis
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
       ],

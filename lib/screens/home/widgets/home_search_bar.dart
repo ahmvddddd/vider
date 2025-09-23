@@ -12,6 +12,7 @@ import '../../../controllers/providers/search_providers_controller.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../../map/providers_map.dart';
 import '../../providers/provider_screen.dart';
 
@@ -58,7 +59,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: Sizes.spaceBtwItems),
+        SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
 
         SearchContainer(
           text: 'search name or service',
@@ -67,9 +68,9 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
           onTap: () => FocusScope.of(context).requestFocus(_focusNode),
           focusNode: _focusNode,
           suffixIcon: Padding(
-            padding: const EdgeInsets.only(right: 8.0),
+            padding: EdgeInsets.only(right: responsiveSize(context, 8.0)),
             child: Container(
-              padding: const EdgeInsets.all(Sizes.xs),
+              padding: EdgeInsets.all(responsiveSize(context, Sizes.xs)),
               decoration: BoxDecoration(
                 color:
                     dark
@@ -85,7 +86,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
                     ),
                 child: Icon(
                   Icons.location_pin,
-                  size: Sizes.iconM,
+                  size: responsiveSize(context, Sizes.iconM),
                   color: Colors.red,
                 ),
               ),
@@ -103,7 +104,7 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
             }
             return HomeListView(
               seperatorBuilder:
-                  (context, index) => const SizedBox(height: Sizes.sm),
+                  (context, index) => SizedBox(height: responsiveSize(context, Sizes.sm)),
               scrollDirection: Axis.vertical,
               scrollPhysics: NeverScrollableScrollPhysics(),
               itemCount: profiles.length,
@@ -178,12 +179,12 @@ class _HomeSearchbarState extends ConsumerState<HomeSearchBar> {
           Row(
             children: [
               CircleAvatar(backgroundImage: NetworkImage(profileImage)),
-              const SizedBox(width: Sizes.sm),
+              SizedBox(width: responsiveSize(context, Sizes.sm)),
               Row(
                 children: [
                   Text(fullname, style: Theme.of(context).textTheme.labelSmall),
 
-                  const SizedBox(width: Sizes.sm),
+                  SizedBox(width: responsiveSize(context, Sizes.sm)),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

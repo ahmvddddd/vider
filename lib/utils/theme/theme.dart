@@ -12,13 +12,13 @@ import 'custom_theme/text_theme.dart';
 class TAppTheme {
   TAppTheme._();
 
-  static ThemeData lightTheme = ThemeData(
+  static ThemeData lightTheme(BuildContext context) => ThemeData(
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.light,
     primaryColor: Colors.grey,
     scaffoldBackgroundColor: Colors.white,
-    textTheme: TTextTheme.lightTextTheme,
+    textTheme: TTextTheme.lightTextTheme(context),
     appBarTheme: TAppBarTheme.lightAppBarTheme,
     elevatedButtonTheme: TElevatedButtonTheme.LightElevatedButtonTheme,
     bottomSheetTheme: TBottomSheetTheme.lightBottomSheetTheme,
@@ -28,13 +28,13 @@ class TAppTheme {
     inputDecorationTheme: TTextFormFieldTheme.lightInputDecorationTheme,
   );
 
-  static ThemeData darkTheme = ThemeData(
+  static ThemeData darkTheme(BuildContext context) => ThemeData(
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.dark,
     primaryColor: Colors.grey,
     scaffoldBackgroundColor: Colors.black,
-    textTheme: TTextTheme.darkTextTheme,
+    textTheme: TTextTheme.darkTextTheme(context),
     appBarTheme: TAppBarTheme.darkAppBarTheme,
     elevatedButtonTheme: TElevatedButtonTheme.darkElevatedButtonTheme,
     bottomSheetTheme: TBottomSheetTheme.darkBottomSheetTheme,
@@ -44,3 +44,20 @@ class TAppTheme {
     inputDecorationTheme: TTextFormFieldTheme.darkInputDecorationTheme,
   );
 }
+
+
+// import 'package:flutter/material.dart';
+// import 'theme_data/text_theme.dart';
+
+// class AppTheme {
+//   AppTheme._();
+
+//   static ThemeData lightTheme(BuildContext context) => ThemeData(
+//         useMaterial3: true,
+//         fontFamily: 'Aeonik',
+//         brightness: Brightness.light,
+//         primaryColor: Colors.grey,
+//         scaffoldBackgroundColor: Colors.white,
+//         textTheme: TexTheme.customTextTheme(context), // now responsive
+//       );
+// }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../utils/constants/custom_colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_function.dart';
+import '../../../../utils/helpers/responsive_size.dart';
 
 class ProviderCard extends StatelessWidget {
   final String imageAvatar;
@@ -40,7 +41,7 @@ class ProviderCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(Sizes.xs),
+            padding: EdgeInsets.all(responsiveSize(context, Sizes.xs)),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(Sizes.cardRadiusMd),
               child: Image.network(
@@ -52,7 +53,7 @@ class ProviderCard extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: Sizes.sm),
+          SizedBox(height: responsiveSize(context, Sizes.sm)),
           Container(
             color:
                 dark
@@ -64,13 +65,13 @@ class ProviderCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const SizedBox(height: Sizes.sm),
+                    SizedBox(height: responsiveSize(context, Sizes.sm)),
                     CircleAvatar(
                     radius: 16,
                     backgroundImage: NetworkImage(imageAvatar),
                   ),
 
-                  const SizedBox(width: Sizes.sm),
+                  SizedBox(width: responsiveSize(context, Sizes.sm)),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -94,10 +95,10 @@ class ProviderCard extends StatelessWidget {
                       ],
                     ),
 
-                    const SizedBox(width: Sizes.md),
+                    SizedBox(width: responsiveSize(context, Sizes.md)),
                     Row(
                       children: [
-                        Icon(Icons.star, color: ratingColor, size: Sizes.iconM,),
+                        Icon(Icons.star, color: ratingColor, size: responsiveSize(context, Sizes.iconM),),
                         Text(
                           rating.toString(),
                           style: Theme.of(

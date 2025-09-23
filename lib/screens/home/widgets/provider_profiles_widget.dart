@@ -11,6 +11,7 @@ import '../../../repository/user/get_matching_location_storage.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../../providers/all_providers_screen.dart';
 import '../../providers/provider_screen.dart';
 import '../components/provider_profiles_shimmer.dart';
@@ -149,11 +150,11 @@ class _ProviderProfilesWidgetState
                               AllProvidersScreen(),
                             ),
                           ),
-                          const SizedBox(height: Sizes.sm),
+                          SizedBox(height: responsiveSize(context, Sizes.sm)),
             HomeListView(
               sizedBoxHeight: screenHeight * 0.28,
               seperatorBuilder:
-                  (context, index) => const SizedBox(width: Sizes.sm),
+                  (context, index) => SizedBox(width: responsiveSize(context, Sizes.sm)),
               scrollDirection: Axis.horizontal,
               itemCount: providers.length,
               itemBuilder: (context, index) {
