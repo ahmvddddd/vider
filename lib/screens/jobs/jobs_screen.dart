@@ -11,6 +11,7 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../utils/helpers/responsive_size.dart';
 import 'components/jobs_screen_shimmer.dart';
 import 'components/rating_dialog.dart';
 
@@ -93,14 +94,14 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
                   children: [
                     if (isRefreshing) Column(children: [JobsScreenShimmer()]),
 
-                    const SizedBox(height: Sizes.spaceBtwItems),
+                    SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                     HomeListView(
                       scrollDirection: Axis.vertical,
                       itemCount: jobs.length,
                       scrollPhysics: const NeverScrollableScrollPhysics(),
                       seperatorBuilder:
                           (context, index) =>
-                              const SizedBox(height: Sizes.spaceBtwItems),
+                              SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                       itemBuilder: (context, index) {
                         var job = jobs[index];
                         String date = DateFormat(
@@ -108,7 +109,7 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
                         ).format(DateTime.parse(job['startTime']));
 
                         return RoundedContainer(
-                          padding: const EdgeInsets.all(Sizes.sm),
+                          padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                           backgroundColor:
                               dark
                                   ? CustomColors.white.withValues(alpha: 0.1)
@@ -121,7 +122,7 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
                               Row(
                                 children: [
                                   Container(
-                                    height: xSAvatarHeight * 0.80,
+                                    height: responsiveSize(context, xSAvatarHeight * 0.80),
                                     width:
                                         xSAvatarHeight *
                                         0.80, // Ensure it's a square
@@ -145,10 +146,10 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
                                     ),
                                   ),
 
-                                  const SizedBox(width: Sizes.sm),
+                                  SizedBox(width: responsiveSize(context, Sizes.sm)),
                                   Row(
                                     children: [
-                                      const SizedBox(width: Sizes.sm),
+                                      SizedBox(width: responsiveSize(context, Sizes.sm)),
                                       Text(
                                         job['providerName'] ?? 'no name',
                                         style:
@@ -164,7 +165,7 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
 
                               //description
                               Padding(
-                                padding: EdgeInsets.all(Sizes.xs),
+                                padding: EdgeInsets.all(responsiveSize(context, Sizes.xs)),
                                 child: Divider(color: dark ? CustomColors.alternate : CustomColors.primary),
                               ),
                               Row(
@@ -186,7 +187,7 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
                                 ],
                               ),
 
-                              const SizedBox(height: Sizes.xs),
+                              SizedBox(height: responsiveSize(context, Sizes.xs)),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -237,7 +238,7 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
                                 ],
                               ),
 
-                              const SizedBox(height: Sizes.xs),
+                              SizedBox(height: responsiveSize(context, Sizes.xs)),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -257,7 +258,7 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
                                 ],
                               ),
 
-                              const SizedBox(height: Sizes.sm),
+                              SizedBox(height: responsiveSize(context, Sizes.sm)),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
@@ -284,19 +285,19 @@ class _JobsPageState extends ConsumerState<JobsScreen> {
           error:
               (e, _) => Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+                  padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment:
-                        CrossAxisAlignment.center, // 👈 center horizontally
+                        CrossAxisAlignment.center,
                     children: [
                       Text(
                         e.toString().replaceAll('Exception:', '').trim(),
-                        style: Theme.of(context).textTheme.labelMedium,
+                        style: Theme.of(context).textTheme.bodySmall,
                         softWrap: true,
-                        textAlign: TextAlign.center, // 👈 center text content
+                        textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: Sizes.spaceBtwItems),
+                      SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                       IconButton(
                         style: IconButton.styleFrom(
                           backgroundColor: CustomColors.primary,

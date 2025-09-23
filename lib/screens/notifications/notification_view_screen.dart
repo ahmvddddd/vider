@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../utils/constants/sizes.dart';
+import '../../utils/helpers/responsive_size.dart';
 import 'widgets/notifications_header.dart';
 
 class NotificationViewScreen extends StatelessWidget {
@@ -23,19 +24,19 @@ class NotificationViewScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+          padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title,
               style: Theme.of(context).textTheme.labelMedium,),
 
-              const SizedBox(height: Sizes.sm),
+              SizedBox(height: responsiveSize(context, Sizes.sm)),
               Text(message,
               style: Theme.of(context).textTheme.bodyMedium,
               softWrap: true,),
               
-              const SizedBox(height: Sizes.spaceBtwSections,),
+              SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections),),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

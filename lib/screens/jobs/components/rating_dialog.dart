@@ -5,6 +5,7 @@ import '../../../controllers/rating/rating_controller.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 
 class RatingDialog extends ConsumerStatefulWidget {
   final String profileId;
@@ -49,7 +50,7 @@ class _RatingDialogState extends ConsumerState<RatingDialog> {
           ),
           if (ratingState.isLoading)
             Padding(
-              padding: EdgeInsets.only(top: 8),
+              padding: EdgeInsets.only(top: responsiveSize(context, Sizes.sm)),
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                 strokeWidth: 4.0,

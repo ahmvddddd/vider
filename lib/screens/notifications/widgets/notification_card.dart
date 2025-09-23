@@ -4,6 +4,7 @@ import '../../../common/widgets/custom_shapes/containers/rounded_container.dart'
 import '../../../common/widgets/custom_shapes/divider/custom_divider.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 
 class NotificationCard extends StatelessWidget {
   final Color borderColor;
@@ -37,7 +38,7 @@ class NotificationCard extends StatelessWidget {
             dark
                 ? Colors.white.withValues(alpha: 0.1)
                 : Colors.black.withValues(alpha: 0.1),
-        padding: const EdgeInsets.all(Sizes.sm),
+        padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
         radius: Sizes.cardRadiusSm,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -47,10 +48,10 @@ class NotificationCard extends StatelessWidget {
               children: [
                 CircleAvatar(
                   backgroundColor: borderColor,
-                  radius: 20,
+                  radius: responsiveSize(context, Sizes.cardRadiusLg + 4),
                   child: Icon(icon, color: iconColor)),
 
-                const SizedBox(width: Sizes.sm),
+                SizedBox(width: responsiveSize(context, Sizes.sm)),
                 SizedBox(
                   width: screenWidth * 0.60,
                   child: Text(
@@ -64,7 +65,7 @@ class NotificationCard extends StatelessWidget {
                 ),
               ],
             ),
-            const CustomDivider(padding: EdgeInsets.all(Sizes.sm)),
+            CustomDivider(padding: EdgeInsets.all(responsiveSize(context, Sizes.sm))),
             SizedBox(
               width: screenWidth * 0.70,
               child: Text(
@@ -77,7 +78,7 @@ class NotificationCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: Sizes.sm),
+            SizedBox(height: responsiveSize(context, Sizes.sm)),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

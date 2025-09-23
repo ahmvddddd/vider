@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/helpers/responsive_size.dart';
 import '../../screens/jobs/components/jobs_screen_shimmer.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/layouts/listview.dart';
@@ -42,15 +43,21 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           child: notificationsAsync.when(
             data: (notifications) {
               if (notifications.isEmpty) {
-                return Center(child: Text('No notifications'));
+                return Center(
+                  child: Text(
+                    'No notifications',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                );
               }
 
               return HomeListView(
                 scrollDirection: Axis.vertical,
                 scrollPhysics: const NeverScrollableScrollPhysics(),
                 seperatorBuilder:
-                    (context, index) =>
-                        const SizedBox(height: Sizes.spaceBtwItems),
+                    (context, index) => SizedBox(
+                      height: responsiveSize(context, Sizes.spaceBtwItems),
+                    ),
                 itemCount: notifications.length,
                 itemBuilder: (context, index) {
                   final notif = notifications[index];
@@ -76,8 +83,11 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                         );
                       },
                       iconColor:
-                          notif.isRead ?  Colors.white
-                          : dark ? CustomColors.primary : CustomColors.alternate,
+                          notif.isRead
+                              ? Colors.white
+                              : dark
+                              ? CustomColors.primary
+                              : CustomColors.alternate,
                       title: notif.title,
                       message: notif.message,
                       date: notif.createdAt,
@@ -85,12 +95,12 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                   }
 
                   return NotificationCard(
-                      borderColor:
-                          notif.isRead
-                              ? CustomColors.darkGrey
-                              : dark
-                              ? CustomColors.alternate
-                              : CustomColors.primary,
+                    borderColor:
+                        notif.isRead
+                            ? CustomColors.darkGrey
+                            : dark
+                            ? CustomColors.alternate
+                            : CustomColors.primary,
                     icon: Icons.notifications,
                     onTap: () async {
                       await ref.read(readNotificationProvider(notif.id).future);
@@ -103,9 +113,12 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                         ),
                       );
                     },
-                      iconColor:
-                          notif.isRead ?  Colors.black
-                          : dark ? CustomColors.primary : CustomColors.alternate,
+                    iconColor:
+                        notif.isRead
+                            ? Colors.black
+                            : dark
+                            ? CustomColors.primary
+                            : CustomColors.alternate,
                     title: notif.title,
                     message: notif.message,
                     date: notif.createdAt,
@@ -120,21 +133,27 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 ),
             error:
                 (err, _) => Padding(
-                  padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+                  padding: EdgeInsets.all(
+                    responsiveSize(context, Sizes.spaceBtwItems),
+                  ),
                   child: Column(
                     children: [
-                      const SizedBox(height: 200),
+                      SizedBox(height: responsiveSize(context, 200)),
                       Text(
                         'Could not load screen, check your internet connection',
                         style: Theme.of(context).textTheme.labelMedium,
                         softWrap: true,
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: Sizes.spaceBtwItems),
+                      SizedBox(
+                        height: responsiveSize(context, Sizes.spaceBtwItems),
+                      ),
                       IconButton(
                         style: IconButton.styleFrom(
                           backgroundColor: CustomColors.primary,
-                          padding: const EdgeInsets.all(Sizes.sm),
+                          padding: EdgeInsets.all(
+                            responsiveSize(context, Sizes.sm),
+                          ),
                         ),
                         icon: const Icon(Icons.refresh, color: Colors.white),
                         onPressed: () {

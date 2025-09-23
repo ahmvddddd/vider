@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:iconsax/iconsax.dart';
 import 'package:vider/utils/helpers/capitalize_text.dart';
 import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../../controllers/user/user_controller.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../../notifications/notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -43,7 +45,7 @@ class _HomeAppBarState extends ConsumerState<HomeAppBar> {
                       dark
                           ? Colors.white.withValues(alpha: 0.1)
                           : Colors.black.withValues(alpha: 0.1),
-                  padding: const EdgeInsets.all(Sizes.xs),
+                  padding: EdgeInsets.all(responsiveSize(context, Sizes.xs)),
                   child: Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
@@ -76,7 +78,7 @@ class _HomeAppBarState extends ConsumerState<HomeAppBar> {
                 );
               },
               child: RoundedContainer(
-                padding: const EdgeInsets.all(Sizes.sm),
+                padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                 radius: 100,
                 backgroundColor:
                     dark
@@ -140,7 +142,7 @@ class _HomeAppBarState extends ConsumerState<HomeAppBar> {
 
               //notifications
               RoundedContainer(
-                padding: const EdgeInsets.all(Sizes.sm),
+                padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                 radius: 100,
                 backgroundColor:
                     dark
@@ -168,37 +170,27 @@ class _HomeAppBarState extends ConsumerState<HomeAppBar> {
                     dark
                         ? Colors.white.withValues(alpha: 0.1)
                         : Colors.black.withValues(alpha: 0.1),
-                padding: const EdgeInsets.all(2),
+                padding: EdgeInsets.all(responsiveSize(context, 2)),
                 child: Center(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
-                    child: Icon(Icons.person),
+                    child: Icon(Iconsax.user),
                   ),
                 ),
               ),
 
               //notifications
-              GestureDetector(
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const NotificationsScreen(),
-                  //   ),
-                  // );
-                },
-                child: RoundedContainer(
-                  padding: const EdgeInsets.all(Sizes.sm),
-                  radius: 100,
-                  backgroundColor:
-                      dark
-                          ? Colors.white.withValues(alpha: 0.1)
-                          : Colors.black.withValues(alpha: 0.1),
-                  child: const Icon(
-                    Icons.notifications,
-                    size: Sizes.iconMd,
-                    color: Colors.white,
-                  ),
+              RoundedContainer(
+                padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
+                radius: 100,
+                backgroundColor:
+                    dark
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.black.withValues(alpha: 0.1),
+                child: Icon(
+                  Icons.notifications,
+                  size: responsiveSize(context, Sizes.iconMd),
+                  color: Colors.white,
                 ),
               ),
             ],

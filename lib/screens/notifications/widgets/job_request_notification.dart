@@ -4,6 +4,7 @@ import '../../../common/widgets/custom_shapes/divider/custom_divider.dart';
 import 'package:intl/intl.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 
 class JobRequestNotification extends StatelessWidget {
   final Color borderColor;
@@ -28,7 +29,7 @@ class JobRequestNotification extends StatelessWidget {
     required this.duration,
     required this.onDecline,
     required this.onAccept,
-    required this.date
+    required this.date,
   });
 
   @override
@@ -57,26 +58,26 @@ class JobRequestNotification extends StatelessWidget {
             maxLines: 3,
           ),
 
-          const SizedBox(height: Sizes.xs,),
+          SizedBox(height: responsiveSize(context, Sizes.xs)),
           Text(
-                DateFormat('dd/MM/yy HH:mm:ss').format(date),
-                style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            DateFormat('dd/MM/yy HH:mm:ss').format(date),
+            style: Theme.of(
+              context,
+            ).textTheme.labelMedium!.copyWith(fontWeight: FontWeight.bold),
           ),
 
-          const CustomDivider(
-            padding:  EdgeInsets.all(Sizes.sm)
+          CustomDivider(
+            padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
           ),
           Row(
             children: [
               CircleAvatar(backgroundImage: NetworkImage(employerImage)),
 
-              const SizedBox(width: Sizes.sm),
+              SizedBox(width: responsiveSize(context, Sizes.sm)),
               Text(employerName, style: Theme.of(context).textTheme.labelSmall),
             ],
           ),
-          const SizedBox(height: Sizes.xs),
+          SizedBox(height: responsiveSize(context, Sizes.xs)),
           Text(
             jobTitle,
             style: Theme.of(
@@ -85,25 +86,26 @@ class JobRequestNotification extends StatelessWidget {
             softWrap: true,
             maxLines: 3,
           ),
-          const SizedBox(height: Sizes.xs),
+          SizedBox(height: responsiveSize(context, Sizes.xs)),
           Row(
             children: [
               Text('PAY:', style: Theme.of(context).textTheme.labelSmall),
-              const SizedBox(width: Sizes.md),
+              SizedBox(width: responsiveSize(context, Sizes.md)),
               Text(
                 '\$$pay',
-                style: Theme.of(
-                  context,
-                ).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold, color: Colors.green),
+                style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
               ),
             ],
           ),
 
-          const SizedBox(height: Sizes.xs),
+          SizedBox(height: responsiveSize(context, Sizes.xs)),
           Row(
             children: [
               Text('Duration:', style: Theme.of(context).textTheme.labelSmall),
-              const SizedBox(width: Sizes.md),
+              SizedBox(width: responsiveSize(context, Sizes.md)),
               Text(
                 '$duration',
                 style: Theme.of(
@@ -113,42 +115,48 @@ class JobRequestNotification extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: Sizes.md),
+          SizedBox(height: responsiveSize(context, Sizes.md)),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Sizes.spaceBtwItems),
+            padding: EdgeInsets.symmetric(
+              horizontal: responsiveSize(context, Sizes.spaceBtwItems),
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(Sizes.spaceBtwItems),
-                      ),
-                      onPressed: onDecline,
-                      child: Text(
-                        'Decline',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.headlineSmall!.copyWith(color: Colors.red),
-                      ),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.all(
+                      responsiveSize(context, Sizes.spaceBtwItems),
                     ),
-            
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.all(Sizes.spaceBtwItems),
-                      ),
-                      onPressed: onAccept,
-                      child: Text(
-                        'Accept',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.headlineSmall!.copyWith(color: Colors.green),
-                      ),
+                  ),
+                  onPressed: onDecline,
+                  child: Text(
+                    'Decline',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlineSmall!.copyWith(color: Colors.red),
+                  ),
+                ),
+
+                TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.all(
+                      responsiveSize(context, Sizes.spaceBtwItems),
                     ),
-              ]
+                  ),
+                  onPressed: onAccept,
+                  child: Text(
+                    'Accept',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlineSmall!.copyWith(color: Colors.green),
+                  ),
+                ),
+              ],
             ),
           ),
-        ]
-      )
+        ],
+      ),
     );
   }
 }

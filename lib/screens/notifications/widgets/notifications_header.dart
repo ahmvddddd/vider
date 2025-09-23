@@ -5,6 +5,7 @@ import '../../../controllers/services/notification_badge_service.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../notifications.dart';
 
 class NotificationsHeader extends ConsumerWidget
@@ -28,7 +29,7 @@ class NotificationsHeader extends ConsumerWidget
   Widget build(BuildContext context, WidgetRef ref) {
     final dark = HelperFunction.isDarkMode(context);
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: Sizes.sm),
+      padding: EdgeInsets.symmetric(horizontal: responsiveSize(context, Sizes.sm)),
       child: AppBar(
         automaticallyImplyLeading: false,
         leading:
