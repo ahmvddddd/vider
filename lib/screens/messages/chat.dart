@@ -7,6 +7,7 @@ import '../../controllers/messages/read_chat_controller.dart';
 import '../../controllers/services/user_id_controller.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../utils/constants/custom_colors.dart';
+import '../../utils/helpers/responsive_size.dart';
 import 'components/chat_shimmer.dart';
 import 'widgets/message_preview.dart';
 import '../../utils/constants/sizes.dart';
@@ -76,7 +77,7 @@ class _ChatState extends ConsumerState<ChatScreen> {
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ),
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
 
                 /// Sort chats: newest first
                 chatController.isEmpty
@@ -87,7 +88,7 @@ class _ChatState extends ConsumerState<ChatScreen> {
                         ),
                       )
                     : Padding(
-                        padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+                        padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
                         child: Builder(
                           builder: (context) {
                             final sortedChats = [...chatController];
@@ -98,7 +99,7 @@ class _ChatState extends ConsumerState<ChatScreen> {
                             return HomeListView(
                               scrollDirection: Axis.vertical,
                               seperatorBuilder: (context, index) =>
-                                  const SizedBox(height: Sizes.sm),
+                                  SizedBox(height: responsiveSize(context,Sizes.sm)),
                               itemCount: sortedChats.length,
                               itemBuilder: (context, index) {
                                 final chats = sortedChats[index];
@@ -148,21 +149,21 @@ class _ChatState extends ConsumerState<ChatScreen> {
           ),
           loading: () => const ChatShimmer(),
           error: (e, _) => Padding(
-            padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+            padding: EdgeInsets.all(Sizes.spaceBtwItems),
             child: Column(
               children: [
-                const SizedBox(height: 200),
+                SizedBox(height: responsiveSize(context, 200)),
                 Text(
                   'Could not load screen. Please check your internet connection',
-                  style: Theme.of(context).textTheme.labelMedium,
+                  style: Theme.of(context).textTheme.bodySmall,
                   softWrap: true,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                 IconButton(
                   style: IconButton.styleFrom(
                     backgroundColor: CustomColors.primary,
-                    padding: const EdgeInsets.all(Sizes.sm),
+                    padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                   ),
                   icon: const Icon(Icons.refresh, color: Colors.white),
                   onPressed: () {

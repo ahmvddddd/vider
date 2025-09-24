@@ -4,6 +4,7 @@ import '../../../common/widgets/layouts/listview.dart';
 import '../../../common/widgets/shimmer/shimmer_widget.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 
 class ChatShimmer extends StatelessWidget {
   const ChatShimmer({super.key});
@@ -17,19 +18,20 @@ class ChatShimmer extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+          padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: Sizes.spaceBtwSections),
+              SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
               HomeListView(
                 scrollDirection: Axis.vertical,
                 seperatorBuilder:
-                    (context, index) => const SizedBox(height: Sizes.sm),
+                    (context, index) =>
+                        SizedBox(height: responsiveSize(context, Sizes.sm)),
                 itemCount: 8,
                 itemBuilder: (context, index) {
                   return RoundedContainer(
-                    padding: const EdgeInsets.all(Sizes.sm),
+                    padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                     radius: Sizes.borderRadiusMd,
                     backgroundColor:
                         dark
@@ -40,12 +42,12 @@ class ChatShimmer extends StatelessWidget {
                       children: [
                         //image
                         ShimmerWidget(
-                          height: xSAvatarHeight,
-                          width: xSAvatarHeight,
+                          height: responsiveSize(context, xSAvatarHeight),
+                          width: responsiveSize(context, xSAvatarHeight),
                           radius: 100,
                         ),
                         //name and service
-                        const SizedBox(width: Sizes.sm),
+                        SizedBox(width: responsiveSize(context, Sizes.sm)),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +57,7 @@ class ChatShimmer extends StatelessWidget {
                               height: screenHeight * 0.02,
                               radius: 50,
                             ),
-                            const SizedBox(height: Sizes.xs),
+                            SizedBox(height: responsiveSize(context, Sizes.xs)),
                             ShimmerWidget(
                               width: screenWidth * 0.60,
                               height: screenHeight * 0.02,

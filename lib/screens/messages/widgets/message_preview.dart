@@ -4,6 +4,7 @@ import '../../../common/widgets/image/full_screen_image_view.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 
 class MessagePreview extends StatelessWidget {
   final String avatar;
@@ -25,7 +26,7 @@ class MessagePreview extends StatelessWidget {
     double xSAvatarHeight = screenHeight * 0.055;
     final dark = HelperFunction.isDarkMode(context);
     return RoundedContainer(
-      padding: const EdgeInsets.all(Sizes.sm),
+      padding: EdgeInsets.all((responsiveSize(context, Sizes.sm))),
       radius: Sizes.cardRadiusMd,
       backgroundColor:
           dark
@@ -39,8 +40,8 @@ class MessagePreview extends StatelessWidget {
             children: [
               //image
               Container(
-                height: xSAvatarHeight,
-                width: xSAvatarHeight,
+                height: responsiveSize(context, xSAvatarHeight),
+                width: responsiveSize(context, xSAvatarHeight),
                 padding: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -86,7 +87,7 @@ class MessagePreview extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: Sizes.xs),
+                  SizedBox(height: responsiveSize(context, Sizes.xs)),
                   SizedBox(
                     width: screenWidth * 0.55,
                     child: Text(
@@ -102,8 +103,8 @@ class MessagePreview extends StatelessWidget {
           ),
     
           Container(
-            width: 10,
-            height: 10,
+            width: responsiveSize(context, 10),
+            height: responsiveSize(context, 10),
             decoration: BoxDecoration(
               color: backgroundColor,
               shape: BoxShape.circle,

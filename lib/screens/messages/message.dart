@@ -11,6 +11,7 @@ import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../utils/helpers/responsive_size.dart';
 import 'widgets/message_header.dart';
 
 class MessageScreen extends ConsumerStatefulWidget {
@@ -47,17 +48,16 @@ class _MessageState extends ConsumerState<MessageScreen> {
       if (myFocusNode.hasFocus) {
         Future.delayed(
           const Duration(milliseconds: 500),
-          () => HelperFunction.scrollToBottom(_scrollController)
+          () => HelperFunction.scrollToBottom(_scrollController),
         );
       }
     });
 
-    Future.delayed(const Duration(milliseconds: 500),
-    () => HelperFunction.scrollToBottom(_scrollController)
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () => HelperFunction.scrollToBottom(_scrollController),
     );
   }
-
-  
 
   Future<void> initializeMessaging() async {
     await getCurrentUserId();
@@ -96,8 +96,6 @@ class _MessageState extends ConsumerState<MessageScreen> {
     });
   }
 
-  
-
   void attemptReconnect() {
     Future.delayed(const Duration(seconds: 2), () {
       socketController.socket.connect();
@@ -120,7 +118,8 @@ class _MessageState extends ConsumerState<MessageScreen> {
           'participants': widget.participants,
           'senderId': currentUserId,
           'receiverId': receiverId,
-          'senderName': '${user.firstname.capitalizeEachWord()} ${user.lastname.capitalizeEachWord()}',
+          'senderName':
+              '${user.firstname.capitalizeEachWord()} ${user.lastname.capitalizeEachWord()}',
           'senderImage': user.profileImage,
           'receiverName': widget.receiverName,
           'receiverImage': widget.receiverImage,
@@ -151,15 +150,17 @@ class _MessageState extends ConsumerState<MessageScreen> {
   Widget build(BuildContext context) {
     final dark = HelperFunction.isDarkMode(context);
     return GestureDetector(
-       onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: MessageHeader(
-          title: Text(widget.receiverName,
-          style: Theme.of(context).textTheme.headlineSmall,),
+          title: Text(
+            widget.receiverName,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
           showBackArrow: true,
         ),
         body: Padding(
-          padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+          padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
           child: Column(
             children: [
               Expanded(
@@ -169,7 +170,7 @@ class _MessageState extends ConsumerState<MessageScreen> {
                   itemBuilder: (context, index) {
                     final message = messages[index];
                     final isMine = message['senderId'] == currentUserId;
-      
+
                     return Align(
                       alignment:
                           isMine ? Alignment.centerRight : Alignment.centerLeft,
@@ -178,7 +179,7 @@ class _MessageState extends ConsumerState<MessageScreen> {
                           vertical: 5,
                           horizontal: 10,
                         ),
-                        padding: const EdgeInsets.all(10),
+                        padding: EdgeInsets.all(responsiveSize(context, 10)),
                         decoration: BoxDecoration(
                           color:
                               isMine
@@ -186,11 +187,15 @@ class _MessageState extends ConsumerState<MessageScreen> {
                                   : dark
                                   ? Colors.white.withValues(alpha: 0.1)
                                   : Colors.black.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(Sizes.cardRadiusLg),
+                          borderRadius: BorderRadius.circular(
+                            Sizes.cardRadiusLg,
+                          ),
                         ),
                         child: Text(
                           message['content'],
-                          style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          style: Theme.of(
+                            context,
+                          ).textTheme.labelMedium!.copyWith(
                             color:
                                 isMine
                                     ? Colors.white
@@ -207,10 +212,11 @@ class _MessageState extends ConsumerState<MessageScreen> {
               ),
               RoundedContainer(
                 radius: 50,
-                backgroundColor: 
-                dark ? Colors.white.withValues(alpha: 0.1)
-                : Colors.black.withValues(alpha: 0.1),
-                padding: const EdgeInsets.all(Sizes.xs),
+                backgroundColor:
+                    dark
+                        ? Colors.white.withValues(alpha: 0.1)
+                        : Colors.black.withValues(alpha: 0.1),
+                padding: EdgeInsets.all(responsiveSize(context, Sizes.xs)),
                 child: Row(
                   children: [
                     Flexible(
@@ -220,14 +226,17 @@ class _MessageState extends ConsumerState<MessageScreen> {
                           focusNode: myFocusNode,
                           controller: _messageController,
                           decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.only(left: Sizes.sm),
+                            contentPadding: EdgeInsets.only(
+                              left: responsiveSize(context, Sizes.sm),
+                            ),
                             hintText: 'Type a message...',
                             hintStyle: Theme.of(context).textTheme.labelSmall,
-                            fillColor: dark ? CustomColors.dark : CustomColors.light,
-                                        focusedBorder: InputBorder.none,
-                                        enabledBorder: InputBorder.none,
-                                        errorBorder: InputBorder.none,
-                                        disabledBorder: InputBorder.none,
+                            fillColor:
+                                dark ? CustomColors.dark : CustomColors.light,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
                           ),
                         ),
                       ),
@@ -236,13 +245,15 @@ class _MessageState extends ConsumerState<MessageScreen> {
                     IconButton(
                       style: IconButton.styleFrom(
                         backgroundColor: CustomColors.primary,
-                        padding: const EdgeInsets.all(Sizes.sm),
-                        shape: CircleBorder()
+                        padding: EdgeInsets.all(
+                          responsiveSize(context, Sizes.sm),
+                        ),
+                        shape: CircleBorder(),
                       ),
-                      onPressed: ()  {
+                      onPressed: () {
                         FocusScope.of(context).unfocus();
                         sendMessage(_messageController.text);
-                        },
+                      },
                       icon: const Icon(Icons.send, color: Colors.white),
                     ),
                   ],
