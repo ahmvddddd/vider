@@ -33,7 +33,7 @@ class _RatingDialogState extends ConsumerState<RatingDialog> {
             "How would you rate this provider?",
             style: Theme.of(context).textTheme.bodyMedium,
           ),
-          const SizedBox(height: Sizes.spaceBtwItems),
+          SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(5, (index) {

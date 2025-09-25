@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vider/utils/helpers/responsive_size.dart';
 import '../../common/widgets/appbar/appbar.dart';
 import '../../common/widgets/pop_up/custom_snackbar.dart';
 import '../../controllers/transactions/pin_provider.dart';
@@ -85,13 +86,13 @@ class _CreatePinScreenState extends ConsumerState<CreatePinScreen> {
               style: Theme.of(context).textTheme.bodySmall,
             ),
         
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children:
                   pin.map((digit) {
                     return Container(
-                      margin: const EdgeInsets.all(8),
+                      margin: EdgeInsets.all(responsiveSize(context, 8)),
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
@@ -110,10 +111,10 @@ class _CreatePinScreenState extends ConsumerState<CreatePinScreen> {
                   }).toList(),
             ),
             if (error != null) ...[
-              const SizedBox(height: Sizes.spaceBtwItems),
+              SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
               Text(error!, style: const TextStyle(color: Colors.red)),
             ],
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
             CustomKeypad(
               onDigitPressed: (digit) {
                 ref.read(pinStateProvider.notifier).enterDigit(digit);

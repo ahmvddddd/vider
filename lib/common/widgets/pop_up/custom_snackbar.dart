@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../utils/constants/sizes.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../custom_shapes/containers/rounded_container.dart';
 
 class CustomSnackbar {
@@ -18,10 +19,10 @@ class CustomSnackbar {
             children: [
               RoundedContainer(
                 backgroundColor: Colors.white.withValues(alpha: 0.1),
-                padding: const EdgeInsets.all(Sizes.xs),
+                padding: EdgeInsets.all(responsiveSize(context, Sizes.xs)),
                 child: Icon(icon, size: Sizes.iconMd, color: Colors.white),
               ),
-              const SizedBox(width: Sizes.xs),
+              SizedBox(width: responsiveSize(context, Sizes.xs)),
               Expanded( // ✅ Prevent overflow by letting the column take available space
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

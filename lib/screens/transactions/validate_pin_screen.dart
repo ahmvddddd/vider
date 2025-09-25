@@ -6,6 +6,7 @@ import '../../controllers/auth/sign_out_controller.dart';
 import '../../controllers/transactions/validate_pin_controller.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
+import '../../utils/helpers/responsive_size.dart';
 
 class ValidatePinDialog extends ConsumerStatefulWidget {
   const ValidatePinDialog({super.key});
@@ -83,9 +84,9 @@ class _ValidatePinDialogState extends ConsumerState<ValidatePinDialog> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: currentPin.map((digit) {
               return Container(
-                margin: const EdgeInsets.all(8),
-                width: 30,
-                height: 30,
+                margin: EdgeInsets.all(responsiveSize(context, 8)),
+                width: responsiveSize(context, 30),
+                height: responsiveSize(context, 30),
                 decoration: BoxDecoration(
                   border: Border.all(),
                   borderRadius: BorderRadius.circular(8),
@@ -93,18 +94,18 @@ class _ValidatePinDialogState extends ConsumerState<ValidatePinDialog> {
                 child: Center(
                   child: Text(
                     digit.isEmpty ? "•" : "*",
-                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: 30),
+                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: responsiveSize(context, 30)),
                   ),
                 ),
               );
             }).toList(),
           ),
           if (error != null) ...[
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
             Text(error!, style: Theme.of(context).textTheme.bodySmall!.copyWith(color: CustomColors.error),
             textAlign: TextAlign.center,),
           ],
-          const SizedBox(height: Sizes.spaceBtwItems),
+          SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
           CustomKeypad(onDigitPressed: _enterDigit, onBackspace: _removeDigit),
         ],
       ),

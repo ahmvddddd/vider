@@ -12,6 +12,7 @@ import '../../../controllers/verification_controllers/verify_otp_controller.dart
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../../../utils/helpers/token_secure_storage.dart';
 import '../../transactions/create_pin.dart';
 
@@ -103,18 +104,18 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
               ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+            padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                 const TitleAndDescription(
                   textAlign: TextAlign.left,
                   title: 'Almost There',
                   description:
                       'Please enter the verification code sent to your email. Check your spam folder if you can not find the OTP email',
                 ),
-                const SizedBox(height: Sizes.spaceBtwSections),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
       
                 // OTP INPUT ROW
                 Row(
@@ -165,7 +166,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                   }),
                 ),
       
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
       
                 // TIMER OR SEND OTP
                 secondsLeft > 0
@@ -215,7 +216,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                         ),
                       ),
       
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
               ],
             ),
           ),

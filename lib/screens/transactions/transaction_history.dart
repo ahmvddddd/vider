@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../utils/helpers/helper_function.dart';
 import '../../controllers/transactions/fetch_transactions_controller.dart';
+import '../../utils/helpers/responsive_size.dart';
 import '../jobs/components/jobs_screen_shimmer.dart';
 
 class TransactionHistory extends ConsumerStatefulWidget {
@@ -45,7 +46,7 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+          padding: EdgeInsets.all(responsiveSize(context,Sizes.spaceBtwItems)),
           child: transactionsAsync.when(
             data: (transactions) {
               if (transactions.isEmpty) {
@@ -61,7 +62,7 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
                   HomeListView(
                     seperatorBuilder:
                         (context, index) =>
-                            const SizedBox(height: Sizes.spaceBtwItems),
+                            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                     scrollDirection: Axis.vertical,
                     scrollPhysics: const NeverScrollableScrollPhysics(),
                     itemCount: transactions.length,
@@ -99,7 +100,7 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
                           iconColor = CustomColors.primary;
                       }
                       return RoundedContainer(
-                        padding: const EdgeInsets.all(Sizes.sm),
+                        padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                         backgroundColor:
                             dark
                                 ? CustomColors.white.withValues(alpha: 0.1)
@@ -132,7 +133,7 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
                                         color: iconColor,
                                       ),
                                     ),
-                                    const SizedBox(width: Sizes.sm),
+                                    SizedBox(width: responsiveSize(context, Sizes.sm)),
                                     Text(
                                       transaction.transactionType,
                                       style:
@@ -157,7 +158,7 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
                             ),
       
                             //service and rating
-                            const SizedBox(height: Sizes.xs),
+                            SizedBox(height: responsiveSize(context, Sizes.xs)),
                             Text(
                               transaction.description,
                               style: Theme.of(
@@ -174,8 +175,8 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
                             ),
       
                             //description
-                            const Padding(
-                              padding: EdgeInsets.all(Sizes.xs),
+                            Padding(
+                              padding: EdgeInsets.all(responsiveSize(context, Sizes.xs)),
                               child: Divider(color: CustomColors.primary),
                             ),
                             Row(
@@ -194,7 +195,7 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: Sizes.xs),
+                            SizedBox(height: responsiveSize(context, Sizes.xs)),
                             Row(
                               mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
@@ -211,7 +212,7 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: Sizes.md),
+                            SizedBox(height: responsiveSize(context, Sizes.md)),
                             Row(
                               mainAxisAlignment:
                                   MainAxisAlignment.spaceBetween,
@@ -250,7 +251,7 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
             error: (error, stack) {
               return Center(
               child: Padding(
-                padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+                padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment:
@@ -262,11 +263,11 @@ class _TransactionHistoryState extends ConsumerState<TransactionHistory> {
                       softWrap: true,
                       textAlign: TextAlign.center, // 👈 center text content
                     ),
-                    const SizedBox(height: Sizes.spaceBtwItems),
+                    SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                     IconButton(
                       style: IconButton.styleFrom(
                         backgroundColor: CustomColors.primary,
-                        padding: const EdgeInsets.all(Sizes.sm),
+                        padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                       ),
                       icon: const Icon(Icons.refresh, color: Colors.white),
                       onPressed: () {

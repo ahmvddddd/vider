@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../utils/constants/custom_colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_function.dart';
+import '../../../../utils/helpers/responsive_size.dart';
 import 'rounded_container.dart';
 
 class ButtonContainer extends StatelessWidget {
@@ -10,9 +11,9 @@ class ButtonContainer extends StatelessWidget {
   final Color backgroundColor;
   const ButtonContainer({
     super.key,
-    required this.text, 
+    required this.text,
     this.onPressed,
-    this.backgroundColor = CustomColors.primary
+    this.backgroundColor = CustomColors.primary,
   });
 
   @override
@@ -22,24 +23,28 @@ class ButtonContainer extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Container(
-        padding: const EdgeInsets.all(Sizes.spaceBtwItems),
-        color: dark ?  CustomColors.white.withValues(alpha: 0.1)
+        padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
+        color:
+            dark
+                ? CustomColors.white.withValues(alpha: 0.1)
                 : CustomColors.black.withValues(alpha: 0.1),
         child: SizedBox(
           width: double.infinity,
           child: GestureDetector(
             onTap: onPressed,
             child: RoundedContainer(
-                          height: screenHeight * 0.05,
-                          padding: const EdgeInsets.all(Sizes.sm),
-                          backgroundColor: backgroundColor,
-                          child: Center(
-                              child: Text(text,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall!
-                                      .copyWith(color: Colors.white))),
-                        ),
+              height: screenHeight * 0.05,
+              padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
+              backgroundColor: backgroundColor,
+              child: Center(
+                child: Text(
+                  text,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelSmall!.copyWith(color: Colors.white),
+                ),
+              ),
+            ),
           ),
         ),
       ),

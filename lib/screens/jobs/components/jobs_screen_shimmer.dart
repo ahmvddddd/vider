@@ -6,6 +6,7 @@ import '../../../../utils/constants/custom_colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_function.dart';
 import '../../../common/widgets/layouts/listview.dart';
+import '../../../utils/helpers/responsive_size.dart';
 
 class JobsScreenShimmer extends StatelessWidget {
   const JobsScreenShimmer({super.key});
@@ -19,14 +20,14 @@ class JobsScreenShimmer extends StatelessWidget {
       child: Scaffold(
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+            padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
             child: HomeListView(
               scrollDirection: Axis.vertical,
               itemCount: 5,
               scrollPhysics: const NeverScrollableScrollPhysics(),
               seperatorBuilder:
                   (context, index) =>
-                      const SizedBox(height: Sizes.spaceBtwItems),
+                      SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
               itemBuilder: (context, index) {
                 return RoundedContainer(
                   padding: const EdgeInsets.all(Sizes.sm),
@@ -46,7 +47,7 @@ class JobsScreenShimmer extends StatelessWidget {
                             radius: 100,
                           ),
 
-                          const SizedBox(width: Sizes.sm),
+                          SizedBox(height: responsiveSize(context, Sizes.sm)),
                           ShimmerWidget(
                             width: screenWidth * 0.12,
                             height: screenHeight * 0.01,
@@ -55,8 +56,8 @@ class JobsScreenShimmer extends StatelessWidget {
                         ],
                       ),
 
-                      const CustomDivider(
-                        padding: EdgeInsets.all(Sizes.spaceBtwItems),
+                      CustomDivider(
+                        padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
                       ),
 
                       Row(
@@ -75,7 +76,7 @@ class JobsScreenShimmer extends StatelessWidget {
                         ],
                       ),
 
-                      const SizedBox(height: Sizes.xs),
+                      SizedBox(height: responsiveSize(context, Sizes.xs)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -92,7 +93,7 @@ class JobsScreenShimmer extends StatelessWidget {
                         ],
                       ),
 
-                      const SizedBox(height: Sizes.xs),
+                      SizedBox(height: responsiveSize(context, Sizes.xs)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

@@ -4,6 +4,7 @@ import '../../../common/widgets/custom_shapes/containers/rounded_container.dart'
 import '../../../common/widgets/layouts/listview.dart';
 import '../../../common/widgets/shimmer/shimmer_widget.dart';
 import '../../../utils/constants/sizes.dart';
+import '../../../utils/helpers/responsive_size.dart';
 
 class ProviderProfilesShimmer extends StatelessWidget {
   const ProviderProfilesShimmer({super.key});
@@ -20,7 +21,7 @@ class ProviderProfilesShimmer extends StatelessWidget {
         HomeListView(
           sizedBoxHeight: screenHeight * 0.28,
           scrollDirection: Axis.horizontal,
-          seperatorBuilder: (context, index) => const SizedBox(width: Sizes.sm),
+          seperatorBuilder: (context, index) => SizedBox(width: responsiveSize(context, Sizes.sm)),
           itemCount: 4,
           itemBuilder: (context, index) {
             return RoundedContainer(
@@ -29,7 +30,7 @@ class ProviderProfilesShimmer extends StatelessWidget {
                       ? Colors.white.withValues(alpha: 0.1)
                       : Colors.black.withValues(alpha: 0.1),
                       radius: Sizes.cardRadiusLg,
-                      padding: const EdgeInsets.all(Sizes.xs),
+                      padding: EdgeInsets.all(responsiveSize(context, Sizes.xs)),
               child: Column(
                 children: [
                   ShimmerWidget(
@@ -38,7 +39,7 @@ class ProviderProfilesShimmer extends StatelessWidget {
                     radius: Sizes.cardRadiusMd,
                   ),
 
-                  const SizedBox(height: Sizes.xs),
+                  SizedBox(height: responsiveSize(context, Sizes.xs)),
                   Row(
                     children: [
                       ShimmerWidget(
@@ -47,7 +48,7 @@ class ProviderProfilesShimmer extends StatelessWidget {
                     radius: 100
                   ),
 
-                  const SizedBox(width: Sizes.sm),
+                  SizedBox(width: responsiveSize(context, Sizes.sm)),
 
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

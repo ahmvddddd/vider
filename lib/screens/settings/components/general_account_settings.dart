@@ -8,6 +8,7 @@ import '../../../controllers/user/user_controller.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../../transactions/change_pin.dart';
 import '../../transactions/transaction_history.dart';
 import 'change_password.dart';
@@ -35,7 +36,7 @@ class _GeneralAccountSettingsState
   Widget build(BuildContext context) {
     final dark = HelperFunction.isDarkMode(context);
     return RoundedContainer(
-      padding: const EdgeInsets.symmetric(vertical: Sizes.spaceBtwItems),
+      padding: EdgeInsets.symmetric(vertical: responsiveSize(context, Sizes.spaceBtwItems)),
       boxShadow: [
         BoxShadow(
           color: dark ? CustomColors.darkerGrey : CustomColors.darkGrey,
@@ -59,14 +60,14 @@ class _GeneralAccountSettingsState
           ),
 
           
-          const SizedBox(height: Sizes.spaceBtwItems),
+          SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
           _settingsTile(context, () => HelperFunction.navigateScreen(
                   context,
                   ChangePasswordPage(),
                 ),
                 Iconsax.password_check, 'Password', 'Change your account password'),
 
-          const SizedBox(height: Sizes.spaceBtwItems),
+          SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
           _settingsTile(
             context,
            () => HelperFunction.navigateScreen(context, ChangePinPage()),
@@ -75,7 +76,7 @@ class _GeneralAccountSettingsState
            'Change your transaction PIN'
            ),
           
-          const SizedBox(height: Sizes.spaceBtwItems),
+          SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
           _settingsTile(context, 
           () async {
               final userState = ref.read(userProvider);
@@ -108,7 +109,7 @@ class _GeneralAccountSettingsState
              'Report a failed transaction or a problem.',),
           
 
-          const SizedBox(height: Sizes.spaceBtwItems),
+          SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
         ],
       ),
     );
@@ -123,15 +124,15 @@ class _GeneralAccountSettingsState
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: Sizes.sm, horizontal: Sizes.spaceBtwItems),
+        padding: EdgeInsets.symmetric(vertical: responsiveSize(context, Sizes.sm), horizontal: responsiveSize(context,Sizes.spaceBtwItems)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                Icon(icon, size: Sizes.iconSm,),
+                Icon(icon, size: responsiveSize(context, Sizes.iconSm),),
                 
-                const SizedBox(width: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -151,7 +152,7 @@ class _GeneralAccountSettingsState
               ],
             ),
         
-            Icon(Iconsax.arrow_right_1, size: Sizes.iconSm,)
+            Icon(Iconsax.arrow_right_1, size: responsiveSize(context, Sizes.iconSm),)
           ],
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../../transactions/deposit_screen.dart';
 
 class AccountInfo extends ConsumerStatefulWidget {
@@ -40,11 +41,11 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
               ],
             ),
 
-            const SizedBox(height: Sizes.sm),
+            SizedBox(height: responsiveSize(context, Sizes.sm)),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const SizedBox(width: Sizes.sm),
+                SizedBox(height: responsiveSize(context, Sizes.sm)),
 
                 GestureDetector(
                   onTap: () {
@@ -57,7 +58,7 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
                     width: MediaQuery.of(context).size.width * 0.43,
                     height: MediaQuery.of(context).size.height * 0.06,
                     radius: Sizes.cardRadiusLg,
-                    padding: const EdgeInsets.all(Sizes.sm),
+                    padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                     backgroundColor: Colors.green,
                     child: Center(
                       child: Text(
@@ -73,7 +74,7 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
               ],
             ),
 
-            const SizedBox(height: Sizes.sm),
+            SizedBox(height: responsiveSize(context, Sizes.sm)),
           ],
         );
       },
@@ -98,11 +99,11 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
                 ],
               ),
 
-              const SizedBox(height: Sizes.sm),
+              SizedBox(height: responsiveSize(context, Sizes.sm)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const SizedBox(width: Sizes.sm),
+                  SizedBox(height: responsiveSize(context, Sizes.sm)),
 
                   GestureDetector(
                     onTap: () {},
@@ -110,7 +111,7 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
                       width: MediaQuery.of(context).size.width * 0.43,
                       height: MediaQuery.of(context).size.height * 0.06,
                       radius: Sizes.cardRadiusLg,
-                      padding: const EdgeInsets.all(Sizes.sm),
+                      padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                       backgroundColor: Colors.grey,
                       child: Center(
                         child: Text(
@@ -124,7 +125,7 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
                 ],
               ),
 
-              const SizedBox(height: Sizes.sm),
+              SizedBox(height: responsiveSize(context, Sizes.sm)),
             ],
           ),
       error: (err, st) => Column(
@@ -147,11 +148,11 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
                 ],
               ),
 
-              const SizedBox(height: Sizes.sm),
+              SizedBox(height: responsiveSize(context, Sizes.sm)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const SizedBox(width: Sizes.sm),
+                  SizedBox(width: responsiveSize(context, Sizes.sm)),
 
                   GestureDetector(
                     onTap: () {},
@@ -159,7 +160,7 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
                       width: MediaQuery.of(context).size.width * 0.43,
                       height: MediaQuery.of(context).size.height * 0.06,
                       radius: Sizes.cardRadiusLg,
-                      padding: const EdgeInsets.all(Sizes.sm),
+                      padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                       backgroundColor: Colors.grey,
                       child: Center(
                         child: Text(
@@ -173,7 +174,7 @@ class _AccountInfoState extends ConsumerState<AccountInfo> {
                 ],
               ),
 
-              const SizedBox(height: Sizes.sm),
+              SizedBox(height: responsiveSize(context, Sizes.sm)),
             ],
           ),
     );

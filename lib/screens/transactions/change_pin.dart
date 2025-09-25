@@ -6,6 +6,7 @@ import '../../common/widgets/pop_up/custom_snackbar.dart';
 import '../../controllers/transactions/change_pin_controller.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
+import '../../utils/helpers/responsive_size.dart';
 
 class ChangePinPage extends ConsumerStatefulWidget {
   const ChangePinPage({super.key});
@@ -106,17 +107,17 @@ class _ChangePinPageState extends ConsumerState<ChangePinPage> {
             isEnteringNewPin ? "Enter New PIN" : "Enter Current PIN",
             style: Theme.of(context).textTheme.bodyLarge,
           ),
-          const SizedBox(height: Sizes.spaceBtwItems),
+          SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: pin.map((digit) {
               return Container(
-                margin: const EdgeInsets.all(8),
-                width: 40,
-                height: 40,
+                margin: EdgeInsets.all(responsiveSize(context, 8)),
+                width: responsiveSize(context, 40),
+                height: responsiveSize(context, 40),
                 decoration: BoxDecoration(
                   border: Border.all(),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(responsiveSize(context, 8)),
                 ),
                 child: Center(
                   child: Text(
@@ -128,10 +129,10 @@ class _ChangePinPageState extends ConsumerState<ChangePinPage> {
             }).toList(),
           ),
           if (error != null) ...[
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
             Text(error!, style: const TextStyle(color: Colors.red)),
           ],
-          const SizedBox(height: Sizes.spaceBtwItems),
+          SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
           CustomKeypad(
             onDigitPressed: _enterDigit,
             onBackspace: _removeDigit,

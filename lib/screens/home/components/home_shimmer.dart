@@ -3,6 +3,7 @@ import '../../../common/widgets/layouts/grid_layout.dart';
 import '../../../common/widgets/layouts/listview.dart';
 import '../../../common/widgets/shimmer/shimmer_widget.dart';
 import '../../../utils/constants/sizes.dart';
+import '../../../utils/helpers/responsive_size.dart';
 
 class HomeShimmer extends StatelessWidget {
   const HomeShimmer({super.key});
@@ -14,20 +15,7 @@ class HomeShimmer extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: Sizes.spaceBtwSections),
-        // ShimmerWidget(
-        //   height: screenHeight * 0.02,
-        //   width: screenHeight * 0.30,
-        //   radius: Sizes.cardRadiusLg,
-        // ),
-
-        // const SizedBox(height: Sizes.spaceBtwItems),
-        // ShimmerWidget(
-        //   height: screenHeight * 0.055,
-        //   width: screenHeight * 0.90,
-        //   radius: Sizes.cardRadiusLg,),
-
-        // const SizedBox(height: Sizes.spaceBtwItems),
+        SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
         GridLayout(
           mainAxisExtent: screenHeight * 0.11,
           crossAxisCount: 4,
@@ -41,17 +29,17 @@ class HomeShimmer extends StatelessWidget {
           },
         ),
 
-        const SizedBox(height: Sizes.spaceBtwSections),
+        SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
         ShimmerWidget(
           height: screenHeight * 0.02,
           width: screenHeight * 0.20,
           radius: Sizes.cardRadiusLg,
         ),
-        const SizedBox(height: Sizes.sm),
+        SizedBox(height: responsiveSize(context, Sizes.sm)),
         HomeListView(
           sizedBoxHeight: screenHeight * 0.28,
           scrollDirection: Axis.horizontal,
-          seperatorBuilder: (context, index) => const SizedBox(width: Sizes.sm),
+          seperatorBuilder: (context, index) => SizedBox(width: responsiveSize(context, Sizes.sm)),
           itemCount: 4,
           itemBuilder: (context, index) {
             return ShimmerWidget(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../utils/constants/custom_colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_function.dart';
+import '../../../../utils/helpers/responsive_size.dart';
 import '../containers/rounded_container.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -43,7 +44,7 @@ class CategoryCard extends StatelessWidget {
           offset: const Offset(0, 2),
         ),
       ],
-      padding: const EdgeInsets.all(Sizes.xs),
+      padding: EdgeInsets.all(responsiveSize(context, Sizes.xs)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -61,9 +62,9 @@ class CategoryCard extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: Sizes.sm),
+          SizedBox(height: responsiveSize(context, Sizes.sm)),
           Padding(
-            padding: const EdgeInsets.all(Sizes.xs),
+            padding:  EdgeInsets.all(responsiveSize(context, Sizes.xs)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -76,7 +77,7 @@ class CategoryCard extends StatelessWidget {
                           backgroundImage: NetworkImage(imageAvatar),
                         ),
 
-                        const SizedBox(width: Sizes.sm),
+                        SizedBox(height: responsiveSize(context, Sizes.sm)),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -99,7 +100,7 @@ class CategoryCard extends StatelessWidget {
                       ],
                     ),
 
-                    const SizedBox(width: Sizes.md),
+                    SizedBox(height: responsiveSize(context, Sizes.md)),
                     Row(
                       children: [
                         Icon(
@@ -122,7 +123,7 @@ class CategoryCard extends StatelessWidget {
                 ),
 
                 //description
-                const SizedBox(height: Sizes.sm),
+                SizedBox(height: responsiveSize(context, Sizes.sm)),
                 SizedBox(
                   width: screenWidth * 0.80,
                   child: Text(
@@ -135,7 +136,7 @@ class CategoryCard extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: Sizes.sm),
+                SizedBox(height: responsiveSize(context, Sizes.sm)),
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(

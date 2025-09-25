@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../components/verify_id_screen.dart';
 import '../../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../../utils/constants/custom_colors.dart';
@@ -29,8 +30,8 @@ class VerificationPopUpContainer extends StatelessWidget {
               RoundedContainer(
                 radius: 100,
                 padding:
-                    const EdgeInsets.all(
-                      Sizes.sm,
+                    EdgeInsets.all(
+                      responsiveSize(context, Sizes.sm),
                     ),
                 backgroundColor: Colors
                     .white
@@ -38,14 +39,14 @@ class VerificationPopUpContainer extends StatelessWidget {
                 child: Center(
                   child: Icon(
                     Icons.warning,
-                    size: Sizes.iconSm,
+                    size: responsiveSize(context, Sizes.iconSm),
                     color: Colors.white,
                   ),
                 ),
               ),
     
-              const SizedBox(
-                width: Sizes.sm,
+              SizedBox(
+                width: responsiveSize(context, Sizes.sm),
               ),
               Text(
                 "You are not verified",

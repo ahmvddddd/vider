@@ -12,6 +12,7 @@ import '../../../../utils/constants/custom_colors.dart';
 import '../../../../utils/helpers/helper_function.dart';
 import '../../../../utils/helpers/token_secure_storage.dart';
 import '../../../nav_menu.dart';
+import '../../../utils/helpers/responsive_size.dart';
 
 class VerifyIdScreen extends ConsumerStatefulWidget {
   const VerifyIdScreen({super.key});
@@ -100,7 +101,7 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+          padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -111,14 +112,14 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: Sizes.spaceBtwSections),
+              SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
               const TitleAndDescription(
                 textAlign: TextAlign.left,
                 title: 'Id Type',
                 description:
                     'Select the type of Identification Document you would like to upload',
               ),
-              const SizedBox(height: Sizes.spaceBtwItems),
+              SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
               SizedBox(
                 width: screenWidth * 0.70,
                 child: Padding(
@@ -148,7 +149,7 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: Sizes.spaceBtwSections),
+              SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
               const TitleAndDescription(
                 textAlign: TextAlign.left,
                 title: 'Id Image',
@@ -180,7 +181,7 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
                       ),
                     ),
                   ),
-              const SizedBox(height: Sizes.spaceBtwItems),
+              SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -195,7 +196,7 @@ class _UploadIdScreenState extends ConsumerState<VerifyIdScreen> {
                       )
                       : TextButton(
                         style: TextButton.styleFrom(
-                          padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+                          padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
                           backgroundColor: CustomColors.primary,
                         ),
                         onPressed: getImage,

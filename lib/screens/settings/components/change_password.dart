@@ -9,6 +9,7 @@ import '../../../controllers/auth/change_password_controller.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../../../utils/validators/validation.dart';
 
 class ChangePasswordPage extends ConsumerStatefulWidget {
@@ -83,7 +84,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
         bottomNavigationBar: SizedBox(
           width: double.infinity,
           child: Container(
-            padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+            padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
             color:
                 dark
                     ? CustomColors.white.withValues(alpha: 0.1)
@@ -119,7 +120,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.all(Sizes.spaceBtwItems),
+              padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -157,14 +158,14 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                         );
                       },
                     ),
-                    const SizedBox(height: Sizes.spaceBtwItems),
+                    SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                     TitleAndDescription(
                       textAlign: TextAlign.left,
                       title: 'Enter new password ',
                       description:
                           'Password must contain at least one uppercase, one lower case one special character and at least 6 characters long',
                     ),
-                    const SizedBox(height: Sizes.spaceBtwItems),
+                    SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                     ValueListenableBuilder<bool>(
                       valueListenable: hideNewPassword,
                       builder: (context, value, child) {

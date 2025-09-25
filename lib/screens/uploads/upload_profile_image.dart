@@ -9,6 +9,7 @@ import '../../controllers/uploads/profile_image_controller.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
+import '../../utils/helpers/responsive_size.dart';
 import '../../utils/helpers/token_secure_storage.dart';
 
 class UploadProfileImageScreen extends ConsumerWidget {
@@ -45,7 +46,7 @@ class UploadProfileImageScreen extends ConsumerWidget {
                         'An error occured',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: responsiveSize(context,10)),
                       ElevatedButton(
                         onPressed: () {
                           // Force refresh the controller
@@ -71,8 +72,8 @@ class UploadProfileImageScreen extends ConsumerWidget {
                         image == null
                             ? isCameraReady
                                 ? Padding(
-                                  padding: const EdgeInsets.all(
-                                    Sizes.spaceBtwItems,
+                                  padding: EdgeInsets.all(
+                                    responsiveSize(context, Sizes.spaceBtwItems),
                                   ),
                                   child: RoundedContainer(
                                     height: screenHeight * 0.45,
@@ -90,7 +91,7 @@ class UploadProfileImageScreen extends ConsumerWidget {
                               radius: 80,
                               backgroundImage: FileImage(File(image.path)),
                             ),
-                        const SizedBox(height: Sizes.spaceBtwItems),
+                        SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                         SizedBox(
                           width: screenWidth * 0.40,
                           child: ElevatedButton(
@@ -102,7 +103,7 @@ class UploadProfileImageScreen extends ConsumerWidget {
                             child: Icon(Icons.camera, color: Colors.white),
                           ),
                         ),
-                        const SizedBox(height: Sizes.spaceBtwItems),
+                        SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                         SizedBox(
                           width: screenWidth * 0.40,
                           child: ElevatedButton(

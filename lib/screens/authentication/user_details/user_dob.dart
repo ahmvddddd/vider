@@ -9,6 +9,7 @@ import '../../../controllers/auth/dob_controller.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../../../utils/helpers/token_secure_storage.dart';
 import '../../uploads/upload_profile_image.dart';
 
@@ -117,7 +118,7 @@ class _UserDetailsScreenState extends ConsumerState<UserDOBScreen> {
               ),
             )
           : SingleChildScrollView(
-              padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+              padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
               child: _buildDOBSection(MediaQuery.of(context).size.width),
             ),
     );
@@ -132,7 +133,7 @@ class _UserDetailsScreenState extends ConsumerState<UserDOBScreen> {
             'Date of Birth',
             style: Theme.of(context).textTheme.bodySmall,
           ),
-          const SizedBox(height: Sizes.spaceBtwItems),
+          SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
           Text(
             selectedDate != null
                 ? 'Selected: ${selectedDate!.toLocal().toString().split(' ')[0]}'
@@ -147,10 +148,10 @@ class _UserDetailsScreenState extends ConsumerState<UserDOBScreen> {
                   .labelMedium!
                   .copyWith(color: Colors.red),
             ),
-          const SizedBox(height: Sizes.spaceBtwSections),
+          SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
           TextButton(
             style: TextButton.styleFrom(
-              padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+              padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
               backgroundColor: CustomColors.primary,
             ),
             onPressed: () => _pickDate(context),

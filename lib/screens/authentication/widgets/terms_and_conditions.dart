@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 
 class TermsAndConditionsDialog extends StatelessWidget {
   const TermsAndConditionsDialog({super.key});
@@ -12,7 +12,7 @@ class TermsAndConditionsDialog extends StatelessWidget {
       backgroundColor: dark ? Colors.black : Colors.white,
       title: const Text('Terms and Conditions'),
       content: SizedBox(
-        height: 400,
+        height: responsiveSize(context, 400),
         width: double.maxFinite,
         child: SingleChildScrollView(
           child: Text('''
@@ -54,8 +54,12 @@ By signing up, you agree to these terms.
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child:  Text('Close',
-          style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.red)),
+          child: Text(
+            'Close',
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall!.copyWith(color: Colors.red),
+          ),
         ),
       ],
     );

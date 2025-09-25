@@ -11,6 +11,7 @@ import '../../repository/user/user_local_storage.dart';
 import '../../../controllers/user/user_controller.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
+import '../../utils/helpers/responsive_size.dart';
 import 'components/account_info.dart';
 import 'components/general_account_settings.dart';
 import 'widgets/profile_details.dart';
@@ -55,11 +56,11 @@ class _AccountSettingsState extends ConsumerState<AccountSettings> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+          padding: EdgeInsets.all(responsiveSize(context,Sizes.spaceBtwItems)),
           child: Column(
             children: [
               Container(
-                padding: const EdgeInsets.all(Sizes.sm),
+                padding: EdgeInsets.all(responsiveSize(context,Sizes.sm)),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Sizes.cardRadiusMd),
                   image: DecorationImage(
@@ -157,21 +158,21 @@ class _AccountSettingsState extends ConsumerState<AccountSettings> {
                       ],
                     ),
 
-                    const SizedBox(height: Sizes.spaceBtwItems),
+                    SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                     AccountInfo(walletController: walletController),
                   ],
                 ),
               ),
 
-              const SizedBox(height: Sizes.spaceBtwSections),
+              SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
               SectionHeading(
                 title: 'General Settings',
                 showActionButton: false,
               ),
-              const SizedBox(height: Sizes.spaceBtwItems),
+              SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
               GeneralAccountSettings(),
 
-              const SizedBox(height: Sizes.spaceBtwSections),
+             SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
               SizedBox(
                 width: screenWidth * 0.90,
                 child: ElevatedButton(
@@ -190,7 +191,7 @@ class _AccountSettingsState extends ConsumerState<AccountSettings> {
                 ),
               ),
 
-              const SizedBox(height: Sizes.sm),
+              SizedBox(height: responsiveSize(context, Sizes.sm)),
             ],
           ),
         ),

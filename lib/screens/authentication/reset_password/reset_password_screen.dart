@@ -7,6 +7,7 @@ import '../../../common/widgets/custom_shapes/containers/button_container.dart';
 import '../../../common/widgets/texts/title_and_description.dart';
 import '../../../controllers/verification_controllers/reset_password_controller.dart';
 import '../../../utils/constants/sizes.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../../../utils/validators/validation.dart';
 
 class ResetPasswordScreen extends ConsumerStatefulWidget {
@@ -103,13 +104,13 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                         : Colors.black, ))
             : SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+          padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                 TitleAndDescription(
                   textAlign: TextAlign.left,
                   title: 'Enter 6-digit OTP',
@@ -123,8 +124,8 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                   children: List.generate(6, (index) {
                     return AnimatedContainer(
                       duration: const Duration(milliseconds: 300),
-                      width: 45,
-                      height: 55,
+                      width: responsiveSize(context, 45),
+                      height: responsiveSize(context, 55),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
@@ -164,7 +165,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                   }),
                 ),
     
-                const SizedBox(height: Sizes.spaceBtwItems * 2),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems * 2)),
                 TitleAndDescription(
                   textAlign: TextAlign.left,
                   title: 'Enter new password',
@@ -190,13 +191,13 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                   },
                 ),
     
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                 TitleAndDescription(
                   textAlign: TextAlign.left,
                   title: 'Confirm password',
                   description: 'Re-enter your password to confirm it matches.',
                 ),
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                 ValueListenableBuilder<bool>(
                   valueListenable: hideConfirmPassword,
                   builder: (context, value, child) {

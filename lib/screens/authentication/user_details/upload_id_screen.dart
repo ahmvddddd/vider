@@ -10,6 +10,7 @@ import '../../../common/widgets/texts/title_and_description.dart';
 import '../../../controllers/uploads/upload_id_controller.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../../../utils/helpers/token_secure_storage.dart';
 import '../verification/verify_email.dart';
 
@@ -100,7 +101,7 @@ class _UploadIdScreenState extends ConsumerState<UploadIdScreen> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+            padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -110,7 +111,7 @@ class _UploadIdScreenState extends ConsumerState<UploadIdScreen> {
                   description:
                       'Select the type of Identification Document you would like to upload',
                 ),
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                 SizedBox(
                   width: screenWidth * 0.70,
                   child: Padding(
@@ -140,7 +141,7 @@ class _UploadIdScreenState extends ConsumerState<UploadIdScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: Sizes.spaceBtwSections),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
                 const TitleAndDescription(
                   textAlign: TextAlign.left,
                   title: 'Id Image',
@@ -148,7 +149,7 @@ class _UploadIdScreenState extends ConsumerState<UploadIdScreen> {
                       'Tap the button below to upload an image of your Identity card. Make sure your photo is clear and ensure your names match with no spelling error.',
                 ),
 
-                const SizedBox(height: Sizes.spaceBtwSections),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
                 idImage == null
                     ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -176,7 +177,7 @@ class _UploadIdScreenState extends ConsumerState<UploadIdScreen> {
                         ),
                       ),
                     ),
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -205,7 +206,7 @@ class _UploadIdScreenState extends ConsumerState<UploadIdScreen> {
                   ],
                 ),
 
-                const SizedBox(height: Sizes.spaceBtwSections),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
                 Text(
                   'ID verification is compulsory for all users. Unverified accounts can not hire providers and would end up being suspended',
                   style: Theme.of(context).textTheme.bodyMedium,

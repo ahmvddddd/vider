@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
+import '../../../utils/helpers/responsive_size.dart';
 
 class ProfileDetails extends ConsumerStatefulWidget {
   final Widget profileImage;
@@ -37,7 +38,7 @@ class _ProfileDetailsState extends ConsumerState<ProfileDetails> {
             ),
           ),
         ),
-        const SizedBox(width: Sizes.md),
+        SizedBox(width: responsiveSize(context, Sizes.md)),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -84,7 +85,7 @@ class ProfileDetailsDummy extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: Sizes.md),
+        SizedBox(width: responsiveSize(context, Sizes.md)),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

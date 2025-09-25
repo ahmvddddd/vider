@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../common/widgets/custom_shapes/containers/rounded_container.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
+import '../../utils/helpers/responsive_size.dart';
 import 'widgets/form_divider.dart';
 import 'widgets/sign_up_form.dart';
 
@@ -18,7 +19,7 @@ class SignupScreen extends StatelessWidget {
       child: Scaffold(
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+            padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
             child: Column(
               children: [
                 SizedBox(height: screenHeight * 0.05),
@@ -38,21 +39,21 @@ class SignupScreen extends StatelessWidget {
                   ),
                 ),
       
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                 const SignUpForm(),
       
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                 const FormDivider(dividerText: 'Already a user ?'),
       
                 //signup button
-                const SizedBox(height: Sizes.spaceBtwItems),
+                SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
                 SizedBox(
                   width: double.infinity,
                   child: GestureDetector(
                     onTap: toggleScreen,
                     child: RoundedContainer(
                       height: screenHeight * 0.06,
-                      padding: const EdgeInsets.all(Sizes.sm),
+                      padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                       backgroundColor: CustomColors.primary,
                       child: Center(
                         child: Text(

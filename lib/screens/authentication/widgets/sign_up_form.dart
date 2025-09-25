@@ -7,6 +7,7 @@ import '../../../controllers/auth/sign_up_controller.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../../../utils/validators/validation.dart';
 import 'build_textfield.dart';
 import 'terms_and_conditions.dart';
@@ -71,28 +72,28 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Column(
           children: [
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
             BuildTextfield(
               controller: firstnameController,
               icon: Iconsax.user,
               hint: 'Firstname',
               validator: (value) => Validator.validateTextField(value),
             ),
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
             BuildTextfield(
               controller: lastnameController,
               icon: Iconsax.user,
               hint: 'Lastname',
               validator: (value) => Validator.validateTextField(value),
             ),
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
             BuildTextfield(
               controller: usernameController,
               icon: Iconsax.user,
               hint: 'Username',
               validator: (value) => Validator.validateTextField(value),
             ),
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
             BuildTextfield(
               controller: emailController,
               icon: Iconsax.direct,
@@ -100,7 +101,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
               isEmail: true,
               validator: (value) => Validator.validateEmail(value),
             ),
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
 
             /// Password
             _buildPasswordField(
@@ -110,7 +111,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
               label: 'Password',
               isDark: isDark,
             ),
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
 
             /// Confirm Password
             _buildPasswordField(
@@ -127,7 +128,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
               },
             ),
 
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
 
             /// Terms & Conditions Checkbox
             ValueListenableBuilder<bool>(
@@ -176,7 +177,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
               },
             ),
 
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
 
             /// Sign Up Button
             signupState.isLoading
@@ -235,7 +236,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
                     },
                     child: RoundedContainer(
                       height: screenHeight * 0.06,
-                      padding: const EdgeInsets.all(Sizes.sm),
+                      padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                       backgroundColor: CustomColors.primary,
                       child: Center(
                         child: Text(
@@ -251,7 +252,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
 
             if (!_submitted && signupState.error != null)
               Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(top: responsiveSize(context, 20)),
                 child: Text(
                   signupState.error!,
                   style: Theme.of(

@@ -8,6 +8,7 @@ import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
 import '../../../controllers/auth/sign_in_controller.dart';
+import '../../../utils/helpers/responsive_size.dart';
 import '../../../utils/validators/validation.dart';
 import '../reset_password/enter_email.dart';
 import 'build_textfield.dart';
@@ -107,7 +108,7 @@ class _SigninFormState extends ConsumerState<SignInForm> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Column(
           children: [
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
 
             // Username field
             Container(
@@ -126,7 +127,7 @@ class _SigninFormState extends ConsumerState<SignInForm> {
               ),
             ),
 
-            const SizedBox(height: Sizes.spaceBtwItems),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwItems)),
 
             // Password field
             Container(
@@ -159,7 +160,7 @@ class _SigninFormState extends ConsumerState<SignInForm> {
               ),
             ),
 
-            const SizedBox(height: Sizes.spaceBtwSections),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
 
             // Sign-in button
             loginState.isLoading
@@ -200,7 +201,7 @@ class _SigninFormState extends ConsumerState<SignInForm> {
                     },
                     child: RoundedContainer(
                       height: screenHeight * 0.06,
-                      padding: const EdgeInsets.all(Sizes.sm),
+                      padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
                       backgroundColor: CustomColors.primary,
                       child: Center(
                         child: Text(
@@ -216,7 +217,7 @@ class _SigninFormState extends ConsumerState<SignInForm> {
 
             if (!_submitted && loginState.error != null)
               Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: EdgeInsets.only(top: responsiveSize(context, 20)),
                 child: Text(
                   loginState.error!,
                   style: Theme.of(
@@ -225,7 +226,7 @@ class _SigninFormState extends ConsumerState<SignInForm> {
                   textAlign: TextAlign.center,
                 ),
               ),
-            const SizedBox(height: Sizes.sm),
+            SizedBox(height: responsiveSize(context, Sizes.sm)),
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(

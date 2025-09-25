@@ -8,6 +8,7 @@ import '../../common/widgets/texts/title_and_description.dart';
 import '../../utils/constants/custom_colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/helpers/helper_function.dart';
+import '../../utils/helpers/responsive_size.dart';
 
 class DepositScreen extends StatelessWidget {
   final String cryptoAddress;
@@ -39,7 +40,7 @@ class DepositScreen extends StatelessWidget {
         },
       ),
       body: Padding(
-        padding: const EdgeInsets.all(Sizes.spaceBtwItems),
+        padding: EdgeInsets.all(responsiveSize(context, Sizes.spaceBtwItems)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -50,10 +51,10 @@ class DepositScreen extends StatelessWidget {
                     'Click the copy button at the bottom of the screen to copy address to clipboard',
               ),
 
-            const SizedBox(height: Sizes.spaceBtwSections),
+            SizedBox(height: responsiveSize(context, Sizes.spaceBtwSections)),
             RoundedContainer(
               width: screenWidth * 0.90,
-              padding: const EdgeInsets.all(Sizes.sm),
+              padding: EdgeInsets.all(responsiveSize(context, Sizes.sm)),
               radius: Sizes.cardRadiusLg,
               backgroundColor:
                   dark

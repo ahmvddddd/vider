@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../../utils/constants/custom_colors.dart';
 import '../../../utils/constants/sizes.dart';
 import '../../../utils/helpers/helper_function.dart';
+import '../../../utils/helpers/responsive_size.dart';
 
 class TAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TAppBar({
@@ -27,7 +28,7 @@ class TAppBar extends StatelessWidget implements PreferredSizeWidget {
     final dark = HelperFunction.isDarkMode(context);
     return SafeArea( // ✅ Ensure it respects the status bar
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: Sizes.sm),
+        padding: EdgeInsets.symmetric(horizontal: responsiveSize(context, Sizes.sm)),
         child: AppBar(
           automaticallyImplyLeading: false,
           elevation: 0,
